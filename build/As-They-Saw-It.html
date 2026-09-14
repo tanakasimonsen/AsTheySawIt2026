@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<!-- UUID://C991D40D-3EA5-4ED8-ACFC-F5D97CB54267// --><tw-storydata name="As They Saw It" startnode="16" creator="Twine (Twee 3) Language" creator-version="1.1.5" ifid="C991D40D-3EA5-4ED8-ACFC-F5D97CB54267" zoom="1" format="SugarCube" format-version="2.37.3" options="debug" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* twine-user-stylesheet #1: "Story Stylesheet" */
+	<!-- UUID://C991D40D-3EA5-4ED8-ACFC-F5D97CB54267// --><tw-storydata name="As They Saw It" startnode="16" creator="Twine (Twee 3) Language" creator-version="1.1.5" ifid="C991D40D-3EA5-4ED8-ACFC-F5D97CB54267" zoom="1" format="SugarCube" format-version="2.37.3" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* twine-user-stylesheet #1: "Story Stylesheet" */
 /* ============================================================
    IMPORTS & PALETTE
    ============================================================ */
@@ -152,6 +152,37 @@ a, .dialogue-prompt a, .chat-line a, .select-row a, .scene-nav a, .continue-link
 }
 
 tw-story a.link-internal { text-decoration: none; }
+
+/* ============================================================
+   DEBUG PANEL
+   ============================================================ */
+#debug-panel {
+  position: fixed;
+  bottom: 1em;
+  left: calc(clamp(10em, 13vw, 15em) + 1em);
+  background-color: var(--bg-panel);
+  border: 2px solid var(--text-main);
+  color: var(--text-main);
+  padding: 0.6em 1em;
+  border-radius: 6px;
+  font-size: 0.75em;
+  z-index: 9999;
+  max-width: 260px;
+  line-height: 1.5;
+}
+.debug-title {
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.3em;
+  border-bottom: 1px dashed var(--text-muted);
+  padding-bottom: 0.2em;
+}
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
 
 /* ============================================================
    SIDEBAR / UI BAR / STORY TITLE
@@ -1215,6 +1246,21 @@ tw-story a.link-internal { text-decoration: none; }
 .speaker-box.anesu-glow-high {
   box-shadow: 0 0 20px 6px rgba(192, 69, 63, 0.55);
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "Story JavaScript" */
+window.updateDebugPanel = function() {
+  if ($('#debug-panel').length === 0) {
+    $('<div id="debug-panel"></div>').appendTo('body');
+  }
+  var v = State.variables;
+  var html = '<div class="debug-title">DEBUG — LIVE VARIABLES</div>';
+  html += '<div class="debug-row"><span>anesuGuard</span><span>' + (v.anesuGuard !== undefined ? v.anesuGuard.toFixed(2) : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>familyAwareness</span><span>' + (v.familyAwareness !== undefined ? v.familyAwareness.toFixed(2) : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>v1Ending</span><span>' + (v.v1Ending || '—') + '</span></div>';
+  html += '<div class="debug-row"><span>wentToElias</span><span>' + (v.wentToElias !== undefined ? v.wentToElias : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>weeksPerson</span><span>' + (v.weeksPerson || '—') + '</span></div>';
+  html += '<div class="debug-row"><span>beatIndex</span><span>' + (v.beatIndex !== undefined ? v.beatIndex : '—') + ' / ' + (v.sceneBeats ? v.sceneBeats.length : '—') + '</span></div>';
+  $('#debug-panel').html(html);
+};
+
 window.typewriterEffect = function(el, text, speed, onComplete) {
   speed = speed || 25;
   if (window.fastMode) {
@@ -1276,6 +1322,7 @@ window.updateScreenClock = function() {
   $('#clockTimeDisplay').text(State.variables.currentTime || '');
   $('#clockDateDisplay').text(State.variables.currentDate || '');
 };
+
 window.updateAngelStatus = function () {
   if ($('#angel-status').length === 0) {
     $('<div id="angel-status"></div>').insertAfter('#menu');
@@ -1295,7 +1342,9 @@ window.updateAngelStatus = function () {
   html += '<div class="status-row"><span class="status-label">Angel Since</span><span class="status-value">\'' + (v.angelSince || '26') + '</span></div>';
   $('#angel-status').html(html);
   updateScreenClock();
+  updateDebugPanel();
 };
+
 window.showMemoryToast = function(message) {
   var $toast = $('<div id="memory-toast">' + (message || "The memory bank has been updated") + '</div>');
   $('body').append($toast);
@@ -2803,12 +2852,16 @@ Erin&#39;s car, on the way to another meeting.
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I know, I know. And then I came home late and Mama—&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu stops. Her hand goes to her cheek, almost involuntarily.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;She hit you?&quot;, impacts: {familyAwareness: 1}},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;...&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;...&quot;},
+    {type: &quot;continueTo&quot;, dest: &quot;V1_AAMessage_01P2&quot;}
+
 )&gt;&gt;
 &lt;&lt;else&gt;&gt;
 &lt;&lt;run $sceneBeats.push(
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Good. I&#39;m proud of you for that, love.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;It didn&#39;t feel like much of a win at the time.&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;It didn&#39;t feel like much of a win at the time.&quot;},
+    {type: &quot;continueTo&quot;, dest: &quot;V1_AAMessage_01P2&quot;}
+
 )&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
