@@ -2859,12 +2859,16 @@ Erin's car, on the way to another meeting.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I know, I know. And then I came home late and Mama—"},
   {type: "action", text: "Anesu stops. Her hand goes to her cheek, almost involuntarily."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "She hit you?", impacts: {familyAwareness: 1}},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "..."}
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
+    {type: "continueTo", dest: "V1_AAMessage_01P2"}
+
 )>>
 <<else>>
 <<run $sceneBeats.push(
   {type: "dialogue", side: "character", speaker: "Erin", text: "Good. I'm proud of you for that, love."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "It didn't feel like much of a win at the time."}
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "It didn't feel like much of a win at the time."},
+    {type: "continueTo", dest: "V1_AAMessage_01P2"}
+
 )>>
 <</if>>
 <<set $beatIndex to 0>>
