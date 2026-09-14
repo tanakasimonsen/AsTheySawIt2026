@@ -66,6 +66,37 @@ a, .dialogue-prompt a, .chat-line a, .select-row a, .scene-nav a, .continue-link
 tw-story a.link-internal { text-decoration: none; }
 
 /* ============================================================
+   DEBUG PANEL
+   ============================================================ */
+#debug-panel {
+  position: fixed;
+  bottom: 1em;
+  left: calc(clamp(10em, 13vw, 15em) + 1em);
+  background-color: var(--bg-panel);
+  border: 2px solid var(--text-main);
+  color: var(--text-main);
+  padding: 0.6em 1em;
+  border-radius: 6px;
+  font-size: 0.75em;
+  z-index: 9999;
+  max-width: 260px;
+  line-height: 1.5;
+}
+.debug-title {
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.3em;
+  border-bottom: 1px dashed var(--text-muted);
+  padding-bottom: 0.2em;
+}
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+/* ============================================================
    SIDEBAR / UI BAR / STORY TITLE
    ============================================================ */
 #story-title {
@@ -1130,6 +1161,21 @@ tw-story a.link-internal { text-decoration: none; }
 
 
 :: Story JavaScript [script]
+window.updateDebugPanel = function() {
+  if ($('#debug-panel').length === 0) {
+    $('<div id="debug-panel"></div>').appendTo('body');
+  }
+  var v = State.variables;
+  var html = '<div class="debug-title">DEBUG — LIVE VARIABLES</div>';
+  html += '<div class="debug-row"><span>anesuGuard</span><span>' + (v.anesuGuard !== undefined ? v.anesuGuard.toFixed(2) : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>familyAwareness</span><span>' + (v.familyAwareness !== undefined ? v.familyAwareness.toFixed(2) : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>v1Ending</span><span>' + (v.v1Ending || '—') + '</span></div>';
+  html += '<div class="debug-row"><span>wentToElias</span><span>' + (v.wentToElias !== undefined ? v.wentToElias : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>weeksPerson</span><span>' + (v.weeksPerson || '—') + '</span></div>';
+  html += '<div class="debug-row"><span>beatIndex</span><span>' + (v.beatIndex !== undefined ? v.beatIndex : '—') + ' / ' + (v.sceneBeats ? v.sceneBeats.length : '—') + '</span></div>';
+  $('#debug-panel').html(html);
+};
+
 window.typewriterEffect = function(el, text, speed, onComplete) {
   speed = speed || 25;
   if (window.fastMode) {
@@ -1191,6 +1237,7 @@ window.updateScreenClock = function() {
   $('#clockTimeDisplay').text(State.variables.currentTime || '');
   $('#clockDateDisplay').text(State.variables.currentDate || '');
 };
+
 window.updateAngelStatus = function () {
   if ($('#angel-status').length === 0) {
     $('<div id="angel-status"></div>').insertAfter('#menu');
@@ -1210,7 +1257,9 @@ window.updateAngelStatus = function () {
   html += '<div class="status-row"><span class="status-label">Angel Since</span><span class="status-value">\'' + (v.angelSince || '26') + '</span></div>';
   $('#angel-status').html(html);
   updateScreenClock();
+  updateDebugPanel();
 };
+
 window.showMemoryToast = function(message) {
   var $toast = $('<div id="memory-toast">' + (message || "The memory bank has been updated") + '</div>');
   $('body').append($toast);
