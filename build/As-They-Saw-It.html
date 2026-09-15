@@ -185,7 +185,7 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 /* ============================================================
-   SIDEBAR / UI BAR / STORY TITLE
+   SIDEBAR / UI BAR / STORY TITLE / CONTINUE ARROW 
    ============================================================ */
 #story-title {
   font-size: 1em;
@@ -241,6 +241,28 @@ tw-story a.link-internal { text-decoration: none; }
 .status-sub {
   font-size: 0.75em;
   color: var(--text-muted);
+}
+
+.continue-arrow {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background-image: url('assets/ui/SkipArrowB_V001.png');
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+}
+
+#dialoguePrompt > a, .dialogue-prompt a, .expand-continue {
+  font-size: 0;
+}
+#dialoguePrompt > a::after, .dialogue-prompt a::after, .expand-continue::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background-image: url('assets/ui/SkipArrowB_V001.png');
+  background-size: 100% 100%;
+  image-rendering: pixelated;
 }
 
 /* ============================================================
@@ -531,12 +553,17 @@ tw-story a.link-internal { text-decoration: none; }
   max-width: 650px;
   margin: 0 auto 0.5em;
   flex-shrink: 0;
-  background-color: var(--bg-panel);
-  border: 3px solid var(--text-main);
-  border-radius: 6px;
-  padding: clamp(0.5em, 1.5vh, 1em) clamp(1em, 2vw, 2em);
+  padding: clamp(0.4em, 1vh, 0.7em) clamp(1em, 2vw, 2em);
   text-align: center;
   font-size: clamp(0.8em, 1.2vw, 1em);
+  border-style: solid;
+  border-width: 20px;
+  border-color: transparent;
+  border-image-source: url('assets/ui/DialogueBox_V002.png');
+  border-image-slice: 33 fill;
+  border-image-width: 20x;
+  border-image-repeat: stretch;
+  image-rendering: pixelated;
 }
 
 .narrative-box .meeting-time {
@@ -592,14 +619,19 @@ tw-story a.link-internal { text-decoration: none; }
 .chat-log {
   flex-grow: 1;
   height: 100%;
-  background-color: var(--bg-panel);
-  border: 3px solid var(--text-main);
-  border-radius: 6px;
-  padding: clamp(0.8em, 1.5vw, 1.5em);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   gap: 1em;
+  padding: clamp(0.8em, 1.5vw, 1.5em);
+  border-style: solid;
+  border-width: 40px;
+  border-color: transparent;
+  border-image-source: url('assets/ui/Speechbox_V001.png');
+  border-image-slice: 40 fill;
+  border-image-width: 40px;
+  border-image-repeat: stretch;
+  image-rendering: pixelated;
 }
 
 .chat-log::-webkit-scrollbar {
@@ -960,13 +992,13 @@ tw-story a.link-internal { text-decoration: none; }
   display: inline-block;
   width: 8px;
   height: 8px;
-  background-color: #c0453f;
-  border-radius: 50%;
+  background-image: url('assets/ui/UnreadDot_V002.png');
+  background-size: 100% 100%;
+  image-rendering: pixelated;
   margin-left: 0.4em;
   vertical-align: middle;
   animation: dot-pulse 1.5s ease-in-out infinite;
 }
-
 @keyframes dot-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -1314,7 +1346,19 @@ $(document).on(':passagedisplay', function () {
     });
   });
   updateScreenClock();
+
+$(document).on(':passagedisplay', function () {
+  requestAnimationFrame(function() {
+    document.body.style.zoom = 1.0001;
+    requestAnimationFrame(function() {
+      document.body.style.zoom = 1;
+    });
+  });
+  updateScreenClock();
+  stopAllSounds();
 });
+});
+
 window.updateScreenClock = function() {
   if ($('#screen-clock').length === 0) {
     $('<div id="screen-clock"><div class="clock-time" id="clockTimeDisplay"></div><div class="clock-date" id="clockDateDisplay"></div></div>').appendTo('body');
@@ -1505,9 +1549,65 @@ window.clickSound.volume = 0.5;
 $(document).on('click', 'a, .quote-entry, .memory-tab, .memory-history-toggle, .expand-text, #skip-toggle, #memory-bank-link', function() {
   window.clickSound.currentTime = 0;
   window.clickSound.play();
-});</script><tw-tag name="StoryInit" color="blue"></tw-tag><tw-tag name="widget" color="yellow"></tw-tag><tw-passagedata pid="1" name="03_Opening_Scene" tags="" position="650,75" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
+});
+
+window.activeSounds = [];
+
+window.playSound = function(src, volume) {
+  var sfx = new Audio(src);
+  sfx.volume = volume !== undefined ? volume : 0.6;
+  window.activeSounds.push(sfx);
+  sfx.addEventListener('ended', function() {
+    var idx = window.activeSounds.indexOf(sfx);
+    if (idx !== -1) window.activeSounds.splice(idx, 1);
+  });
+  sfx.play();
+};
+
+window.stopAllSounds = function() {
+  window.activeSounds.forEach(function(sfx) {
+    sfx.pause();
+    sfx.currentTime = 0;
+  });
+  window.activeSounds = [];
+};
+
+window.currentAmbience = null;
+
+window.setAmbience = function(src, volume) {
+  volume = volume !== undefined ? volume : 0.3;
+  if (window.currentAmbience && window.currentAmbience.src.indexOf(src) !== -1) {
+    return; // already playing this track, don't restart it
+  }
+  var oldAudio = window.currentAmbience;
+  var newAudio = src ? new Audio(src) : null;
+  if (newAudio) {
+    newAudio.loop = true;
+    newAudio.volume = 0;
+    newAudio.play();
+  }
+  window.currentAmbience = newAudio;
+
+  var steps = 20;
+  var stepTime = 30;
+  var i = 0;
+  var fadeTimer = setInterval(function() {
+    i++;
+    if (oldAudio) oldAudio.volume = Math.max(0, volume * (1 - i / steps));
+    if (newAudio) newAudio.volume = Math.min(volume, volume * (i / steps));
+    if (i >= steps) {
+      clearInterval(fadeTimer);
+      if (oldAudio) { oldAudio.pause(); oldAudio.currentTime = 0; }
+    }
+  }, stepTime);
+};
+
+window.stopAmbience = function() {
+  setAmbience(null);
+};</script><tw-tag name="StoryInit" color="blue"></tw-tag><tw-tag name="widget" color="yellow"></tw-tag><tw-passagedata pid="1" name="03_Opening_Scene" tags="" position="650,75" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Sun, 21 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;7:15pm&quot;&gt;&gt;
+&lt;&lt;run setAmbience(&#39;audio/meeting_interior.mp3&#39;)&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 
 &lt;&lt;set $sceneBeats to [
@@ -1577,6 +1677,7 @@ You&#39;ve chosen to follow Anesu this week.
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="V1_02_FirstNightwithAnesu" tags="" position="425,225" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Sun, 28 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;8:45pm&quot;&gt;&gt;
+&lt;&lt;run setAmbience(&#39;audio/meeting_exterior.mp3&#39;)&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 
 &lt;&lt;set $sceneBeats to [
@@ -1584,7 +1685,7 @@ You&#39;ve chosen to follow Anesu this week.
   {type: &quot;thought&quot;, text: &quot;I never know how to respond to someone saying a \&quot;good meeting\&quot;, they can be so depressing sometimes, and so was Andy&#39;s share. And Jordan! God man you&#39;re 40 something years old, get your shit together!&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Mhmm, yeah, a great meeting. Thank you for driving me home Erin.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;You know it&#39;s no trouble love. Soon you can drive me! When you get your P&#39;s!&quot;},
-  {type: &quot;action&quot;, text: &quot;Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.&quot;, sound: &quot;audio/seatbelt_ding.mp3&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Doesn&#39;t the dinging bother you?&quot;},
   {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;What dinging?&quot;, dest: &quot;V1_03_AnesuDoorstep&quot;}
 ]&gt;&gt;
@@ -1608,7 +1709,8 @@ The air is sharp as Erin and Anesu exchange goodbyes with fellow members, walkin
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Erin&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="V1_03_AnesuDoorstep" tags="" position="900,200" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="V1_03_AnesuDoorstep" tags="" position="900,200" size="100,100">&lt;&lt;run stopAmbience()&gt;&gt;        
+&lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good rest of your week hun! Remember, your mother loves you very much.&quot;, memoryEntry: {who: &quot;Erin&quot;, text: &quot;My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mum like they&#39;re friends, which they very much are not.&quot;}},
   {type: &quot;action&quot;, text: &quot;Erin flashes her lights and drives off, her home a few kms down the road.&quot;},
   {type: &quot;thought&quot;, text: &quot;Okay, just shoes off and straight to your room, don&#39;t even hesitate.&quot;},
@@ -1865,7 +1967,7 @@ Anesu, Mama, and Dad stand together in the hallway.
 &lt;/div&gt;
 &lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
 &lt;img @src=&quot;$characterImages[&#39;Guardian Angel&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
-&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="V1_04_ComplyReveal" tags="" position="1075,150" size="100,100">&lt;&lt;set $v1Ending to &quot;Comply&quot;&gt;&gt;
@@ -2084,10 +2186,10 @@ this is...
 
 /*AA MEMBERS*/
 &lt;&lt;set $members to [
-  {name: &quot;Anesu Song&quot;, age: &quot;20&quot;, sobriety: &quot;6 months&quot;, doc: &quot;Alcohol&quot;, story: &quot;Struggled with bullying in her childhood and shortly after graduation a short stint with binge drinking, unable to deal with the traumas of racial bullying and exclusion, emotional abuse and a multiple sexual assaults. Now about 6 months into her sobriety after a stint in rehab, Anesu is unsure about this whole sobriety thing, only promising her parents to stop for a year. The bridges are stilled pooled with smoke and rubble, not a rescue team in sight for the fire she flamed herself. Room still checked, bag still searched and any drop in mood sends a spark throughout the familial unit. They say the best part of sobriety is you get your feelings back, but then the worst thing is...you get your feelings back.&quot;, unlocked: true, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
+  {name: &quot;Anesu Song&quot;, age: &quot;20&quot;, sobriety: &quot;6 months&quot;, doc: &quot;Alcohol&quot;, story: &quot;Home doesn&#39;t feel like home right now. Six months sober, and everyone&#39;s still watching to see if it sticks&quot;, unlocked: true, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Martha Bonini&quot;, age: &quot;39&quot;, sobriety: &quot;3 weeks, 3rd relapse&quot;, doc: &quot;Alcohol and prescribed morphine&quot;, story: &quot;A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
-  {name: &quot;Erin Ferguson&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, story: &quot;A lonely widowed woman who doesn&#39;t hear from her adult children as she lost them through her addiction and by the time her fourth turned 18, all of them refused to speak to her. She lost her husband 9 years ago to a work related accident, crushed by an automatic roller door. This exacerbated her drinking. Now that she&#39;s sober, she wants to talk to her children again, although they couldn&#39;t think of anything worse.&quot;, unlocked: false, image: &quot;https://i.imgur.com/A4YV3S2.gif&quot;, weeksKnown: 0},
-  {name: &quot;Franco Pitt&quot;, age: &quot;24&quot;, sobriety: &quot;Not currently sober&quot;, doc: &quot;Alcohol and \&quot;occasionally\&quot; cocaine&quot;, story: &quot;A young man new to the corporate world, more specfically, legal. He has spent his 2nd half of life studying trying to work at Australia&#39;s finest lawfirm, but once he gets there, he realises how genuinely clueless he is, how little life experience he has and how immature he is when it comes to adversity. He has found himself in a toxic relationship where he struggles to find balance with his percieved overbearing girlfriend, although true, it is excacerbated by his drinking. The girlfriend, more than anything wants Franco but displays her desire for a normal healthy relationship in toxic and self-sabotaging ways. Cheating on her boyfriend, engaging in risky behaviours which turned into a near death incident, causing tension in the home.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
+  {name: &quot;Erin Ferguson&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, story: &quot;Four kids who don&#39;t call anymore. A husband she still isn&#39;t used to not having. She&#39;s sober now — a little late, in her opinion.&quot;, unlocked: false, image: &quot;https://i.imgur.com/A4YV3S2.gif&quot;, weeksKnown: 0},
+  {name: &quot;Franco Pitt&quot;, age: &quot;24&quot;, sobriety: &quot;Not currently sober&quot;, doc: &quot;Alcohol and \&quot;occasionally\&quot; cocaine&quot;, story: &quot;Landed the job he studied his whole life for. Still doesn&#39;t feel like an adult. His relationship isn&#39;t helping&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Member 5&quot;, age: &quot;—&quot;, sobriety: &quot;—&quot;, doc: &quot;—&quot;, story: &quot;Placeholder story.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Member 6&quot;, age: &quot;—&quot;, sobriety: &quot;—&quot;, doc: &quot;—&quot;, story: &quot;Placeholder story.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Member 7&quot;, age: &quot;—&quot;, sobriety: &quot;—&quot;, doc: &quot;—&quot;, story: &quot;Placeholder story.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
@@ -2214,6 +2316,11 @@ $members[$memberIndex].story
   updateAngelStatus();
 })()&gt;&gt;
 &lt;&lt;/if&gt;&gt;
+
+&lt;&lt;if _beat.sound&gt;&gt;
+&lt;&lt;run playSound(_beat.sound, _beat.soundVolume)&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
 &lt;&lt;if _beat.memoryEntry&gt;&gt;
 &lt;&lt;run addMemory(_beat.memoryEntry.who, _beat.memoryEntry.text)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -2268,7 +2375,7 @@ _beat.text
 &lt;&lt;set $beatIndex += 1&gt;&gt;
 &lt;&lt;run setTimeout(function(){ $(&#39;.chat-log&#39;).removeClass(&#39;breathing&#39;); }, window.fastMode ? 50 : (_beat.duration ? _beat.duration : 3000))&gt;&gt;
 &lt;&lt;elseif _beat.type is &quot;text&quot;&gt;&gt;
-&lt;&lt;set _sender to _beat.side is &quot;them&quot; ? (_beat.senderName ? _beat.senderName : &quot;Elias&quot;) : ($playerName isnot &quot;&quot; ? $playerName : &quot;You&quot;)&gt;&gt;
+&lt;&lt;set _sender to _beat.side is &quot;them&quot; ? (_beat.senderName ? _beat.senderName : &quot;Elias&quot;) : &quot;Anesu&quot;&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div @class=&quot;&#39;text-bubble &#39; + _beat.side&quot;&gt;&lt;div class=&quot;text-sender&quot;&gt;_sender&lt;/div&gt;_beat.text&lt;&lt;if _beat.time&gt;&gt;&lt;div class=&quot;chat-timestamp&quot;&gt;_beat.time&lt;/div&gt;&lt;&lt;/if&gt;&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
 
@@ -2280,14 +2387,18 @@ _beat.text
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;continue-link&quot;&gt;&lt;&lt;link &quot;continue&quot; _beat.dest&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
 &lt;&lt;elseif _beat.type is &quot;dialogue&quot; or _beat.type is &quot;choice&quot;&gt;&gt;
-&lt;&lt;set _label to _beat.label ? _beat.label : (_beat.speaker is &quot;You&quot; and $playerName isnot &quot;&quot; ? $playerName : _beat.speaker)&gt;&gt;
+&lt;&lt;set _label to _beat.label ? _beat.label : ((_beat.speaker is &quot;You&quot; or _beat.speaker is &quot;Higher Power&quot;) and $playerName isnot &quot;&quot; ? $playerName : _beat.speaker)&gt;&gt;
 &lt;&lt;if _beat.side is &quot;character&quot;&gt;&gt;
+&lt;&lt;if $(&#39;#rightSpeakerName&#39;).length&gt;&gt;
 &lt;&lt;replace &quot;#rightSpeakerName&quot;&gt;&gt;_label&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeakerImg&#39;).attr(&#39;src&#39;, $characterImages[_beat.speaker])&gt;&gt;
+&lt;&lt;/if&gt;&gt;
 &lt;&lt;run $(&#39;.speaker-box&#39;).removeClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeaker&#39;).addClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;else&gt;&gt;
+&lt;&lt;if $(&#39;#leftSpeakerName&#39;).length&gt;&gt;
 &lt;&lt;replace &quot;#leftSpeakerName&quot;&gt;&gt;_label&lt;&lt;/replace&gt;&gt;
+&lt;&lt;/if&gt;&gt;
 &lt;&lt;run $(&#39;.speaker-box&#39;).removeClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;run $(&#39;.speaker-box&#39;).first().addClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -2376,7 +2487,7 @@ _beat.text
 })()&gt;&gt;
 &lt;&lt;elseif _beat.type is &quot;freeType&quot;&gt;&gt;
 &lt;&lt;if _beat.side is &quot;character&quot;&gt;&gt;
-&lt;&lt;set _label to _beat.label ? _beat.label : _beat.speaker&gt;&gt;
+&lt;&lt;set _label to _beat.label ? _beat.label : (_beat.speaker is &quot;Higher Power&quot; and $playerName isnot &quot;&quot; ? $playerName : _beat.speaker)&gt;&gt;
 &lt;&lt;replace &quot;#rightSpeakerName&quot;&gt;&gt;_label&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeakerImg&#39;).attr(&#39;src&#39;, $characterImages[_beat.speaker])&gt;&gt;
 &lt;&lt;run $(&#39;.speaker-box&#39;).removeClass(&#39;speaking&#39;)&gt;&gt;
