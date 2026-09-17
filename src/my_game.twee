@@ -1288,9 +1288,11 @@ window.updateDebugPanel = function() {
   }
   $('#debug-panel').show();
   var v = State.variables;
+  var awareness = v.familyAwareness || 0;
+  var tier = awareness >= 6 ? "aware" : awareness >= 3 ? "uncertain" : "blind";
   var html = '<div class="debug-title">DEBUG — LIVE VARIABLES</div>';
   html += '<div class="debug-row"><span>anesuGuard</span><span>' + (v.anesuGuard !== undefined ? v.anesuGuard.toFixed(2) : '—') + '</span></div>';
-  html += '<div class="debug-row"><span>familyAwareness</span><span>' + (v.familyAwareness !== undefined ? v.familyAwareness.toFixed(2) : '—') + '</span></div>';
+  html += '<div class="debug-row"><span>familyAwareness</span><span>' + (v.familyAwareness !== undefined ? v.familyAwareness.toFixed(2) : '—') + ' (' + tier + ')</span></div>';
   html += '<div class="debug-row"><span>v1Ending</span><span>' + (v.v1Ending || '—') + '</span></div>';
   html += '<div class="debug-row"><span>wentToElias</span><span>' + (v.wentToElias !== undefined ? v.wentToElias : '—') + '</span></div>';
   html += '<div class="debug-row"><span>weeksPerson</span><span>' + (v.weeksPerson || '—') + '</span></div>';
