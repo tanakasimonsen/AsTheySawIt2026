@@ -96,6 +96,28 @@ tw-story a.link-internal { text-decoration: none; }
   gap: 1em;
 }
 
+#debug-toggle {
+  position: fixed;
+  bottom: 1em;
+  right: 8.5em;
+  background-color: var(--bg-panel);
+  border: 2px solid var(--text-main);
+  color: var(--text-main);
+  padding: 0.4em 0.9em;
+  border-radius: 6px;
+  font-family: 'VT323', monospace;
+  font-size: 0.85em;
+  cursor: pointer;
+  z-index: 9999;
+  letter-spacing: 1px;
+}
+#debug-toggle.active {
+  background-color: rgba(159, 184, 173, 0.3);
+  border-color: var(--accent-thought);
+}
+
+
+
 /* ============================================================
    SIDEBAR / UI BAR / STORY TITLE / CONTINUE ARROW 
    ============================================================ */
@@ -123,6 +145,7 @@ tw-story a.link-internal { text-decoration: none; }
   width: clamp(10em, 13vw, 15em) !important;
   background-color: #2b2420;
   border-right: 1px solid var(--text-main);
+  overflow-y: auto;
 }
 
 #angel-status {
@@ -175,6 +198,28 @@ tw-story a.link-internal { text-decoration: none; }
   background-image: url('assets/ui/SkipArrowB_V001.png');
   background-size: 100% 100%;
   image-rendering: pixelated;
+}
+
+#volume-panel {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid var(--text-muted);
+}
+.volume-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.6em;
+}
+.volume-row label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.2em;
+}
+.volume-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--text-main);
 }
 
 /* ============================================================
@@ -265,6 +310,15 @@ tw-story a.link-internal { text-decoration: none; }
   margin-top: 1.5em;
 }
 
+@keyframes talk-wobble {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(-1deg); }
+  75% { transform: translateY(1px) rotate(1deg); }
+}
+.speaker-box img.talking {
+  animation: talk-wobble 0.15s steps(2) infinite;
+}
+
 /* ============================================================
    QUOTE BOX (AA Big Book passages)
    ============================================================ */
@@ -345,19 +399,18 @@ tw-story a.link-internal { text-decoration: none; }
 
 .card-box {
   width: clamp(500px, 82vh, 950px);
-  height: clamp(600px, 88vh, 950px);
+  height: auto;
+  max-height: clamp(450px, 70vh, 700px);
   border: 3px dashed var(--text-main);
   padding: clamp(0.5em, 1vw, 0.8em);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
- 
 }
 
 .card-box {
   overflow-y: auto;
   overflow-x: hidden;
-
 }
 
 .card-box .card-field {
@@ -378,12 +431,11 @@ tw-story a.link-internal { text-decoration: none; }
 
 .card-box .card-story {
   flex-shrink: 1;
-  min-height: 300px;
+  min-height: 120px;
   flex-grow: 1;
   border-top: 1px dashed var(--text-muted);
   margin-top: 0.5em;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
   padding-right: 0.8em;
   box-sizing: border-box;
 }
@@ -422,6 +474,18 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .select-row a:hover {
+  color: var(--text-muted);
+}
+
+.select-row-inline {
+  display: inline-flex;
+  align-items: center;
+}
+.select-row-inline a {
+  font-size: 0.7em;
+  color: var(--text-main);
+}
+.select-row-inline a:hover {
   color: var(--text-muted);
 }
 
@@ -865,6 +929,27 @@ tw-story a.link-internal { text-decoration: none; }
   opacity: 0.85;
 }
 
+.expand-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.expand-layer-old {
+  opacity: 0.5;
+  text-decoration: line-through;
+  font-size: 0.9em;
+}
+.expand-layer-current.expand-clickable {
+  cursor: pointer;
+}
+.expand-hint {
+  font-size: 0.75em;
+  color: var(--accent-thought-dim);
+  font-style: italic;
+  margin-top: 0.2em;
+  display: block;
+}
+
 /* ============================================================
    BREATHING SCREEN
    ============================================================ */
@@ -1197,6 +1282,11 @@ window.updateDebugPanel = function() {
   if ($('#debug-panel').length === 0) {
     $('<div id="debug-panel"></div>').appendTo('body');
   }
+  if (!window.debugPanelOn) {
+    $('#debug-panel').hide();
+    return;
+  }
+  $('#debug-panel').show();
   var v = State.variables;
   var html = '<div class="debug-title">DEBUG — LIVE VARIABLES</div>';
   html += '<div class="debug-row"><span>anesuGuard</span><span>' + (v.anesuGuard !== undefined ? v.anesuGuard.toFixed(2) : '—') + '</span></div>';
@@ -1208,10 +1298,29 @@ window.updateDebugPanel = function() {
   $('#debug-panel').html(html);
 };
 
-window.typewriterEffect = function(el, text, speed, onComplete) {
+window.debugPanelOn = true;
+window.setupDebugToggle = function() {
+  if ($('#debug-toggle').length) return;
+  var $btn = $('<div id="debug-toggle">🐞 Debug: ON</div>');
+  $('body').append($btn);
+  $btn.on('click', function() {
+    window.debugPanelOn = !window.debugPanelOn;
+    $(this).text('🐞 Debug: ' + (window.debugPanelOn ? 'ON' : 'OFF'));
+    $(this).toggleClass('active', window.debugPanelOn);
+    updateDebugPanel();
+  });
+};
+$(document).on(':passagedisplay', function() {
+  setupDebugToggle();
+});
+
+window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
   speed = speed || 25;
+  var $portrait = $('.speaker-box.speaking img');
+  $portrait.addClass('talking');
   if (window.fastMode) {
     el.textContent = text;
+    $portrait.removeClass('talking');
     if (typeof onComplete === "function") onComplete();
     return;
   }
@@ -1220,13 +1329,37 @@ window.typewriterEffect = function(el, text, speed, onComplete) {
   (function tick() {
     if (i < text.length) {
       el.textContent += text.charAt(i);
+    if (i % 3 === 0 && text.charAt(i) !== ' ') {
+      talkBlip(speaker);
+}
       i++;
       setTimeout(tick, speed);
-    } else if (typeof onComplete === "function") {
-      onComplete();
+    } else {
+      $portrait.removeClass('talking');
+      if (typeof onComplete === "function") onComplete();
     }
   })();
 };
+
+window.talkBlip = function(speaker) {
+  var options = window.talkBlipSounds && window.talkBlipSounds[speaker]
+    ? window.talkBlipSounds[speaker]
+    : ["audio/bleeps/bleep001.mp3"];
+  var src = options[Math.floor(Math.random() * options.length)];
+  var blip = new Audio(src);
+  blip.volume = 0.3 * (window.gameVolumes ? window.gameVolumes.sfx : 1);
+  blip.playbackRate = 0.9 + Math.random() * 0.3;
+  blip.play();
+  setTimeout(function() {
+    blip.pause();
+    blip.currentTime = 0;
+  }, 120);
+};
+
+window.talkBlipSounds = {
+  "Higher Power": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"]
+};
+
 $(document).on('keydown.spacebarAdvance', function(e) {
   if (e.code === 'Space' || e.key === ' ') {
     var $prompt = $('.dialogue-prompt a, .type-input-row, [id^="freeTypeBubble"]');
@@ -1253,14 +1386,6 @@ $(document).on(':scene-typing-done', function() {
   }
   $log.scrollTop($log[0].scrollHeight);
 });
-$(document).on(':passagedisplay', function () {
-  requestAnimationFrame(function() {
-    document.body.style.zoom = 1.0001;
-    requestAnimationFrame(function() {
-      document.body.style.zoom = 1;
-    });
-  });
-  updateScreenClock();
 
 $(document).on(':passagedisplay', function () {
   requestAnimationFrame(function() {
@@ -1271,7 +1396,6 @@ $(document).on(':passagedisplay', function () {
   });
   updateScreenClock();
   stopAllSounds();
-});
 });
 
 window.updateScreenClock = function() {
@@ -1380,7 +1504,7 @@ window.openMemoryBank = function(startTab) {
       html += '<div class="memory-entry latest">';
       html += '<div class="memory-date">' + latest.date + (latest.time ? ' — ' + latest.time : '') + '</div>';
       html += '<div class="memory-text">' + latest.text + '</div>';
-      html += '</div>';
+        html += '</div>';
       if (entries.length > 1) {
         html += '<div class="memory-history-toggle" data-who="' + who + '">▸ earlier entries (' + (entries.length - 1) + ')</div>';
         html += '<div class="memory-history" id="history-' + who.replace(/\s/g,'') + '" style="display:none;">';
@@ -1458,24 +1582,79 @@ $(document).on(':passagedisplay', function() {
 
 });
 
+window.gameVolumes = JSON.parse(localStorage.getItem('atsi_volumes') || '{}');
+if (window.gameVolumes.sfx === undefined) window.gameVolumes.sfx = 0.6;
+if (window.gameVolumes.ambience === undefined) window.gameVolumes.ambience = 0.3;
+if (window.gameVolumes.score === undefined) window.gameVolumes.score = 0.5;
+
+window.saveVolumes = function() {
+  localStorage.setItem('atsi_volumes', JSON.stringify(window.gameVolumes));
+};
+
+window.applyLiveVolumes = function() {
+  if (window.currentAmbience && window.currentAmbience._baseVolume !== undefined) {
+    window.currentAmbience.volume = window.currentAmbience._baseVolume * window.gameVolumes.ambience;
+  }
+  if (window.currentScore && window.currentScore._baseVolume !== undefined) {
+    window.currentScore.volume = window.currentScore._baseVolume * window.gameVolumes.score;
+  }
+};
+
+window.setupVolumePanel = function() {
+  if ($('#volume-panel').length) return;
+  var html = '<div id="volume-panel">';
+  html += '<div class="volume-row"><label>SFX</label><input type="range" id="vol-sfx" min="0" max="100" value="' + (gameVolumes.sfx * 100) + '"></div>';
+  html += '<div class="volume-row"><label>Ambience</label><input type="range" id="vol-ambience" min="0" max="100" value="' + (gameVolumes.ambience * 100) + '"></div>';
+  html += '<div class="volume-row"><label>Score</label><input type="range" id="vol-score" min="0" max="100" value="' + (gameVolumes.score * 100) + '"></div>';
+  html += '</div>';
+  $('#ui-bar').append(html);
+
+  $('#vol-sfx').on('input', function(){
+    gameVolumes.sfx = this.value / 100;
+    saveVolumes();
+  });
+  $('#vol-ambience').on('input', function(){
+    gameVolumes.ambience = this.value / 100;
+    saveVolumes();
+    applyLiveVolumes();
+  });
+  $('#vol-score').on('input', function(){
+    gameVolumes.score = this.value / 100;
+    saveVolumes();
+    applyLiveVolumes();
+  });
+};
+
+$(document).on(':passagedisplay', function(){
+  setupVolumePanel();
+});
+
 window.clickSound = new Audio('audio/click.mp3');
 window.clickSound.volume = 0.5;
 
 $(document).on('click', 'a, .quote-entry, .memory-tab, .memory-history-toggle, .expand-text, #skip-toggle, #memory-bank-link', function() {
   window.clickSound.currentTime = 0;
+  window.clickSound.volume = 0.5 * gameVolumes.sfx;
   window.clickSound.play();
 });
 
 window.activeSounds = [];
+window.namedSounds = {};
 
-window.playSound = function(src, volume) {
+window.playSound = function(src, volume, id, persist) {
   var sfx = new Audio(src);
-  sfx.volume = volume !== undefined ? volume : 0.6;
-  window.activeSounds.push(sfx);
+  sfx.volume = (volume !== undefined ? volume : 0.6) * gameVolumes.sfx;
   sfx.addEventListener('ended', function() {
     var idx = window.activeSounds.indexOf(sfx);
     if (idx !== -1) window.activeSounds.splice(idx, 1);
+    if (id && window.namedSounds[id] === sfx) delete window.namedSounds[id];
   });
+  if (!persist) {
+    window.activeSounds.push(sfx);
+  }
+  if (id) {
+    window.namedSounds[id] = sfx;
+  }
   sfx.play();
 };
 
@@ -1487,34 +1666,86 @@ window.stopAllSounds = function() {
   window.activeSounds = [];
 };
 
+window.stopNamedSound = function(id) {
+  if (window.namedSounds[id]) {
+    window.namedSounds[id].pause();
+    window.namedSounds[id].currentTime = 0;
+    delete window.namedSounds[id];
+  }
+};
+
 window.currentAmbience = null;
 
 window.setAmbience = function(src, volume) {
-  volume = volume !== undefined ? volume : 0.3;
-  if (window.currentAmbience && window.currentAmbience.src.indexOf(src) !== -1) {
-    return; // already playing this track, don't restart it
+  var baseVolume = volume !== undefined ? volume : 0.3;
+  if (window.currentAmbience && src && window.currentAmbience.src.indexOf(src) !== -1) {
+    return;
   }
   var oldAudio = window.currentAmbience;
   var newAudio = src ? new Audio(src) : null;
   if (newAudio) {
     newAudio.loop = true;
     newAudio.volume = 0;
+    newAudio._baseVolume = baseVolume;
+    newAudio.addEventListener('ended', function() {
+      newAudio.currentTime = 0;
+      newAudio.play();
+    });
     newAudio.play();
   }
   window.currentAmbience = newAudio;
 
-  var steps = 20;
-  var stepTime = 30;
+  var steps = 30;
+  var stepTime = 100;
   var i = 0;
   var fadeTimer = setInterval(function() {
     i++;
-    if (oldAudio) oldAudio.volume = Math.max(0, volume * (1 - i / steps));
-    if (newAudio) newAudio.volume = Math.min(volume, volume * (i / steps));
+    if (oldAudio) oldAudio.volume = Math.max(0, (oldAudio._baseVolume || baseVolume) * gameVolumes.ambience * (1 - i / steps));
+    if (newAudio) newAudio.volume = Math.min(baseVolume * gameVolumes.ambience, baseVolume * gameVolumes.ambience * (i / steps));
     if (i >= steps) {
       clearInterval(fadeTimer);
       if (oldAudio) { oldAudio.pause(); oldAudio.currentTime = 0; }
     }
   }, stepTime);
+};
+
+window.currentScore = null;
+
+window.setScore = function(src, volume) {
+  var baseVolume = volume !== undefined ? volume : 0.5;
+  if (window.currentScore && src && window.currentScore.src.indexOf(src) !== -1) {
+    return;
+  }
+  var oldAudio = window.currentScore;
+  var newAudio = src ? new Audio(src) : null;
+  if (newAudio) {
+    newAudio.loop = true;
+    newAudio.volume = 0;
+    newAudio._baseVolume = baseVolume;
+    newAudio.addEventListener('ended', function() {
+      newAudio.currentTime = 0;
+      newAudio.play();
+    });
+    newAudio.play();
+  }
+  window.currentScore = newAudio;
+
+  var steps = 30;
+  var stepTime = 100;
+  var i = 0;
+  var fadeTimer = setInterval(function() {
+    i++;
+    if (oldAudio) oldAudio.volume = Math.max(0, (oldAudio._baseVolume || baseVolume) * gameVolumes.score * (1 - i / steps));
+    if (newAudio) newAudio.volume = Math.min(baseVolume * gameVolumes.score, baseVolume * gameVolumes.score * (i / steps));
+    if (i >= steps) {
+      clearInterval(fadeTimer);
+      if (oldAudio) { oldAudio.pause(); oldAudio.currentTime = 0; }
+    }
+  }, stepTime);
+};
+
+window.stopScore = function() {
+  setScore(null);
 };
 
 window.stopAmbience = function() {
@@ -1541,7 +1772,6 @@ window.stopAmbience = function() {
     {text: "Yeah, first time. What's my job here?"},
     {text: "I don't really understand what's happening."}
   ]},
-  
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "Well, you pick one to assist each week. We hear members share and then we guide. We can nudge, suggest, plant the seed so to speak, and can't force one to be sober but rather help them see what they can do to be better, achieve greater things and maybe see a better tomorrow..."},
   {type: "dialogue", side: "player", speaker: "You", text: "So I can pick any person? I'm a god now??"},
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "Mhmm, not exactly. You're a higher power, a guardian angel for the Mirabel meeting. We assist and provide the tools. We cannot force one to be better. Take a look at who is here tonight...Maybe someone will be of interest. I need help with this meeting, it seems to be a popular one.", setVar: "assignedMeeting", setValue: "Mirabel Meeting"},
@@ -1612,6 +1842,9 @@ You've chosen to follow Anesu this week.
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Erin", text: "Well that was a lovely meeting! Andy finally shared."},
   {type: "thought", text: "I never know how to respond to someone saying a \"good meeting\", they can be so depressing sometimes, and so was Andy's share. And Jordan! God man you're 40 something years old, get your shit together!"},
+  {type: "action", text: "Erin's door thuds shut.", sound: "audio/car_door.mp3"},
+  {type: "action", text: "With Anesu a beat after.", sound: "audio/car_door.mp3"},
+  {type: "action", text: "The engine turns over.", sound: "audio/engine_start.mp3", soundId: "engine", soundPersist: true},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Mhmm, yeah, a great meeting. Thank you for driving me home Erin."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "You know it's no trouble love. Soon you can drive me! When you get your P's!"},
   {type: "action", text: "Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.", sound: "audio/seatbelt_ding.mp3"},
@@ -1643,10 +1876,11 @@ The air is sharp as Erin and Anesu exchange goodbyes with fellow members, walkin
 :: V1_03_AnesuDoorstep {"position":"900,200","size":"100,100"}   
 <<run stopAmbience()>>        
 <<set $sceneBeats to [
+  {type: "action", text: "They jolt with a halt, a little too close to the garage door.", sound: "audio/engine_stop.mp3", stopSoundId: "engine"},
   {type: "dialogue", side: "character", speaker: "Erin", text: "Have a good rest of your week hun! Remember, your mother loves you very much.", memoryEntry: {who: "Erin", text: "My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mum like they're friends, which they very much are not."}},
   {type: "action", text: "Erin flashes her lights and drives off, her home a few kms down the road."},
   {type: "thought", text: "Okay, just shoes off and straight to your room, don't even hesitate."},
-  {type: "action", text: "Unlocking the door was a success but now comes the shoes..."},
+  {type: "action", text: "Unlocking the door was a success but now comes the shoes...", sound: "audio/door_unlock.mp3"},
   {type: "action", text: "As Anesu fumbles with her boots, the first door in the hallway cracks open."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "For fucks sake."},
   {type: "action", text: "Her mother appears in the doorway."},
@@ -2210,6 +2444,22 @@ $members[$memberIndex].name<br>(Chair + Person)
 <<set $memberIndex to ($memberIndex + 11) % 12>>
 <<replace "#memberDisplay">><<showMembers>><</replace>>
 <</link>>
+<div class="select-row-inline">
+<<if $members[$memberIndex].unlocked>>
+<<link "select">>
+<<set $weeksPerson to $members[$memberIndex].name>>
+<<set $weeksPersonSobriety to $members[$memberIndex].sobriety>>
+<<set $members[$memberIndex].justUnlocked to false>>
+<<if $members[$memberIndex].name is "Anesu Song">>
+<<goto "V1_02_FirstNightwithAnesu">>
+<<elseif $members[$memberIndex].name is "Erin Ferguson">>
+<<goto "V4_ErinOpening">>
+<</if>>
+<</link>>
+<<else>>
+<span class="locked-label">Locked</span>
+<</if>>
+</div>
 <<link "▶">>
 <<set $memberIndex to ($memberIndex + 1) % 12>>
 <<replace "#memberDisplay">><<showMembers>><</replace>>
@@ -2217,9 +2467,12 @@ $members[$memberIndex].name<br>(Chair + Person)
 </div>
 </div>
 <div class="card-box">
+<<if $members[$memberIndex].justUnlocked>>
+<div class="card-new-badge">NEW</div>
+<</if>>
 <div class="card-field">
 <div class="card-label">Name</div>
-$members[$memberIndex].name<<if $members[$memberIndex].justUnlocked>> <span class="new-badge">NEW</span><</if>>
+$members[$memberIndex].name
 </div>
 <div class="card-field">
 <div class="card-label">Age</div>
@@ -2233,31 +2486,9 @@ $members[$memberIndex].sobriety
 <div class="card-label">Drug of Choice</div>
 $members[$memberIndex].doc
 </div>
-<<if $weeksPlayed gte 1>>
-<div class="card-field">
-<div class="card-label">Weeks Known</div>
-$members[$memberIndex].weeksKnown
-</div>
-<</if>>
 <div class="card-field card-story">
 <div class="card-label">Story</div>
 $members[$memberIndex].story
-</div>
-<div class="select-row">
-<<if $members[$memberIndex].unlocked>>
-<<link "select">>
-<<set $weeksPerson to $members[$memberIndex].name>>
-<<set $weeksPersonSobriety to $members[$memberIndex].sobriety>>
-<<set $members[$memberIndex].justUnlocked to false>>
-<<if $members[$memberIndex].name is "Anesu Song">>
-<<goto "V1_01_AnesuChosen">>
-<<elseif $members[$memberIndex].name is "Erin Ferguson">>
-<<goto "V5_Erin_Opening">>
-<</if>>
-<</link>>
-<<else>>
-<span class="locked-label">Locked</span>
-<</if>>
 </div>
 </div>
 </div>
@@ -2295,8 +2526,12 @@ $members[$memberIndex].story
 })()>>
 <</if>>
 
+
 <<if _beat.sound>>
-<<run playSound(_beat.sound, _beat.soundVolume)>>
+<<run playSound(_beat.sound, _beat.soundVolume, _beat.soundId, _beat.soundPersist)>>
+<</if>>
+<<if _beat.stopSoundId>>
+<<run stopNamedSound(_beat.stopSoundId)>>
 <</if>>
 
 <<if _beat.memoryEntry>>
@@ -2384,7 +2619,7 @@ _beat.text
 <<if _beat.type is "dialogue">>
 <<append "#chatLog">><div @class="'chat-line ' + _beat.side"><div class="chat-speaker">_label</div><span class="type-target"></span></div><</append>>
 <<set $beatIndex += 1>>
-<<run typewriterEffect($('#chatLog .type-target').last()[0], _beat.text, 25, function() {
+<<run typewriterEffect($('#chatLog .type-target').last()[0], _beat.text, 25, _beat.speaker, function() {
   $(document).trigger(':scene-typing-done');
 })>>
 
@@ -2423,6 +2658,7 @@ _beat.text
 <</link>>
 </div>
 <</append>>
+
 <<elseif _beat.type is "typedChoice">>
 <<set _opts to _beat.options>>
 <<append "#chatLog">>
@@ -2453,7 +2689,7 @@ _beat.text
       State.variables.beatIndex += 1;
       var label = State.variables.playerName !== "" ? State.variables.playerName : "You";
       $('#chatLog').append('<div class="chat-line player"><div class="chat-speaker">' + label + '</div><span class="type-target"></span></div>');
-      typewriterEffect($('#chatLog .type-target').last()[0], chosen.text, 25, function(){
+      typewriterEffect($('#chatLog .type-target').last()[0], chosen.text, 25, label, function(){
         if (chosen.dest) {
           Wikifier.wikifyEval('<<goto "' + chosen.dest + '">>');
         } else {
@@ -2463,6 +2699,7 @@ _beat.text
     }
   });
 })()>>
+
 <<elseif _beat.type is "freeType">>
 <<if _beat.side is "character">>
 <<set _label to _beat.label ? _beat.label : (_beat.speaker is "Higher Power" and $playerName isnot "" ? $playerName : _beat.speaker)>>
@@ -2527,32 +2764,49 @@ _beat.text
 <<run (function(){
   var layers = _beat.layers || (_beat.fullText ? [_beat.fullText] : []);
   var label = _label;
-  var bubbleEl = $('<div class="chat-line ' + _beat.side + '"></div>');
+  var side = _beat.side;
+  var bubbleEl = $('<div class="chat-line ' + _glowClass + side + '"></div>');
   var speakerEl = $('<div class="chat-speaker"></div>').text(label);
-  var textEl = $('<span class="expand-text"></span>').text(_beat.shortText);
-  var hintEl = $('<span class="expand-hint"> (nudge)</span>');
+  var layersWrap = $('<div class="expand-layers"></div>');
+  var firstLineEl = $('<div class="expand-layer expand-layer-current"></div>').text(_beat.shortText);
+  layersWrap.append(firstLineEl);
+  var hintText = side === "player" ? "(push further)" : "(press further)";
+  var hintEl = $('<span class="expand-hint"></span>').text(hintText);
   var continueEl = $('<div class="dialogue-prompt"><a class="link-internal expand-continue">▼</a></div>');
   var layerIndex = 0;
+  var currentLineEl = firstLineEl;
 
-  textEl.on('click', function(){
-    if (layerIndex < layers.length) {
-      textEl.text(layers[layerIndex]);
-      layerIndex++;
-      if (layerIndex >= layers.length) {
-        hintEl.remove();
+  function attachClick() {
+    currentLineEl.addClass('expand-clickable').on('click', function(){
+      if (layerIndex < layers.length) {
+        currentLineEl.removeClass('expand-layer-current expand-clickable').addClass('expand-layer-old').off('click');
+        var newLineEl = $('<div class="expand-layer expand-layer-current"></div>').text(layers[layerIndex]);
+        layersWrap.append(newLineEl);
+        currentLineEl = newLineEl;
+        layerIndex++;
+        $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+        if (layerIndex >= layers.length) {
+          hintEl.remove();
+        } else {
+          attachClick();
+        }
       }
-    }
-  });
+    });
+  }
+  if (layers.length > 0) {
+    attachClick();
+  } else {
+    hintEl.remove();
+  }
 
-  bubbleEl.append(speakerEl).append(textEl).append(hintEl);
+  bubbleEl.append(speakerEl).append(layersWrap).append(hintEl);
   $('#chatLog').append(bubbleEl);
   $('#chatLog').append(continueEl);
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
 
   continueEl.find('.expand-continue').on('click', function(){
     continueEl.remove();
-    textEl.off('click');
-    textEl.addClass('expand-locked');
+    currentLineEl.off('click').removeClass('expand-clickable');
     hintEl.remove();
     var imp;
     if (layerIndex === 0) {
@@ -2575,8 +2829,6 @@ _beat.text
     State.variables.beatIndex += 1;
     Wikifier.wikifyEval('<<advanceScene>>');
   });
-})()>>
-
 })()>>
 
 <</if>>
