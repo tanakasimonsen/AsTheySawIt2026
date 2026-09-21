@@ -18,9 +18,70 @@ As They Saw It
 
 :: Story Stylesheet [stylesheet]
 /* ============================================================
-   IMPORTS & PALETTE
+   IMPORTS, FONTFACE & PALETTE
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+@font-face {
+  font-family: 'Pixelta';
+  src: url('assets/fonts/Pixelta.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Dico';
+  src: url('assets/fonts/Dico.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'PokemonXY';
+  src: url('assets/fonts/PokemonXandY.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Pixely';
+  src: url('assets/fonts/Pixely.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ZX_Spectrum_7';
+  src: url('assets/fonts/zx_spectrum-7.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'cozy-quill';
+  src: url('assets/fonts/cozy-quill.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'leviwindows';
+  src: url('assets/fonts/leviwindows.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'zeldadxt';
+  src: url('assets/fonts/zeldadxt.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'reindeer-modern';
+  src: url('assets/fonts/reindeer-modern.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Game-Font';
+  src: url('assets/fonts/Game-Font.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NorthernSans';
+  src: url('assets/fonts/NorthernSans.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Wyvern';
+  src: url('assets/fonts/Wyvern.TTF') format('truetype');
+}
+
 
 :root {
   --bg-main: #182d09;
@@ -122,8 +183,12 @@ tw-story a.link-internal { text-decoration: none; }
    SIDEBAR / UI BAR / STORY TITLE / CONTINUE ARROW 
    ============================================================ */
 #story-title {
+  font-size: 0;
+}
+#story-title::after {
+  content: "written & designed by titikormetsi studios";
   font-size: 1em;
-  letter-spacing: 1px;
+  font-family: 'Pixelta', monospace;
 }
 
 #story {
@@ -137,6 +202,12 @@ tw-story a.link-internal { text-decoration: none; }
   transition: none !important;
 }
 
+#menu a,
+#menu-item-saves,
+#menu-item-restart {
+  font-family: 'PokemonXY', monospace;
+}
+
 #ui-bar-toggle {
   display: none !important;
 }
@@ -144,8 +215,16 @@ tw-story a.link-internal { text-decoration: none; }
 #ui-bar {
   width: clamp(10em, 13vw, 15em) !important;
   background-color: #2b2420;
+  background-image: url('assets/ui/UIBar_Day.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
   border-right: 1px solid var(--text-main);
   overflow-y: auto;
+}
+
+body.scene-night #ui-bar {
+  background-image: url('assets/ui/UIBar_Night.png');
 }
 
 #angel-status {
@@ -162,6 +241,7 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .status-label {
+  font-family: 'PokemonXY', monospace;
   font-size: 0.7em;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -169,6 +249,7 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .status-value {
+  font-family: 'PokemonXY', monospace;
   font-size: 1em;
   color: var(--text-main);
 }
@@ -250,6 +331,7 @@ tw-story a.link-internal { text-decoration: none; }
    TITLE / MENU SCREENS
    ============================================================ */
 .menu-screen {
+  font-family: 'Pixelta', monospace;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -283,20 +365,16 @@ tw-story a.link-internal { text-decoration: none; }
   color: var(--text-muted);
 }
 
-.dialogue-box {
-  width: 100%;
-  max-width: 600px;
-  min-height: 200px;
-  background-color: var(--bg-panel);
-  border: 3px solid var(--text-main);
-  border-radius: 6px;
-  padding: 2em;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.title-lines {
   text-align: center;
+}
+.title-line {
+  font-size: 1em;
+  margin-bottom: 0.8em;
+}
+.title-line-main {
+  font-size: 2em;
+  letter-spacing: 1px;
 }
 
 #dialogueLine {
@@ -414,6 +492,7 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .card-box .card-field {
+  font-family: 'Pixelta', monospace;
   flex-shrink: 0;
   border-bottom: 1px dashed var(--text-muted);
   padding: 0.05em 0;
@@ -430,6 +509,7 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .card-box .card-story {
+  font-family: 'Pixelta', monospace;
   flex-shrink: 1;
   min-height: 120px;
   flex-grow: 1;
@@ -440,20 +520,21 @@ tw-story a.link-internal { text-decoration: none; }
   box-sizing: border-box;
 }
 
-.card-box .card-story::-webkit-scrollbar {
+/* .card-box .card-story::-webkit-scrollbar {
   width: 8px;
-}
+} */
 
-.card-box .card-story::-webkit-scrollbar-track {
+/* .card-box .card-story::-webkit-scrollbar-track {
   background: transparent;
-}
+} */
 
-.card-box .card-story::-webkit-scrollbar-thumb {
+/* .card-box .card-story::-webkit-scrollbar-thumb {
   background-color: var(--text-main);
   border-radius: 4px;
-}
+} */
 
 .card-label {
+  font-family: 'Pixelta', monospace;
   font-size: 0.75em;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -482,6 +563,7 @@ tw-story a.link-internal { text-decoration: none; }
   align-items: center;
 }
 .select-row-inline a {
+  font-family: 'Pixelta', monospace;
   font-size: 0.7em;
   color: var(--text-main);
 }
@@ -531,19 +613,30 @@ tw-story a.link-internal { text-decoration: none; }
   flex-shrink: 0;
   padding: clamp(0.4em, 1vh, 0.7em) clamp(1em, 2vw, 2em);
   text-align: center;
-  font-size: clamp(0.8em, 1.2vw, 1em);
+   font-size: 0.6em;
+  font-family: 'cozy-quill', monospace;
   border-style: solid;
   border-width: 20px;
   border-color: transparent;
   border-image-source: url('assets/ui/DialogueBox_V002.png');
   border-image-slice: 33 fill;
-  border-image-width: 20x;
+  border-image-width: 20px;
   border-image-repeat: stretch;
   image-rendering: pixelated;
 }
 
+.narrative-box .chapter-heading {
+  font-size: 1.8em;
+  letter-spacing: 2px;
+  font-family: 'Pixelta', monospace;
+  color: var(--text-main);
+  margin-bottom: 0.3em;
+}
+
 .narrative-box .meeting-time {
-  font-size: 0.9em;
+  font-size: 1em;
+  letter-spacing: 1px;
+  font-family: 'Pixelta', monospace;
   color: var(--text-muted);
   margin-bottom: 0.5em;
 }
@@ -642,6 +735,8 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .chat-line.player {
+  font-family: 'reindeer-modern', monospace;
+  font-size: 1em;
   align-self: flex-start;
   text-align: left;
   background-color: rgba(42, 61, 20, 0.6);
@@ -654,6 +749,46 @@ tw-story a.link-internal { text-decoration: none; }
   background-color: rgba(205, 193, 159, 0.1);
 }
 
+.font-guardian-angel {
+  font-family: 'reindeer-modern', monospace;
+  font-size: 0.8em;
+}
+
+.chat-line.character.font-guardian-angel {
+  font-family: 'reindeer-modern', monospace;
+}
+
+.chat-line.font-erin {
+  font-family: 'Game-Font', monospace;
+  font-size: 1.5em;  
+}
+
+.chat-line.font-anesu {
+  font-family: 'NorthernSans', monospace;
+  font-size: 1em;
+}
+
+.chat-line.font-mama {
+  font-family: 'Wyvern', monospace;
+}
+
+.chat-line.font-dad {
+  font-family: 'Dico', monospace;
+}
+
+.chat-line.font-micah {
+  font-family: 'ZX_Spectrum_7', monospace;
+}
+
+#namePromptBox input[type="text"] {
+  font-family: 'reindeer-modern', monospace;
+  font-size: 0.5em;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--text-main);
+  color: var(--text-main);
+}
+
 .chat-choices {
   margin-top: 1em;
   text-align: center;
@@ -663,12 +798,15 @@ tw-story a.link-internal { text-decoration: none; }
   align-self: center;
   max-width: 90%;
   text-align: center;
-  font-style: italic;
+  font-family: 'LeviWindows', monospace;
   color: var(--text-muted);
   font-size: 0.85em;
   margin: 0.3em 0;
 }
-
+.chat-action.action-italic {
+  font-family: 'ZeldaDX', monospace;
+  font-style: italic;
+}
 .chat-spacer {
   height: 1.5em;
 }
@@ -710,6 +848,7 @@ tw-story a.link-internal { text-decoration: none; }
   color: var(--text-muted);
 }
 
+
 /* ============================================================
   HYPERLINK COLOURS
    ============================================================ */
@@ -743,6 +882,8 @@ tw-story a.link-internal { text-decoration: none; }
    THOUGHT BUBBLES (wavy animation)
    ============================================================ */
 .chat-thought {
+  font-family: 'zeldadxt', monospace;
+  font-size: 0.7em;
   align-self: flex-start;
   text-align: left;
   font-style: italic;
@@ -753,6 +894,7 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .chat-thought .thought-label {
+  font-family: 'zeldadxt', monospace;
   font-size: 0.75em;
   font-style: normal;
   letter-spacing: 1px;
@@ -779,7 +921,11 @@ tw-story a.link-internal { text-decoration: none; }
    PHONE / TEXTING SCENE
    ============================================================ */
 .phone-frame {
+  width: 400px;
   background-color: var(--bg-panel);
+  background-image: url('assets/ui/PhoneScreenB_V004.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   border: 3px solid var(--text-main);
   border-radius: 12px;
   padding: 2em 1.5em;
@@ -789,6 +935,49 @@ tw-story a.link-internal { text-decoration: none; }
   min-height: 700px;
   max-height: 700px;
   overflow-y: auto;
+}
+
+.phone-scene-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5em;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.side-log {
+  width: 260px;
+  max-height: 700px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  padding-top: 1em;
+}
+
+#leftLog {
+  align-items: flex-start;
+}
+
+#rightLog {
+  align-items: flex-end;
+}
+
+.phone-overlay {
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
+}
+.phone-frame-inline {
+  width: 320px;
+  background-image: url('assets/ui/PhoneFrame.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 1.5em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .phone-frame::-webkit-scrollbar {
@@ -874,6 +1063,7 @@ tw-story a.link-internal { text-decoration: none; }
 /* ============================================================
    TYPED CHOICE / FREE TYPE INPUT
    ============================================================ */
+
 .type-input-row {
   display: flex;
   align-items: center;
@@ -893,12 +1083,16 @@ tw-story a.link-internal { text-decoration: none; }
 }
 
 .type-preview {
+  font-family: 'reindeer-modern', monospace;
   color: var(--text-main);
+  font-size: 0.75em;
+
 }
 
 .type-hint {
   align-self: flex-start;
   font-size: 0.75em;
+  font-family: 'leviwindows', monospace;
   color: var(--text-muted);
   font-style: italic;
   padding-left: 1em;
@@ -1303,17 +1497,21 @@ window.updateDebugPanel = function() {
 window.debugPanelOn = true;
 window.setupDebugToggle = function() {
   if ($('#debug-toggle').length) return;
-  var $btn = $('<div id="debug-toggle">🐞 Debug: ON</div>');
+  var $btn = $('<div id="debug-toggle">🐞</div>');
   $('body').append($btn);
   $btn.on('click', function() {
     window.debugPanelOn = !window.debugPanelOn;
-    $(this).text('🐞 Debug: ' + (window.debugPanelOn ? 'ON' : 'OFF'));
+    $(this).text('🐞' + (window.debugPanelOn ? 'ON' : 'OFF'));
     $(this).toggleClass('active', window.debugPanelOn);
     updateDebugPanel();
   });
 };
 $(document).on(':passagedisplay', function() {
   setupDebugToggle();
+});
+
+$(document).on(':passagedisplay', function () {
+  $('#story-title').text('created by titikormetsi studios');
 });
 
 window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
@@ -1341,6 +1539,54 @@ window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
       if (typeof onComplete === "function") onComplete();
     }
   })();
+};
+
+window.typePlain = function(el, text, speed, onComplete) {
+  speed = speed || 45;
+  if (window.fastMode) {
+    el.textContent = text;
+    if (typeof onComplete === "function") onComplete();
+    return;
+  }
+  var i = 0;
+  el.textContent = "";
+  (function tick() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(tick, speed);
+    } else if (typeof onComplete === "function") {
+      onComplete();
+    }
+  })();
+};
+
+window.typeSequenceLines = function(containerId, lines, speed, onComplete) {
+  speed = speed || 45;
+  var container = document.getElementById(containerId);
+  var idx = 0;
+  function next() {
+    if (idx >= lines.length) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+    var item = lines[idx];
+    var text = typeof item === "string" ? item : item.text;
+    var cls = typeof item === "string" ? "title-line" : ("title-line " + (item.className || ""));
+    var lineEl = document.createElement('div');
+    lineEl.className = cls;
+    lineEl.style.display = "block";
+    lineEl.style.color = "inherit";
+    if (typeof item === "object" && item.fontSize) {
+      lineEl.style.fontSize = item.fontSize;
+    }
+    container.appendChild(lineEl);
+    typePlain(lineEl, text, speed, function(){
+      idx++;
+      next();
+    });
+  }
+  next();
 };
 
 window.talkBlip = function(speaker) {
@@ -1571,11 +1817,11 @@ window.closeQuoteModal = function() {
 window.fastMode = false;
 window.setupSkipToggle = function() {
   if ($('#skip-toggle').length) return;
-  var $btn = $('<div id="skip-toggle">⏩ Fast Mode: OFF</div>');
+  var $btn = $('<div id="skip-toggle">⏩</div>');
   $('body').append($btn);
   $btn.on('click', function() {
     window.fastMode = !window.fastMode;
-    $(this).text('⏩ Fast Mode: ' + (window.fastMode ? 'ON' : 'OFF'));
+    $(this).text('⏩' + (window.fastMode ? 'ON' : 'OFF'));
     $(this).toggleClass('active', window.fastMode);
   });
 };
@@ -1762,10 +2008,10 @@ window.stopAmbience = function() {
 <<run updateAngelStatus()>>
 
 <<set $sceneBeats to [
-  {type: "dialogue", side: "character", speaker: "???", text: "\"Don't worry, the seeped scent of cigarette smoke will wear off.\""},
+  {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "???", text: "\"Don't worry, the seeped scent of cigarette smoke will wear off.\""},
   {type: "action", text: "You hear a light chuckle and rough throat clear."},
-  {type: "dialogue", side: "character", speaker: "???", text: "They say it is described to be a circle of sadness. I'd say it is quite the opposite. It's the birth of hope. I can't lie, my first time here I thought it was an outtake of Fight Club. I kinda stumbled across this place on my way to a church. Was meant to assist a grieving widow. I take care of these people. Somewhat..."},
-  {type: "dialogue", side: "character", speaker: "???", label: "Mabel", text: "My name is Mabel, a Guardian Angel of this meeting. Now I have help!", setVar: "bossName", setValue: "Mabel"},
+  {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "???", text: "They say it is described to be a circle of sadness. I'd say it is quite the opposite. It's the birth of hope. I can't lie, my first time here I thought it was an outtake of Fight Club. I kinda stumbled across this place on my way to a church. Was meant to assist a grieving widow. I take care of these people. Somewhat..."},
+  {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "My name is Mabel, a Guardian Angel of this meeting. Now I have help!", setVar: "bossName", setValue: "Mabel"},
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "I'm assuming you're new?"},
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "What can I call you?"},
   {type: "namePrompt"},
@@ -1783,7 +2029,7 @@ window.stopAmbience = function() {
 
 <div class="opening-layout">
 <div class="narrative-box">
-<div class="meeting-time">7.15pm Sunday Meeting</div>
+<div class="meeting-time">PROLOGUE</div>
 You float above an AA meeting in session, observing the many faces and walks of life that reside weekly at the community centre. 
 </div>
 <div class="conversation-row">
@@ -1817,7 +2063,7 @@ You float above an AA meeting in session, observing the many faces and walks of 
 <<set $beatIndex to 0>>
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time">Mirabel Meeting</div>
+<div class="meeting-time">Preface</div>
 You've chosen to follow Anesu this week.
 </div>
 <div class="conversation-row">
@@ -1857,17 +2103,19 @@ You've chosen to follow Anesu this week.
 <<set $beatIndex to 0>>
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time">MIRABEL REC CENTRE CARPARK</div>
-The air is sharp as Erin and Anesu exchange goodbyes with fellow members, walking through puffs of smoke
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
+<div class="meeting-time"></div>
+You follow Anesu home, watching her hop in the passenger side of Erin's car.
 </div>
+
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
 <div class="speaker-name" id="leftSpeakerName">Anesu</div>
 </div>
 <div class="chat-log" id="chatLog">
-<div class="chat-action">You follow Anesu home, watching her hop in the passenger side of Erin's car.</div>
-<div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div></div>
+<div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
 <div class="speaker-box" id="rightSpeaker">
 <img @src="$characterImages['Erin']" id="rightSpeakerImg">
 <div class="speaker-name" id="rightSpeakerName">Erin</div>
@@ -1892,6 +2140,7 @@ The air is sharp as Erin and Anesu exchange goodbyes with fellow members, walkin
 <<set $beatIndex to 0>>
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
 <div class="meeting-time">Anesu's House</div>
 The porch light is on. The house is quiet, for now. You perch yourself on a tree and watch the girl walk to her doorstep, hesitating at the door.
 </div>
@@ -1958,7 +2207,8 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
 <div class="opening-layout">
 
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
+<div class="meeting-time">Her Hallway</div>
 She's cold and doesn't move to approach her daughter, just stands in the doorway by her bedroom door.
 </div>
 <div class="conversation-row">
@@ -1983,11 +2233,14 @@ She's cold and doesn't move to approach her daughter, just stands in the doorway
   {type: "continueTo", dest: "V1_04_Deny"}
 ]>>
 <<set $beatIndex to 0>>
+
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
-We deny.
+<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="meeting-time">Her Hallway</div>
+We deny
 </div>
+
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
@@ -2055,10 +2308,10 @@ We deny.
 <<set $beatIndex to 0>>
 
 <div class="opening-layout">
-
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
-Anesu, Mama, and Dad stand together in the hallway.
+<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="meeting-time">Her Hallway</div>
+Anesu, Mama, and Dad stand together. Together in the literal sense... not at all symoblical.
 </div>
 
 <div class="conversation-row">
@@ -2134,8 +2387,9 @@ Anesu, Mama, and Dad stand together in the hallway.
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time">Sunday, Late</div>
----
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
+<div class="meeting-time">Sunday... A little too late.</div>
+</div>
 </div>
 <div class="conversation-row">
 <div class="speaker-box">
@@ -2160,11 +2414,14 @@ Anesu, Mama, and Dad stand together in the hallway.
   {type: "continueTo", dest: "V1_04_Comply"}
 ]>>
 <<set $beatIndex to 0>>
+
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
-We comply. 
+<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="meeting-time">Her Hallway</div>
+We comply.
 </div>
+
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
@@ -2212,11 +2469,14 @@ We comply.
 
 ]>>
 <<set $beatIndex to 0>>
+
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
-Anesu, Mama, and Dad stand together in the hallway.
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
+<div class="meeting-time">Her Hallway</div>
+Anesu, Mama, and Dad stand together. Together in the literal sense... not at all symoblical.
 </div>
+
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
@@ -2239,11 +2499,14 @@ Anesu, Mama, and Dad stand together in the hallway.
   {type: "continueTo", dest: "V1_04_Compromise"}
 ]>>
 <<set $beatIndex to 0>>
+
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
-We compromise. 
+<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="meeting-time">Her Hallway</div>
+We compromise.
 </div>
+
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
@@ -2305,11 +2568,14 @@ We compromise.
   {type: "continueTo", dest: "V1_05_Transition"}
 ]>>
 <<set $beatIndex to 0>>
+
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time"></div>
-Anesu, Mama, and Dad stand together in the hallway.
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
+<div class="meeting-time">Her Hallway</div>
+Anesu, Mama, and Dad stand together. Together in the literal sense... not at all symoblical.
 </div>
+
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
@@ -2348,23 +2614,18 @@ Anesu, Mama, and Dad stand together in the hallway.
 
 :: 02_Title_Screen {"position":"500,75","size":"100,100"}
 <div class="menu-screen">
-<div class="dialogue-box">
-<div id="dialogueLine" class="menu-text">
-this is...
-</div>
-<div id="dialoguePrompt">
-<<timed 1.5s>>\
-<<replace "#dialogueLine">>as they saw it<</replace>>\
-<<timed 1.5s>>\
-<<replace "#dialoguePrompt">>\
-<div class="continue-link"><<link "start the story?" "03_Opening_Scene">><</link>></div>\
-<</replace>>\
-<</timed>>\
-<</timed>>
-</div>
-</div>
+<div class="title-lines" id="titleLines"></div>
+<div id="dialoguePrompt"></div>
 </div>
 
+<<run setTimeout(function(){
+  typeSequenceLines('titleLines', [
+    "this is...",
+    {text: "As They Saw It", fontSize: "2.5em"}
+  ], 100, function(){
+    Wikifier.wikifyEval('<<replace "#dialoguePrompt">><div class="continue-link"><<link "start the story?" "03_Opening_Scene">><</link>></div><</replace>>');
+  });
+}, 10)>>
 
 :: 01_Opening_Monologue {"position":"375,75","size":"100,100"}
 <<set $currentDate to "Sun, 21 Apr 2024">>
@@ -2381,6 +2642,7 @@ this is...
   "Mama": "https://i.imgur.com/L16jEVN.gif",
   "Dad": "https://i.imgur.com/DSDJ6Y9.gif",
   "Micah": "https://i.imgur.com/bjzAo97.gif"
+  "Julian" "https://imgur.com/a/LkOfPpU.gif"
 }>>
 
 /*UI VARIABLES*/
@@ -2406,29 +2668,23 @@ this is...
   {name: "Member 12", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0}
 ]>>
 <<set $memberIndex to 0>>
+
 /* OPENING MONOLOGUE*/
 <div class="menu-screen">
-<div class="dialogue-box">
-<div id="dialogueLine" class="menu-text">
-There's a place for us... For when our soul is lost to the wind. Where the will is weak and obligation slips away...
-</div>
-<div id="dialoguePrompt">
-<<link "▼">>\
-<<replace "#dialogueLine">>They say there is something wrong with us, but we're just like them... like you. <</replace>>\
-<<replace "#dialoguePrompt">>\
-<<link "▼">>\
-<<replace "#dialogueLine">>Nobody says it gets easier right away. But you're here and that's the part that counts.<</replace>>\
-<<replace "#dialogueLine">>No one said it had to be forever. It only has to be a day..<</replace>>\
-<<replace "#dialoguePrompt">>\
-<div class="continue-link"><<link "continue" "02_Title_Screen">><</link>></div>\
-<</replace>>\
-<</link>>\
-<</replace>>\
-<</link>>
-</div>
-</div>
+<div class="title-lines" id="titleLines"></div>
+<div id="dialoguePrompt"></div>
 </div>
 
+<<run setTimeout(function(){
+  typeSequenceLines('titleLines', [
+    "There's a place for us... For when our soul is lost to the wind. Where the will is weak and obligation slips away...",
+    "They say there is something wrong with us, but we're just like them... like you.",
+    "Nobody says it gets easier right away. But you're here and that's the part that counts.",
+    "No one said it had to be forever. It only has to be a day.."
+  ], 45, function(){
+    Wikifier.wikifyEval('<<replace "#dialoguePrompt">><div class="continue-link"><<link "continue" "02_Title_Screen">><</link>></div><</replace>>');
+  });
+}, 10)>>
 
 :: 00_Member_Widget [widget] {"position":"1225,0","size":"100,100"}
 <<widget "showMembers">>
@@ -2539,11 +2795,14 @@ $members[$memberIndex].story
 <<if _beat.memoryEntry>>
 <<run addMemory(_beat.memoryEntry.who, _beat.memoryEntry.text)>>
 <</if>>
+
 <<if _beat.type is "narrative">>
 <<replace "#sceneNarrative">>
+<<if _beat.chapter>><div class="chapter-heading">_beat.chapter</div><</if>>
 <div class="meeting-time">_beat.heading</div>
 _beat.text
 <</replace>>
+
 <<if _beat.night is true>>
 <<run $('body').addClass('scene-night')>>
 <<elseif _beat.night is false>>
@@ -2554,12 +2813,16 @@ _beat.text
 <<run addQuote(_beat.quoteUnlock.text, _beat.quoteUnlock.source)>>
 <</if>>
 <<elseif _beat.type is "action">>
+<<set _actionClass to _beat.italic ? ' action-italic' : ''>>
 <<append "#chatLog">><div class="chat-action">_beat.text</div><</append>>
 <<set $beatIndex += 1>>
+
 <<elseif _beat.type is "thought">>
-<<append "#chatLog">><div class="chat-thought"><span class="thought-label">Anesu (thinking)</span><span class="thought-text"></span></div><</append>>
-<<run (function() {
-  var thoughtEl = $('#chatLog .thought-text').last();
+<<run (function(){
+  var target = $('#leftLog').length ? $('#leftLog') : $('#chatLog');
+  var thoughtEl = $('<div class="chat-thought"><span class="thought-label">Anesu (thinking)</span><span class="thought-text"></span></div>');
+  target.append(thoughtEl);
+  var textEl = thoughtEl.find('.thought-text');
   var text = _beat.text;
   var words = text.split(/(\s+)/);
   var html = "";
@@ -2577,9 +2840,11 @@ _beat.text
       html += '</span>';
     }
   }
-  thoughtEl.html(html);
+  textEl.html(html);
+  target.scrollTop(target[0].scrollHeight);
 })()>>
 <<set $beatIndex += 1>>
+
 <<elseif _beat.type is "spacer">>
 <<append "#chatLog">><div class="chat-spacer"></div><</append>>
 <<set $beatIndex += 1>>
@@ -2595,7 +2860,11 @@ _beat.text
 <<set $beatIndex += 1>>
 
 <<elseif _beat.type is "interject">>
-<<append "#chatLog">><div class="ga-interject"><span class="ga-label">you</span>_beat.text</div><</append>>
+<<run (function(){
+  var target = $('#rightLog').length ? $('#rightLog') : $('#chatLog');
+  target.append('<div class="ga-interject"><span class="ga-label">you</span>' + _beat.text + '</div>');
+  target.scrollTop(target[0].scrollHeight);
+})()>>
 <<set $beatIndex += 1>>
 
 <<elseif _beat.type is "continueTo">>
@@ -2603,6 +2872,7 @@ _beat.text
 <<set $beatIndex += 1>>
 <<elseif _beat.type is "dialogue" or _beat.type is "choice">>
 <<set _label to _beat.label ? _beat.label : ((_beat.speaker is "You" or _beat.speaker is "Higher Power") and $playerName isnot "" ? $playerName : _beat.speaker)>>
+<<set _target to ($('#leftLog').length and _beat.side is "player") ? "#leftLog" : (($('#rightLog').length and _beat.side is "character") ? "#rightLog" : "#chatLog")>>
 <<if _beat.side is "character">>
 <<if $('#rightSpeakerName').length>>
 <<replace "#rightSpeakerName">>_label<</replace>>
@@ -2619,20 +2889,20 @@ _beat.text
 <</if>>
 <<if _beat.setVar>><<run State.variables[_beat.setVar] = _beat.setValue>><<run updateAngelStatus()>><</if>>
 <<if _beat.type is "dialogue">>
-<<append "#chatLog">><div @class="'chat-line ' + _beat.side"><div class="chat-speaker">_label</div><span class="type-target"></span></div><</append>>
+<<append _target>><div @class="'chat-line ' + _beat.side + ' font-' + _beat.speaker.toLowerCase().replace(/\s/g,'-')"><div class="chat-speaker">_label</div><span class="type-target"></span></div><</append>>
 <<set $beatIndex += 1>>
-<<run typewriterEffect($('#chatLog .type-target').last()[0], _beat.text, 25, _beat.speaker, function() {
+<<run typewriterEffect($(_target + ' .type-target').last()[0], _beat.text, 25, _beat.speaker, function() {
   $(document).trigger(':scene-typing-done');
 })>>
 
 <<else>>
 <<set _thisDest to _beat.dest>>
-<<append "#chatLog">><div @class="'chat-line ' + _beat.side"><div class="chat-speaker">_label</div></div><</append>>
+<<append _target>><div @class="'chat-line ' + _beat.side + ' font-' + _beat.speaker.toLowerCase().replace(/\s/g,'-')"><div class="chat-speaker">_label</div></div><</append>>
 <<run (function(){
   var dest = _thisDest;
   var linkEl = $('<a class="link-internal">' + _beat.text + '</a>');
   linkEl.on('click', function(){ Engine.play(dest); });
-  $('#chatLog .chat-line').last().append(linkEl);
+  $(_target + ' .chat-line').last().append(linkEl);
 })()>>
 <<set $beatIndex += 1>>
 <</if>>
@@ -2750,6 +3020,22 @@ _beat.text
   });
 })()>>
 
+<<elseif _beat.type is "phoneMessages">>
+<<run (function(){
+  var wrapEl = $('<div class="phone-overlay"></div>');
+  var frameEl = $('<div class="phone-frame-inline"></div>');
+  wrapEl.append(frameEl);
+  _beat.messages.forEach(function(msg){
+    var bubble = $('<div class="text-bubble ' + msg.side + '"></div>');
+    bubble.append('<div class="text-sender">' + msg.sender + '</div>');
+    bubble.append(document.createTextNode(msg.text));
+    frameEl.append(bubble);
+  });
+  $('#chatLog').append(wrapEl);
+  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+})()>>
+<<set $beatIndex += 1>>
+
 
 <<elseif _beat.type is "expandable">>
 <<if _beat.side is "character">>
@@ -2853,6 +3139,12 @@ _beat.text
 <<append "#chatLog">><div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div><</append>>
 <</if>>
 <<run $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight)>>
+<</widget>>
+
+<<widget "showPlayLink">>
+<<replace "#dialoguePrompt">>
+<div class="continue-link"><<link "start the story?" "03_Opening_Scene">><</link>></div>
+<</replace>>
 <</widget>>
 
 :: V3_01_Opening {"position":"375,625","size":"100,100"}
@@ -3329,13 +3621,17 @@ Erin's car, still driving.
   {type: "choice", side: "player", speaker: "Anesu", text: "I'll stay home", dest: "V2_03_StayingHome", impacts: {anesuGuard: -1}}
 ]>>
 <<set $beatIndex to 0>>
-<div class="phone-layout">
+<div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
 <div class="meeting-time">Wednesday, Late</div>
 Anesu's phone lights up on the bed beside her.
 </div>
+<div class="phone-scene-row">
+<div class="side-log" id="leftLog"></div>
 <div class="phone-frame" id="chatLog">
 <div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="side-log" id="rightLog"></div>
 </div>
 </div>
 
@@ -3364,12 +3660,16 @@ Anesu's phone lights up on the bed beside her.
   {type: "spacer"},
 {type: "narrative", heading: "THE NEXT MORNING", text: "Anesu wakes in his bed to a wall of notifications.", night: false, time: "7:45am"},
 {type: "action", text: "6 missed calls from Mama. 5 missed calls from Dad. A message from Micah."},
-{type: "dialogue", side: "character", speaker: "Dad", text: "Why didn't you tell anyone you were going out last night? You have to tell us these things. You can't just disappear."},
-{type: "dialogue", side: "character", speaker: "Mama", text: "Where are you? Why are you not home?"},
-{type: "dialogue", side: "character", speaker: "Mama", text: "Anesu, pick up the phone. Come home right now. Why is your location off? Who are you with? What are you hiding?"},
-{type: "dialogue", side: "character", speaker: "Mama", text: "You better be home within 30 minutes or I am changing the locks."},
-{type: "dialogue", side: "character", speaker: "Dad", text: "Please just come home, Anesu. You know better than this. Come home right now."},
-{type: "dialogue", side: "character", speaker: "Micah", text: "Bro mums crashing out. What did you do?"},
+
+{type: "phoneMessages", messages: [
+  {side: "them", sender: "Mama", text: "Where are you? Why are you not home?"},
+  {side: "them", sender: "Mama", text: "Anesu, pick up the phone. Come home right now. Why is your location off? Who are you with? What are you hiding?"},
+  {side: "them", sender: "Mama", text: "You better be home within 30 minutes or I am changing the locks."},
+  {side: "them", sender: "Dad", text: "Why didn't you tell anyone you were going out last night? You have to tell us these things. You can't just disappear."},
+  {side: "them", sender: "Dad", text: "Please just come home, Anesu. You know better than this. Come home right now."},
+  {side: "them", sender: "Micah", text: "Bro mums crashing out. What did you do?"}
+]},
+
 {type: "action", text: "Anesu wakes groggily, far to the right of the bed, too far from his arms. Her eyes widen — she's in his bed, not her own."},
 {type: "dialogue", side: "player", speaker: "Anesu", text: "Shit shit shit shit."},
 {type: "action", text: "She shakes him awake, insisting she needs to be taken home right away. It's 8am — early, and her energy is rushed and frazzled.", time: "8:00am"},
@@ -3405,12 +3705,23 @@ Anesu's phone lights up on the bed beside her.
 {type: "choice", side: "player", speaker: "Anesu", text: "Well. Here we fucking go.", dest: "V2_04_Argument"}
 ]>>
 <<set $beatIndex to 0>>
-<div class="phone-layout">
+
+<div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
 <div class="meeting-time">Way too fucking late</div>
 </div>
-<div class="phone-frame" id="chatLog">
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Anesu']">
+<div class="speaker-name" id="leftSpeakerName">Anesu</div>
+</div>
+<div class="chat-log" id="chatLog">
 <div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<img @src="$characterImages['Elias']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Elias</div>
+</div>
 </div>
 </div>
 
