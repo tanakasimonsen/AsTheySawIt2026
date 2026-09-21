@@ -2339,7 +2339,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <<set $currentTime to "9:15pm">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
-  {type: "thought", text: "I wait till Mama has gone to sleep. I check Dad's Xbox room and he seems to be extremely locked in. I stand and stare, watching him."},
+  {type: "action", text: "Anesu waits till Mama has gone to sleep, then checks Dad's Xbox room — he seems to be extremely locked in. She stands and stares, watching him."},
   {type: "action", text: "Dad pulls out an earphone and looks to Anesu."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "You having a filthy cigarette?"},
   {type: "action", text: "Anesu nods."},
@@ -2349,15 +2349,18 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah yeah, it's on the agenda."},
   {type: "thought", text: "He thinks I'm smoking straight tobacco, but my smokes are always a little happy."},
   {type: "action", text: "Anesu turns on her heel and walks to the back door, stopping at the pantry to grab some plain tuna."},
-  {type: "thought", text: "I slide it open ever so slightly, the creaking obnoxiously loud. Normally Dad would've fixed this by now. Maybe I should do it... no expectations, hey?"},
+  {type: "action", text: "She slides it open ever so slightly, the creaking obnoxiously loud."},
+  {type: "thought", text: "Normally Dad would've fixed this by now. Maybe I should do it... no expectations, hey?"},
   {type: "thought", text: "Yeah, Dad knows I smoke, but I don't really like Micah knowing. I mean, yeah, he's a grown man, but still."},
   {type: "action", text: "Anesu walks around the corner, following the brick path Dad made when he realised they had spare bricks in the garage."},
   {type: "action", text: "Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up."},
   {type: "action", text: "Meow meow."},
+  {type: "showCharacter", speaker: "Julian"},
   {type: "thought", text: "I hate cats... the way they run, how they have to be all over you, that they could kill me. Slowly. But it would be the worst fucking death."},
   {type: "thought", text: "But for some reason, this cat is growing on me. Like a cancer."},
-  {type: "thought", text: "I watch him walking along the colourbond fence, eyeing me carefully. I'm pretty sure he's a stray. Or maybe he just loves the smell of weed..."},
-  {type: "thought", text: "I've named him Julian. He doesn't touch me, he keeps his distance — almost as if he knows I'm allergic to him."},
+  {type: "freeType", side: "character", speaker: "Higher Power", text: "He's walking along the colourbond fence, eyeing you carefully. Pretty sure he's a stray. Or maybe he just loves the smell of weed..."},
+  {type: "action", text: "She's named him Julian."},
+  {type: "thought", text: "He doesn't touch me, he keeps his distance — almost as if he knows I'm allergic to him."},
   {type: "spacer"},
   {type: "expandable", side: "character", speaker: "Higher Power", shortText: "Smoking again?", fullText: "Maybe we take Dad's advice."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah, I gotta stop at some point. Of course that's what Mama wants."},
@@ -2390,7 +2393,6 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <div class="chapter-heading">Chapter One: First Night with Anesu</div>
 <div class="meeting-time">Sunday... A little too late.</div>
 </div>
-</div>
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
@@ -2405,7 +2407,6 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 </div>
 </div>
 </div>
-
 
 :: V1_04_ComplyReveal {"position":"1075,150","size":"100,100"}
 <<set $v1Ending to "Comply">>
@@ -2641,8 +2642,8 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
   "Erin": "https://i.imgur.com/A4YV3S2.gif",
   "Mama": "https://i.imgur.com/L16jEVN.gif",
   "Dad": "https://i.imgur.com/DSDJ6Y9.gif",
-  "Micah": "https://i.imgur.com/bjzAo97.gif"
-  "Julian" "https://imgur.com/a/LkOfPpU.gif"
+  "Micah": "https://i.imgur.com/bjzAo97.gif",
+  "Julian": "https://imgur.com/5Xz9pGG.gif",
 }>>
 
 /*UI VARIABLES*/
@@ -2802,7 +2803,6 @@ $members[$memberIndex].story
 <div class="meeting-time">_beat.heading</div>
 _beat.text
 <</replace>>
-
 <<if _beat.night is true>>
 <<run $('body').addClass('scene-night')>>
 <<elseif _beat.night is false>>
@@ -2812,6 +2812,14 @@ _beat.text
 <<if _beat.quoteUnlock>>
 <<run addQuote(_beat.quoteUnlock.text, _beat.quoteUnlock.source)>>
 <</if>>
+
+<<elseif _beat.type is "showCharacter">>
+<<replace "#rightSpeakerName">>_beat.speaker<</replace>>
+<<run $('#rightSpeakerImg').attr('src', $characterImages[_beat.speaker])>>
+<<run $('.speaker-box').removeClass('speaking')>>
+<<run $('#rightSpeaker').addClass('speaking')>>
+<<set $beatIndex += 1>>
+
 <<elseif _beat.type is "action">>
 <<set _actionClass to _beat.italic ? ' action-italic' : ''>>
 <<append "#chatLog">><div class="chat-action">_beat.text</div><</append>>
@@ -3053,7 +3061,6 @@ _beat.text
   var layers = _beat.layers || (_beat.fullText ? [_beat.fullText] : []);
   var label = _label;
   var side = _beat.side;
-  var bubbleEl = $('<div class="chat-line ' + _glowClass + side + '"></div>');
   var speakerEl = $('<div class="chat-speaker"></div>').text(label);
   var layersWrap = $('<div class="expand-layers"></div>');
   var firstLineEl = $('<div class="expand-layer expand-layer-current"></div>').text(_beat.shortText);
