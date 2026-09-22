@@ -205,7 +205,7 @@ tw-story a.link-internal { text-decoration: none; }
 #menu a,
 #menu-item-saves,
 #menu-item-restart {
-  font-family: 'PokemonXY', monospace;
+  font-family: 'Pixelta', monospace;
 }
 
 #ui-bar-toggle {
@@ -241,15 +241,14 @@ body.scene-night #ui-bar {
 }
 
 .status-label {
-  font-family: 'PokemonXY', monospace;
+  font-family: 'Pixelta', monospace;
   font-size: 0.7em;
-  text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-muted);
 }
 
 .status-value {
-  font-family: 'PokemonXY', monospace;
+  font-family: 'Pixelta', monospace;
   font-size: 1em;
   color: var(--text-main);
 }
@@ -614,7 +613,7 @@ body.scene-night #ui-bar {
   padding: clamp(0.4em, 1vh, 0.7em) clamp(1em, 2vw, 2em);
   text-align: center;
    font-size: 0.6em;
-  font-family: 'cozy-quill', monospace;
+  font-family: 'PokemonXY', monospace;
   border-style: solid;
   border-width: 20px;
   border-color: transparent;
@@ -2651,7 +2650,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <<set $assignedMeeting to "">>
 <<set $weeksPerson to "—">>
 <<set $bossName to "????">>
-<<set $angelSince to "26">>
+<<set $angelSince to "2024">>
 
 /*AA MEMBERS*/
 <<set $members to [
@@ -3595,12 +3594,12 @@ Erin's car, still driving.
   {type: "text", side: "me", text: "Come and get me?", time: "9:53pm"},
   {type: "interject", text: "You HAVE no car, NO LICENSE might I add? And what exactly are you gonna tell Mama?"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Telling her nothing, no guy is ever allowed in my life.", layers: [
-    "[PLACEHOLDER — first push, partial truth]",
+    "I can't say anything. She won't even be able to begin to understand",
     "If I tell her, she'll say I told you so, and I can't hear that right now — not when I already know she's right."
   ], partialImpacts: {anesuGuard: -0.3}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "interject", text: "And with good reason! They've all been dicks and only want you for sex."},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Well I want them for just sex too...", layers: [
-    "[PLACEHOLDER — first push, partial truth]",
+    "Sex can feel good...??",
     "I don't, actually. I just want someone to look at me like I matter, and sex is the only version of that I know how to ask for."
   ], partialImpacts: {familyAwareness: 0.3}, nudgeImpacts: {familyAwareness: 0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "interject", text: "Then why do you get so upset when they disappear?"},
@@ -3610,15 +3609,15 @@ Erin's car, still driving.
   {type: "text", side: "me", text: "10pm??", time: "10:03pm"},
   {type: "text", side: "them", text: "I'll see you then gorgeous", time: "10:04pm"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "See? He thinks I'm gorgeous.", layers: [
-    "[PLACEHOLDER — first push, partial truth]",
-    "I need someone to think that right now. I don't care that it's him. I just need it to be true from somebody."
+    "He thinks I'm gorgeous! He likes me!",
+    "I just need someone to think that right now. I don't care that it's him. I just need it to be true from somebody."
   ], partialImpacts: {anesuGuard: -0.2}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "interject", text: "Correction, he thinks your tits are gorgeous."},
   {type: "interject", text: "And I thought you didn't like sex? I thought you came to that conclusion with Sheryl?"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "I mean, I could like it with him?", layers: [
-    "[PLACEHOLDER — first push, partial truth]",
-    "[PLACEHOLDER — second push, if you want a 3-layer here]",
-    "I know I won't. I know exactly how this goes. I'm choosing it anyway because knowing doesn't make the wanting stop."
+    "He could be kind about it...Maybe he's the one who can make it enjoyable?",
+    "Maybe the first few times haven't been exactly how I wanted...m",
+    "Ugh I know I won't. I know exactly how this goes. But I want to feel wanted, I NEED to feel wanted."
   ], partialImpacts: {anesuGuard: -0.3}, nudgeImpacts: {anesuGuard: -1, familyAwareness: 0.5}, skipImpacts: {anesuGuard: 1}},
   {type: "interject", text: "Oh please, this tool? This fucking guy? You met him on some lame app, we seriously can't still be doing this."},
   {type: "interject", text: "Maybe this isn't the time for it. This is the opposite of putting yourself first."},
@@ -3992,15 +3991,86 @@ Anesu stares at her phone, the message bar blinking, waiting.
 <<run $('body').removeClass('scene-night')>>
 <<set $currentDate to "Wed, 1 May 2024">>
 <<run updateAngelStatus()>>
-<<set $sceneBeats to [
-  {type: "narrative", heading: "PLACEHOLDER", text: "[PLACEHOLDER — Anesu decides to stay home instead]"},
-  {type: "action", text: "[PLACEHOLDER — she wanders into the living room / kitchen, unsure what to do with the night]"},
-  {type: "dialogue", side: "character", speaker: "Micah", text: "Oh, you're here! I thought you left..."},
-  {type: "thought", text: "[PLACEHOLDER — how she feels about that reaction, about staying]"},
-  {type: "action", text: "[PLACEHOLDER — some friction still finds her tonight, even at home]"},
-  {type: "choice", side: "player", speaker: "Anesu", text: "[PLACEHOLDER]", dest: "V2_Transition"}
+<<set _baseBeats to [
+  {type: "action", text: "Anesu keeps her eyes down as her headphones drown out that yapper, hanging out at the back of her skull."},
+  {type: "thought", text: "He's now found someone else. Poof, just like that. You don't matter anymore."},
+  {type: "interject", text: "Hey! Shush! You aren't helping."},
+  {type: "action", text: "Anesu scoffs as she moves the fruit bowl out of the way, wiping away dust and dirt."},
+  {type: "action", text: "Ruby looks up from her book, peering over the edge from the couch across the room."},
+  {type: "thought", text: "Why did you say no?! This was your chance! You could've been his!"},
+  {type: "interject", text: "Okay there is no way that would've happened! He clearly just wanted Anesu for sex!"},
+  {type: "thought", text: "We don't know that now, do we?"},
+  {type: "interject", text: "YES WE DO! Did you not see what he said when she said she wasn't coming over?"},
+  {type: "spacer"},
+  {type: "thought", text: "But he was only like that 'cause we said no."},
+  {type: "interject", text: "YEAH, he was a PRICK after setting a BASIC BOUNDARY? That's someone we want for Anesu?"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Guys, not now..."},
+  {type: "interject", text: "Zip it, Su. We cannot be blaming ourselves here!! You made the right choice."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "He's just gonna block me now... I can feel it. Once they stop messaging for"},
+  {type: "action", text: "Anesu checks her phone to see the delivered signage."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "this long, it's game over."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk how to describe it. It's this sinking feeling. My heart is eating my stomach. My intestines are knotting and engulfing my liver and kidneys..."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "My bones begin to rattle and my blood stream grinds to a halt. It's an awful sickening feeling of intense incurable rejection and it happens every time..."},
+  {type: "interject", text: "Then why do it, Anesu?"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk bec—"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Su? I think that spot is clean."},
+  {type: "action", text: "Ruby has been watching her mid-wipe the same spot for the past 10 minutes, staring straight ahead, stare never wavering."},
+  {type: "action", text: "Anesu shakes it off and clears her throat, swallowing the despair."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "What's wrong, sisi? Something's obviously troubling you."},
+  {type: "interject", text: "Tell her, Su."},
+  {type: "thought", text: "No don't, she's just going to bag you and sink her nails in further. You can smoke about it later."},
+  {type: "interject", text: "That is the worst advice you've ever given. Tell her, Su."},
+  {type: "action", text: "Anesu takes a deep shaky breath, ringing out the cloth for the seventh time."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Why don't guys want me?"},
+  {type: "action", text: "Ruby watches her face crack and tears spill over, the whites of her eyes turned bloodshot. Ruby stays still, watching for the next sentence."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Why can't I just have a date?"},
+  {type: "interject", text: "And there it all goes. The floodgates are shattered and the salt dries her out."},
+  {type: "action", text: "Ruby stays still, her arms twitch a little to instinctively give a hug, but she remains stoic."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Because men are assholes. Especially at this age. They are unable to see outside of themse—"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "But why can't I just have it ONE TIME! I don't understand what's so horrible about me!"},
+  {type: "action", text: "Ruby's face falters and she scowls at her daughter."},
+  {type: "interject", text: "Uh oh."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Why is it automatically your fault? Are you actively picking dickheads?"},
+  {type: "action", text: "Anesu licks the tears and snot building up on her lips, wiping away the uncontrollable jealousy and resentment she now felt."},
+  {type: "thought", text: "See? You're a fucking mess, girl. Crying over a man who doesn't care."},
+  {type: "interject", text: "Wait, I thought you were saying this is Su's fault... now it's his? We can't go both barrels from both ends."},
+  {type: "thought", text: "He doesn't care because she said no, making her a waste of his time. But then again, the fact you thought he liked you is a fucking laugh."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "No I'm no—"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "So then why is it that YOU'RE the issue? I clearly must be missing something."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I'm the common denominator."},
+  {type: "action", text: "She spits it out."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I do everything right. And I just can't seem to be wanted by anyone!"},
+  {type: "action", text: "She continues to sob in the kitchen, silently as to be sure Micah and Dad don't come out to see the commotion."},
+  {type: "thought", text: "They always need to know what's going on."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "We want you..."},
+  {type: "thought", text: "Yeah, fucking right."},
+  {type: "interject", text: "Hush now."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "You know what I mean..."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "What is so horrible about me? Am I that ugly? Am I that unlovable? That undesriable? What else do I have to fix??"},
+  {type: "interject", text: "Oh Su, it's not you."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "It's not about you, sisi, it's these awful terrible men that cannot think outside themselves. I do not agree with anything that you're saying. It's completely absurd."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "You are such a kind girl, sisi. Too kind for that matter. You've been through too much for some man, some WHITE man, to diminish your light and render you feeling like this."},
+  {type: "interject", text: "Okay I don't think ethnicity has anything to do with this but I like where she's going."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Eh, Mama has a thing about white people. Doesn't like them, yet she married one."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "It absolutely breaks my heart seeing and hearing you determine your worth and value off what some man says and thinks about you. Because it is most likely ridiculously untrue."},
+  {type: "action", text: "Ruby has tried so hard to build her daughter up to never even consider, to never even think twice about what a man could possibly say about her."},
+  {type: "action", text: "But it's hard when the outside world tells her everything but."},
+  {type: "spacer"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Am I really that terrible, Mama? What did I possibly do to be treated like this?"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Oh Su, it's hard... you also don't really help yourself... these men you find on dating apps are not the ones you want to be with."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "So where do I meet them? A bar?? A club?! They're all drunk and sloppy and I can taste the alcohol on them."},
+  {type: "spacer"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Then clearly your Higher Power has something else in store for you."},
+  {type: "interject", text: "*wink*"},
+  {type: "spacer"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I'd make such a good partner."},
+  {type: "action", text: "She breaks one more time, eyes scrunching up hard. And all Ruby can see is her 4 year old Anesu, standing alone in the kinder yard, finding someone to share her flowers with."},
+  {type: "action", text: "Ruby tip toes over to Anesu and places her hand on her shoulder, leaning her head forward to touch her daughter's."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "You'd be an incredible partner. The man you choose to be your husband will be the luckiest man alive."},
+  {type: "spacer"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Then why does no one want me?"},
+  {type: "action", text: "The two stand in the kitchen together, foreheads pressed, heat and unconditional love being shared."}
 ]>>
-<<set $beatIndex to 0>>
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
