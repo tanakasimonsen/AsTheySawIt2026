@@ -1599,6 +1599,7 @@ $(document).on(':passagedisplay', function () {
 });
 
 window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
+  console.log("typewriterEffect called with speaker:", speaker, "fastMode:", window.fastMode);
   speed = speed || 25;
   var $portrait = $('.speaker-box.speaking img');
   $portrait.addClass('talking');
@@ -1614,6 +1615,7 @@ window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
     if (i < text.length) {
       el.textContent += text.charAt(i);
     if (i % 3 === 0 && text.charAt(i) !== ' ') {
+      console.log("calling talkBlip with:", speaker);
       talkBlip(speaker);
 }
       i++;
@@ -1689,7 +1691,8 @@ window.talkBlip = function(speaker) {
 };
 
 window.talkBlipSounds = {
-  "Higher Power": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"]
+  "Higher Power": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"],
+  "Guardian Angel": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"]
 };
 
 $(document).on('keydown.spacebarAdvance', function(e) {
@@ -2682,7 +2685,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;&lt;set $assignedMeeting to &quot;&quot;&gt;&gt;
 &lt;&lt;set $weeksPerson to &quot;—&quot;&gt;&gt;
 &lt;&lt;set $bossName to &quot;????&quot;&gt;&gt;
-&lt;&lt;set $angelSince to &quot;26&quot;&gt;&gt;
+&lt;&lt;set $angelSince to &quot;2024&quot;&gt;&gt;
 
 /*AA MEMBERS*/
 &lt;&lt;set $members to [
@@ -3963,15 +3966,86 @@ Anesu stares at her phone, the message bar blinking, waiting.
 &lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Wed, 1 May 2024&quot;&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
-&lt;&lt;set $sceneBeats to [
-  {type: &quot;narrative&quot;, heading: &quot;PLACEHOLDER&quot;, text: &quot;[PLACEHOLDER — Anesu decides to stay home instead]&quot;},
-  {type: &quot;action&quot;, text: &quot;[PLACEHOLDER — she wanders into the living room / kitchen, unsure what to do with the night]&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Oh, you&#39;re here! I thought you left...&quot;},
-  {type: &quot;thought&quot;, text: &quot;[PLACEHOLDER — how she feels about that reaction, about staying]&quot;},
-  {type: &quot;action&quot;, text: &quot;[PLACEHOLDER — some friction still finds her tonight, even at home]&quot;},
-  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;[PLACEHOLDER]&quot;, dest: &quot;V2_Transition&quot;}
+&lt;&lt;set _baseBeats to [
+  {type: &quot;action&quot;, text: &quot;Anesu keeps her eyes down as her headphones drown out that yapper, hanging out at the back of her skull.&quot;},
+  {type: &quot;thought&quot;, text: &quot;He&#39;s now found someone else. Poof, just like that. You don&#39;t matter anymore.&quot;},
+  {type: &quot;interject&quot;, text: &quot;Hey! Shush! You aren&#39;t helping.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu scoffs as she moves the fruit bowl out of the way, wiping away dust and dirt.&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby looks up from her book, peering over the edge from the couch across the room.&quot;},
+  {type: &quot;thought&quot;, text: &quot;Why did you say no?! This was your chance! You could&#39;ve been his!&quot;},
+  {type: &quot;interject&quot;, text: &quot;Okay there is no way that would&#39;ve happened! He clearly just wanted Anesu for sex!&quot;},
+  {type: &quot;thought&quot;, text: &quot;We don&#39;t know that now, do we?&quot;},
+  {type: &quot;interject&quot;, text: &quot;YES WE DO! Did you not see what he said when she said she wasn&#39;t coming over?&quot;},
+  {type: &quot;spacer&quot;},
+  {type: &quot;thought&quot;, text: &quot;But he was only like that &#39;cause we said no.&quot;},
+  {type: &quot;interject&quot;, text: &quot;YEAH, he was a PRICK after setting a BASIC BOUNDARY? That&#39;s someone we want for Anesu?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Guys, not now...&quot;},
+  {type: &quot;interject&quot;, text: &quot;Zip it, Su. We cannot be blaming ourselves here!! You made the right choice.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;He&#39;s just gonna block me now... I can feel it. Once they stop messaging for&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu checks her phone to see the delivered signage.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;this long, it&#39;s game over.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Idk how to describe it. It&#39;s this sinking feeling. My heart is eating my stomach. My intestines are knotting and engulfing my liver and kidneys...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;My bones begin to rattle and my blood stream grinds to a halt. It&#39;s an awful sickening feeling of intense incurable rejection and it happens every time...&quot;},
+  {type: &quot;interject&quot;, text: &quot;Then why do it, Anesu?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Idk bec—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Su? I think that spot is clean.&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby has been watching her mid-wipe the same spot for the past 10 minutes, staring straight ahead, stare never wavering.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu shakes it off and clears her throat, swallowing the despair.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;What&#39;s wrong, sisi? Something&#39;s obviously troubling you.&quot;},
+  {type: &quot;interject&quot;, text: &quot;Tell her, Su.&quot;},
+  {type: &quot;thought&quot;, text: &quot;No don&#39;t, she&#39;s just going to bag you and sink her nails in further. You can smoke about it later.&quot;},
+  {type: &quot;interject&quot;, text: &quot;That is the worst advice you&#39;ve ever given. Tell her, Su.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu takes a deep shaky breath, ringing out the cloth for the seventh time.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Why don&#39;t guys want me?&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby watches her face crack and tears spill over, the whites of her eyes turned bloodshot. Ruby stays still, watching for the next sentence.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Why can&#39;t I just have a date?&quot;},
+  {type: &quot;interject&quot;, text: &quot;And there it all goes. The floodgates are shattered and the salt dries her out.&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby stays still, her arms twitch a little to instinctively give a hug, but she remains stoic.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Because men are assholes. Especially at this age. They are unable to see outside of themse—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;But why can&#39;t I just have it ONE TIME! I don&#39;t understand what&#39;s so horrible about me!&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby&#39;s face falters and she scowls at her daughter.&quot;},
+  {type: &quot;interject&quot;, text: &quot;Uh oh.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Why is it automatically your fault? Are you actively picking dickheads?&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu licks the tears and snot building up on her lips, wiping away the uncontrollable jealousy and resentment she now felt.&quot;},
+  {type: &quot;thought&quot;, text: &quot;See? You&#39;re a fucking mess, girl. Crying over a man who doesn&#39;t care.&quot;},
+  {type: &quot;interject&quot;, text: &quot;Wait, I thought you were saying this is Su&#39;s fault... now it&#39;s his? We can&#39;t go both barrels from both ends.&quot;},
+  {type: &quot;thought&quot;, text: &quot;He doesn&#39;t care because she said no, making her a waste of his time. But then again, the fact you thought he liked you is a fucking laugh.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;No I&#39;m no—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;So then why is it that YOU&#39;RE the issue? I clearly must be missing something.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m the common denominator.&quot;},
+  {type: &quot;action&quot;, text: &quot;She spits it out.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I do everything right. And I just can&#39;t seem to be wanted by anyone!&quot;},
+  {type: &quot;action&quot;, text: &quot;She continues to sob in the kitchen, silently as to be sure Micah and Dad don&#39;t come out to see the commotion.&quot;},
+  {type: &quot;thought&quot;, text: &quot;They always need to know what&#39;s going on.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;We want you...&quot;},
+  {type: &quot;thought&quot;, text: &quot;Yeah, fucking right.&quot;},
+  {type: &quot;interject&quot;, text: &quot;Hush now.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;You know what I mean...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;What is so horrible about me? Am I that ugly? Am I that unlovable? That undesriable? What else do I have to fix??&quot;},
+  {type: &quot;interject&quot;, text: &quot;Oh Su, it&#39;s not you.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;It&#39;s not about you, sisi, it&#39;s these awful terrible men that cannot think outside themselves. I do not agree with anything that you&#39;re saying. It&#39;s completely absurd.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You are such a kind girl, sisi. Too kind for that matter. You&#39;ve been through too much for some man, some WHITE man, to diminish your light and render you feeling like this.&quot;},
+  {type: &quot;interject&quot;, text: &quot;Okay I don&#39;t think ethnicity has anything to do with this but I like where she&#39;s going.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Eh, Mama has a thing about white people. Doesn&#39;t like them, yet she married one.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;It absolutely breaks my heart seeing and hearing you determine your worth and value off what some man says and thinks about you. Because it is most likely ridiculously untrue.&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby has tried so hard to build her daughter up to never even consider, to never even think twice about what a man could possibly say about her.&quot;},
+  {type: &quot;action&quot;, text: &quot;But it&#39;s hard when the outside world tells her everything but.&quot;},
+  {type: &quot;spacer&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Am I really that terrible, Mama? What did I possibly do to be treated like this?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Oh Su, it&#39;s hard... you also don&#39;t really help yourself... these men you find on dating apps are not the ones you want to be with.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;So where do I meet them? A bar?? A club?! They&#39;re all drunk and sloppy and I can taste the alcohol on them.&quot;},
+  {type: &quot;spacer&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Then clearly your Higher Power has something else in store for you.&quot;},
+  {type: &quot;interject&quot;, text: &quot;*wink*&quot;},
+  {type: &quot;spacer&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;d make such a good partner.&quot;},
+  {type: &quot;action&quot;, text: &quot;She breaks one more time, eyes scrunching up hard. And all Ruby can see is her 4 year old Anesu, standing alone in the kinder yard, finding someone to share her flowers with.&quot;},
+  {type: &quot;action&quot;, text: &quot;Ruby tip toes over to Anesu and places her hand on her shoulder, leaning her head forward to touch her daughter&#39;s.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You&#39;d be an incredible partner. The man you choose to be your husband will be the luckiest man alive.&quot;},
+  {type: &quot;spacer&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Then why does no one want me?&quot;},
+  {type: &quot;action&quot;, text: &quot;The two stand in the kitchen together, foreheads pressed, heat and unconditional love being shared.&quot;}
 ]&gt;&gt;
-&lt;&lt;set $beatIndex to 0&gt;&gt;
 
 &lt;div class=&quot;opening-layout&quot;&gt;
 &lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;

@@ -1514,6 +1514,7 @@ $(document).on(':passagedisplay', function () {
 });
 
 window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
+  console.log("typewriterEffect called with speaker:", speaker, "fastMode:", window.fastMode);
   speed = speed || 25;
   var $portrait = $('.speaker-box.speaking img');
   $portrait.addClass('talking');
@@ -1529,6 +1530,7 @@ window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
     if (i < text.length) {
       el.textContent += text.charAt(i);
     if (i % 3 === 0 && text.charAt(i) !== ' ') {
+      console.log("calling talkBlip with:", speaker);
       talkBlip(speaker);
 }
       i++;
@@ -1604,7 +1606,8 @@ window.talkBlip = function(speaker) {
 };
 
 window.talkBlipSounds = {
-  "Higher Power": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"]
+  "Higher Power": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"],
+  "Guardian Angel": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"]
 };
 
 $(document).on('keydown.spacebarAdvance', function(e) {
@@ -3986,10 +3989,8 @@ Anesu stares at her phone, the message bar blinking, waiting.
 }, 3800)>>
 
 
-:: V2_03_StayingHome {"position":"575,425","size":"100,100"}
-<<set $wentToElias to false>>
+:: V2_StayingHome {"position":"700,750","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
-<<set $currentDate to "Wed, 1 May 2024">>
 <<run updateAngelStatus()>>
 <<set _baseBeats to [
   {type: "action", text: "Anesu keeps her eyes down as her headphones drown out that yapper, hanging out at the back of her skull."},
@@ -4001,7 +4002,9 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "interject", text: "Okay there is no way that would've happened! He clearly just wanted Anesu for sex!"},
   {type: "thought", text: "We don't know that now, do we?"},
   {type: "interject", text: "YES WE DO! Did you not see what he said when she said she wasn't coming over?"},
-  {type: "spacer"},
+  {type: "thought", text: "..."},
+  {type: "thought", text: "..."},
+  {type: "thought", text: "..."},
   {type: "thought", text: "But he was only like that 'cause we said no."},
   {type: "interject", text: "YEAH, he was a PRICK after setting a BASIC BOUNDARY? That's someone we want for Anesu?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Guys, not now..."},
@@ -4011,6 +4014,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "this long, it's game over."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk how to describe it. It's this sinking feeling. My heart is eating my stomach. My intestines are knotting and engulfing my liver and kidneys..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "My bones begin to rattle and my blood stream grinds to a halt. It's an awful sickening feeling of intense incurable rejection and it happens every time..."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "It's like a sixth sense... kinda like when deers know when a storm is coming before the wind changes. The first thought that comes to mind is to block them first before they do... but then there's the what if? What if they are different... what if they change this time?"},
   {type: "interject", text: "Then why do it, Anesu?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk bec—"},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Su? I think that spot is clean."},
@@ -4055,27 +4059,59 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "dialogue", side: "character", speaker: "Mama", text: "It absolutely breaks my heart seeing and hearing you determine your worth and value off what some man says and thinks about you. Because it is most likely ridiculously untrue."},
   {type: "action", text: "Ruby has tried so hard to build her daughter up to never even consider, to never even think twice about what a man could possibly say about her."},
   {type: "action", text: "But it's hard when the outside world tells her everything but."},
-  {type: "spacer"},
+  {type: "thought", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Am I really that terrible, Mama? What did I possibly do to be treated like this?"},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Oh Su, it's hard... you also don't really help yourself... these men you find on dating apps are not the ones you want to be with."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "So where do I meet them? A bar?? A club?! They're all drunk and sloppy and I can taste the alcohol on them."},
-  {type: "spacer"},
+  {type: "thought", text: "..."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Then clearly your Higher Power has something else in store for you."},
   {type: "interject", text: "*wink*"},
-  {type: "spacer"},
+  {type: "thought", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'd make such a good partner."},
   {type: "action", text: "She breaks one more time, eyes scrunching up hard. And all Ruby can see is her 4 year old Anesu, standing alone in the kinder yard, finding someone to share her flowers with."},
   {type: "action", text: "Ruby tip toes over to Anesu and places her hand on her shoulder, leaning her head forward to touch her daughter's."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You'd be an incredible partner. The man you choose to be your husband will be the luckiest man alive."},
-  {type: "spacer"},
+  {type: "thought", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Then why does no one want me?"},
   {type: "action", text: "The two stand in the kitchen together, foreheads pressed, heat and unconditional love being shared."}
 ]>>
 
+<<if $v1Ending is "Deny">>
+<<set _endingBeats to [
+  {type: "action", text: "The two stand in the kitchen together — but Ruby doesn't lean for her forehead this time. She reaches for her hand instead, holding it a tad too tight, still not sure it'll be allowed."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "We want you all the time. All the fights, all the bickering. All the growth."},
+  {type: "action", text: "Her hand... it's always been cold. It's not smooth. It's not soft. But it's true, and Anesu can feel the determination, dripping down her knuckles."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi. I don't always say it right."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Thank you, Mama."},
+  {type: "interject", text: "See? She really does."}
+]>>
+<<elseif $v1Ending is "Comply">>
+<<set _endingBeats to [
+  {type: "dialogue", side: "character", speaker: "Mama", text: "We want you all the time. Of every day."},
+  {type: "action", text: "Anesu stiffens, just slightly, at the closeness — some part of her still braced for the enabling comment, the aftertaste of the breathalyser."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi."},
+  {type: "action", text: "She exhales shakily, an unnoticed weight alleviated somewhat."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I am??"},
+  {type: "action", text: "She almost doesn't let herself believe it. Almost."},
+  {type: "interject", text: "You truly are, Anesu."}
+]>>
+<<else>>
+<<set _endingBeats to [
+  {type: "dialogue", side: "character", speaker: "Mama", text: "We want you all the time. Of every day."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi."},
+  {type: "action", text: "She exhales shakily, an unnoticed weight alleviated somewhat."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I am??"},
+  {type: "interject", text: "You truly are, Anesu."}
+]>>
+<</if>>
+
+<<set $sceneBeats to _baseBeats.concat(_endingBeats)>>
+<<set $beatIndex to 0>>
+
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time">Wednesday, Late</div>
-Placeholder narrative text.
+<div class="meeting-time"></div>
+The kitchen, evening. Anesu wipes the same spot on the counter, over and over.
 </div>
 <div class="conversation-row">
 <div class="speaker-box">
@@ -4086,8 +4122,8 @@ Placeholder narrative text.
 <div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
 </div>
 <div class="speaker-box" id="rightSpeaker">
-<img @src="$characterImages['Micah']" id="rightSpeakerImg">
-<div class="speaker-name" id="rightSpeakerName">Micah</div>
+<img @src="$characterImages['Mama']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Mama</div>
 </div>
 </div>
 </div>
