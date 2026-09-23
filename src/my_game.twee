@@ -4130,3 +4130,48 @@ The kitchen, evening. Anesu wipes the same spot on the counter, over and over.
 
 
 :: V5_Erin_Opening {"position":"1450,700","size":"100,100"}
+<<run $('body').removeClass('scene-night')>>
+<<run updateAngelStatus()>>
+<<set $sceneBeats to [
+  {type: "action", text: "Erin drops Anesu off once again, watching her hair bounce as she walks to her door."},
+  {type: "dialogue", side: "character", speaker: "Erin", text: "Have a good week, Su! Trust your Higher Power!"},
+  {type: "action", text: "Erin blows her a kiss and smiles brightly. She catches it and holds it to her heart, waving with gusto."},
+  {type: "thought", text: "What a beautiful girl."},
+  {type: "interject", text: "You seem to really like her, huh?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Oh, she's like a third daughter... I feel like I have a do-over when it comes to Su. Like God gave me another chance to be a mother."},
+  {type: "interject", text: "That's so sweet, Erin. How long have you been her sponsor for?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Oh, I'm not sure now."},
+  {type: "action", text: "Erin backs out the driveway and makes a sharp right up the road."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "About 6 months now? At this point she helps me more with my sobriety than I do with hers."},
+  {type: "interject", text: "Yeah? How so?"},
+  {type: "action", text: "Erin's grip on the wheel tightens, reminded of her reality."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "It gives me a chance to be another mother. A better one."},
+  {type: "action", text: "Tears form in her ducts and threaten to beat down."},
+  {type: "action", text: "She pulls into her drive and sits there."},
+  {type: "action", text: "She sits and sits..."},
+  {type: "action", text: "Waits and waits."},
+  {type: "interject", text: "Are we waiting for something?"},
+  {type: "action", text: "Erin snaps out of it and sniffs it all away."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Oh, nothing. Was waiting for Robert..."},
+  {type: "continueTo", dest: "B2C1_02_HomeAlone"}
+]>>
+<<set $beatIndex to 0>>
+
+<div class="opening-layout">
+<div class="narrative-box" id="sceneNarrative">
+<div class="meeting-time"></div>
+Erin's car, pulling away from Anesu's house.
+</div>
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Erin']">
+<div class="speaker-name" id="leftSpeakerName">Erin</div>
+</div>
+<div class="chat-log" id="chatLog">
+<div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<div class="speaker-name" id="rightSpeakerName"></div>
+</div>
+</div>
+</div>
