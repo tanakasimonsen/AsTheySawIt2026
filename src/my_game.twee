@@ -1774,7 +1774,7 @@ window.updateAngelStatus = function () {
     $('<div id="angel-status"></div>').insertAfter('#menu');
   }
   if ($('#memory-bank-link').length === 0) {
-    $('<a id="memory-bank-link" style="display:block; cursor:pointer; margin-top:0.5em;">📖 Memory Bank</a>').insertAfter('#menu');
+   $('<a id="memory-bank-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">📖 Memory Bank</a>').insertAfter('#menu');
   }
   var v = State.variables;
   var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';

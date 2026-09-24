@@ -4396,6 +4396,195 @@ Erin&#39;s home. Quiet, apart from her.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="37" name="B2C1_03_FamilyDinner" tags="" position="400,600" size="100,100">&lt;&lt;set $sceneBeats to [
+  {type: &quot;action&quot;, text: &quot;The engulfing scent of steak paired with garlic potatoes fills the house, the kitchen lively with dancing hands, bouncing from the sink to stove to benchtop.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin plates the food with care and love. Two plates for two guests.&quot;},
+  {type: &quot;action&quot;, text: &quot;Her feet drag along the floor as she holds the plates with care, looking back at Robert, giving him a wink. She manages the feat and pours them both a glass of orange juice.&quot;},
+  {type: &quot;action&quot;, text: &quot;She places Robert beside her and grabs her knife and fork...&quot;},
+  {type: &quot;action&quot;, text: &quot;...just to put it down again. To sit and stare...&quot;},
+  {type: &quot;action&quot;, text: &quot;Her face falls slowly and the colour drains from her face ever so more.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Erin?&quot;},
+  {type: &quot;action&quot;, text: &quot;Tears begin to well and threaten to fall, her nose scrunching as if she&#39;s holding them up and in.&quot;},
+  {type: &quot;action&quot;, text: &quot;She holds herself, tense and rigid.&quot;},
+  {type: &quot;action&quot;, text: &quot;You look out to where she&#39;s staring and hold the vision.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Let&#39;s take a look...&quot;},
+  {type: &quot;choices&quot;, options: [
+    {text: &quot;You can cry, Erin...&quot;, dest: &quot;B2C1_03a_YouCanCry&quot;},
+    {text: &quot;Oh Erin, breathe.&quot;, dest: &quot;B2C1_03b_Breathe&quot;},
+    {text: &quot;You&#39;re safe, Erin...&quot;, dest: &quot;B2C1_03c_YoureSafe&quot;}
+  ]}
+]&gt;&gt;
+&lt;&lt;set $beatIndex to 0&gt;&gt;
+
+&lt;div class=&quot;opening-layout&quot;&gt;
+&lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
+&lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+Erin&#39;s dining room, table set for two.
+&lt;/div&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Erin&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Erin&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
+&lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="38" name="B2C1_03a_YouCanCry" tags="" position="250,700" size="100,100">&lt;&lt;set $sceneBeats to [
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You can cry, Erin. [PLACEHOLDER — fuller line of encouragement, expanding on this one]&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B2C1_04_Transition&quot;}
+]&gt;&gt;
+&lt;&lt;set $beatIndex to 0&gt;&gt;
+
+&lt;div class=&quot;opening-layout&quot;&gt;
+&lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
+&lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Erin&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Erin&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
+&lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="39" name="B2C1_03b_Breathe" tags="" position="400,700" size="100,100">&lt;&lt;set $sceneBeats to [
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Oh Erin, breathe. [PLACEHOLDER — fuller line of encouragement, expanding on this one]&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B2C1_04_Transition&quot;}
+]&gt;&gt;
+&lt;&lt;set $beatIndex to 0&gt;&gt;
+
+&lt;div class=&quot;opening-layout&quot;&gt;
+&lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
+&lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Erin&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Erin&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
+&lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="40" name="B2C1_03c_YoureSafe" tags="" position="550,700" size="100,100">&lt;&lt;set $sceneBeats to [
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You&#39;re safe, Erin... [PLACEHOLDER — fuller line of encouragement, expanding on this one]&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B2C1_04_Transition&quot;}
+]&gt;&gt;
+&lt;&lt;set $beatIndex to 0&gt;&gt;
+
+&lt;div class=&quot;opening-layout&quot;&gt;
+&lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
+&lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Erin&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Erin&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
+&lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="41" name="B2C1_04_Transition" tags="" position="400,850" size="100,100">&lt;&lt;run $(&#39;body&#39;).addClass(&#39;scene-night&#39;)&gt;&gt;
+&lt;&lt;set $sceneBeats to [
+  {type: &quot;action&quot;, text: &quot;It&#39;s another late evening, but instead of her making dinner, she&#39;s missing it — hammered in her room... too drunk to have dinner with her family.&quot;},
+  {type: &quot;action&quot;, text: &quot;But it&#39;s been two weeks.&quot;},
+  {type: &quot;action&quot;, text: &quot;Gotta come out at some point.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin takes a deep breath, licking her lips sloppily, dribbling down her front, and \&quot;composes\&quot; herself, making her way to the dining room.&quot;},
+  {type: &quot;action&quot;, text: &quot;She hears her loved ones chat away, no one bothering to turn around at the click of the door.&quot;},
+  {type: &quot;action&quot;, text: &quot;Mhmm — Robert flinched a little.&quot;},
+  {type: &quot;action&quot;, text: &quot;She thumps to the table, attempting to drag it out with discretion, but topples it instead.&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie sighs and flares her nostrils, trying to continue her chat with Hazel about the concert that weekend.&quot;},
+  {type: &quot;action&quot;, text: &quot;They all continue. Eating, chewing, chatting.&quot;},
+  {type: &quot;action&quot;, text: &quot;It&#39;s as if she doesn&#39;t exist.&quot;},
+  {type: &quot;action&quot;, text: &quot;She sits herself at the table and groans at the sight of greasy steak and garlicky, buttery potatoes.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Wwwwwhooo made this??&quot;},
+  {type: &quot;action&quot;, text: &quot;Robert winces sheepishly and looks to his wife.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;I did, honey. The steak was about to go bad.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;I clearly say that it was me going to be COOKING. I bought that for me to make.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin looks annoyed and disgusted, and it was a lot of emotion for a warm meal.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;You didn&#39;t even make it right! That&#39;s why I should do it!&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin begins to tear up, perceived to be misunderstood, but the family knew she was in a blackout.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;Dad made us a nice meal, Mum. Get off his back. You&#39;re just drunk.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin glares at her daughter and holds a burp.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Drunk? You don&#39;t even know anything, Kenz.&quot;},
+  {type: &quot;action&quot;, text: &quot;Hazel scoffs and pushes her seat back, grabbing her plate.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;I&#39;ll be finishing this in my room. Thank you, Dad.&quot;},
+  {type: &quot;action&quot;, text: &quot;She looks to her father and then across the table.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;Erin.&quot;},
+  {type: &quot;action&quot;, text: &quot;She clutches her pearls as if she&#39;s been wounded and whips to Robert.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;YOU see how SHE SpeaKS to me?&quot;},
+  {type: &quot;action&quot;, text: &quot;Robert sighs and rubs his temple, fidgeting with his wedding band.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Now isn&#39;t the time, Erin, you&#39;ve been drinking.&quot;},
+  {type: &quot;action&quot;, text: &quot;And that&#39;s when shit hits the fan.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Drinking? I&#39;VE BEEN FUCKING DRINKING? ALL I DO IS WORK AND WORK AND WORK AND WORK. THIS IS THE THANKS I GIVE? I GET?&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie quickly grabs Oscar&#39;s hand and darts with him out of the room.&quot;},
+  {type: &quot;action&quot;, text: &quot;They obviously can&#39;t deal with this again.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Erin, please don&#39;t do this, love, it&#39;s ok—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;OKAY? YOU THINK BEING DISRESPECTED IS OKAY?? YOU ARE SO OKAY WITH—&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin stands up and swipes her hands across the table, sending the food crashing and splattering all over the floor. An hour of cooking gone in an instant.&quot;},
+  {type: &quot;action&quot;, text: &quot;Tears fall rapidly down Robert&#39;s cheeks, blurring his frames, bottom lip quivering.&quot;},
+  {type: &quot;action&quot;, text: &quot;He&#39;s so afraid... so afraid of the one he loves most. Oh Robert, I&#39;m so sorry.&quot;},
+  {type: &quot;action&quot;, text: &quot;He goes to pick up the mess, yet Erin keeps on screaming.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;ALL YOU DO IS DEFEND THEIR TERRIBLE BEHAVIOUR, WHAT ABOUT YOUR WIFE?&quot;},
+  {type: &quot;action&quot;, text: &quot;All he does is think about you, Erin.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;I work so h-h-h-ard. I made you dinner for you and the kids.&quot;},
+  {type: &quot;action&quot;, text: &quot;Footsteps pound down the hallway and the shit is smeared even further round the home.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;GET OUT!&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie beelines for her mother, grabbing her shoulders and directing her to the door. The force was heavy and almost sent Erin flying, too drunk to keep her balance.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Kenzie, please, just go to your ro—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;NO! I&#39;VE HAD IT! SHE IS SO MEAN TO YOU AND MEAN TO US.&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie keeps pushing Erin down the hall, keeping one arm on her as she unlocks the door.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Get YOUR HAANDS offMEEE.&quot;},
+  {type: &quot;action&quot;, text: &quot;She begins to flail but she has no strength, unable to fight against her 16 year old. Mackenzie continues to push past the threshold and shoves her onto the nature strip.&quot;},
+  {type: &quot;action&quot;, text: &quot;This is terrible.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;DO NOT COME BACK, ERIN. GET THE FUCK AWAY!!&quot;},
+  {type: &quot;action&quot;, text: &quot;The door slams shut and the chirp of the summer crickets ring in Erin&#39;s skull.&quot;},
+  {type: &quot;action&quot;, text: &quot;Grass in her ear, gravel on her palms and scraped shins...&quot;},
+  {type: &quot;action&quot;, text: &quot;She stays lying there, her world still spinning.&quot;},
+  {type: &quot;action&quot;, text: &quot;And spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning.&quot;}
+]&gt;&gt;
+&lt;&lt;set $beatIndex to 0&gt;&gt;
+
+&lt;div class=&quot;opening-layout&quot;&gt;
+&lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
+&lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+A different dinner. Years ago.
+&lt;/div&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Erin&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Erin&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
+&lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Robert&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */
