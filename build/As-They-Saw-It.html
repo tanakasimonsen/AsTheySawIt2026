@@ -1064,13 +1064,19 @@ body.scene-night #ui-bar {
 }
 .phone-frame-inline {
   width: 320px;
-  background-image: url('assets/ui/PhoneFrame.png');
+  min-height: 500px;
+  max-height: 500px;
+  background-color: var(--bg-panel);
+  background-image: url('assets/ui/PhoneScreenB_V004.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  border: 3px solid var(--text-main);
+  border-radius: 12px;
   padding: 1.5em 1em;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  overflow-y: auto;
 }
 
 .phone-frame::-webkit-scrollbar {
@@ -1698,6 +1704,13 @@ $(document).on(':passagedisplay', function () {
   $('#story-title').text('created by titikormetsi studios');
 });
 
+window.scrollAllLogs = function() {
+  ['#chatLog', '#leftLog', '#rightLog'].forEach(function(sel){
+    var el = document.querySelector(sel);
+    if (el) el.scrollTop = el.scrollHeight;
+  });
+};
+
 window.typewriterEffect = function(el, text, speed, speaker, onComplete) {
   console.log("typewriterEffect called with speaker:", speaker, "fastMode:", window.fastMode);
   speed = speed || 25;
@@ -1819,7 +1832,7 @@ $(document).on(':scene-typing-done', function() {
       $('html, body').animate({ scrollTop: $('#memberDisplay').offset().top }, 500);
     });
   }
-  $log.scrollTop($log[0].scrollHeight);
+  scrollAllLogs();
 });
 
 $(document).on(':passagedisplay', function () {
@@ -2511,7 +2524,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
   {type: &quot;thought&quot;, text: &quot;Normally Dad would&#39;ve fixed this by now. Maybe I should do it... no expectations, hey?&quot;},
   {type: &quot;thought&quot;, text: &quot;Yeah, Dad knows I smoke, but I don&#39;t really like Micah knowing. I mean, yeah, he&#39;s a grown man, but still.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu walks around the corner, following the brick path Dad made when he realised they had spare bricks in the garage.&quot;},
-  {type: &quot;action&quot;, text: &quot;Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up.&quot;, sound: &quot;audio/spark_up.mp3&quot;},
   {type: &quot;action&quot;, text: &quot;Meow meow.&quot;},
   {type: &quot;showCharacter&quot;, speaker: &quot;Julian&quot;},
   {type: &quot;thought&quot;, text: &quot;I hate cats... the way they run, how they have to be all over you, that they could kill me. Slowly. But it would be the worst fucking death.&quot;},
@@ -2948,7 +2961,8 @@ _beat.text
 
 &lt;&lt;elseif _beat.type is &quot;action&quot;&gt;&gt;
 &lt;&lt;set _actionClass to _beat.italic ? &#39; action-italic&#39; : &#39;&#39;&gt;&gt;
-&lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-action&quot;&gt;_beat.text&lt;/div&gt;&lt;&lt;/append&gt;&gt;
+&lt;&lt;set _target to (_beat.anesuSide and $(&#39;#leftLog&#39;).length) ? &quot;#leftLog&quot; : &quot;#chatLog&quot;&gt;&gt;
+&lt;&lt;append _target&gt;&gt;&lt;div class=&quot;chat-action&quot;&gt;_beat.text&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
 
 &lt;&lt;elseif _beat.type is &quot;thought&quot;&gt;&gt;
@@ -2981,6 +2995,10 @@ _beat.text
 
 &lt;&lt;elseif _beat.type is &quot;spacer&quot;&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-spacer&quot;&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
+&lt;&lt;set $beatIndex += 1&gt;&gt;
+
+&lt;&lt;elseif _beat.type is &quot;pause&quot;&gt;&gt;
+&lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-pause&quot;&gt;...&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
 
 &lt;&lt;elseif _beat.type is &quot;breathe&quot;&gt;&gt;
@@ -3107,10 +3125,13 @@ _beat.text
 })()&gt;&gt;
 
 &lt;&lt;elseif _beat.type is &quot;freeType&quot;&gt;&gt;
+&lt;&lt;set _target to ($(&#39;#leftLog&#39;).length and _beat.side is &quot;player&quot;) ? &quot;#leftLog&quot; : (($(&#39;#rightLog&#39;).length and _beat.side is &quot;character&quot;) ? &quot;#rightLog&quot; : &quot;#chatLog&quot;)&gt;&gt;
 &lt;&lt;if _beat.side is &quot;character&quot;&gt;&gt;
 &lt;&lt;set _label to _beat.label ? _beat.label : (_beat.speaker is &quot;Higher Power&quot; and $playerName isnot &quot;&quot; ? $playerName : _beat.speaker)&gt;&gt;
+&lt;&lt;if $(&#39;#rightSpeakerName&#39;).length&gt;&gt;
 &lt;&lt;replace &quot;#rightSpeakerName&quot;&gt;&gt;_label&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeakerImg&#39;).attr(&#39;src&#39;, $characterImages[_beat.speaker])&gt;&gt;
+&lt;&lt;/if&gt;&gt;
 &lt;&lt;run $(&#39;.speaker-box&#39;).removeClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeaker&#39;).addClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;else&gt;&gt;
@@ -3120,7 +3141,7 @@ _beat.text
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;set _bubbleId to &quot;freeTypeBubble&quot; + $beatIndex&gt;&gt;
 &lt;&lt;set _revealId to &quot;freeTypeReveal&quot; + $beatIndex&gt;&gt;
-&lt;&lt;append &quot;#chatLog&quot;&gt;&gt;
+&lt;&lt;append _target&gt;&gt;
 &lt;div class=&quot;chat-line&quot; @id=&quot;_bubbleId&quot;&gt;
 &lt;div class=&quot;chat-speaker&quot;&gt;_label&lt;/div&gt;
 &lt;span @id=&quot;_revealId&quot;&gt;&lt;/span&gt;&lt;span class=&quot;type-caret&quot;&gt;▌&lt;/span&gt;
@@ -3129,6 +3150,7 @@ _beat.text
 &lt;&lt;run (function(){
   var scriptedText = _beat.text;
   var side = _beat.side;
+  var target = _target;
   var bubbleSel = &quot;#&quot; + _bubbleId;
   var revealSel = &quot;#&quot; + _revealId;
   var revealed = 0;
@@ -3143,7 +3165,7 @@ _beat.text
     }
     if (revealed &lt;= scriptedText.length) {
       $(revealSel).text(scriptedText.substring(0, revealed));
-      $(&#39;#chatLog&#39;).scrollTop($(&#39;#chatLog&#39;)[0].scrollHeight);
+      $(target).scrollTop($(target)[0].scrollHeight);
     }
     if (revealed &gt;= scriptedText.length) {
       $(document).off(&#39;keydown.freeType&#39;);
@@ -3172,10 +3194,13 @@ _beat.text
 
 
 &lt;&lt;elseif _beat.type is &quot;expandable&quot;&gt;&gt;
+&lt;&lt;set _target to ($(&#39;#leftLog&#39;).length and _beat.side is &quot;player&quot;) ? &quot;#leftLog&quot; : (($(&#39;#rightLog&#39;).length and _beat.side is &quot;character&quot;) ? &quot;#rightLog&quot; : &quot;#chatLog&quot;)&gt;&gt;
 &lt;&lt;if _beat.side is &quot;character&quot;&gt;&gt;
 &lt;&lt;set _label to _beat.label ? _beat.label : (_beat.speaker is &quot;Higher Power&quot; and $playerName isnot &quot;&quot; ? $playerName : _beat.speaker)&gt;&gt;
+&lt;&lt;if $(&#39;#rightSpeakerName&#39;).length&gt;&gt;
 &lt;&lt;replace &quot;#rightSpeakerName&quot;&gt;&gt;_label&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeakerImg&#39;).attr(&#39;src&#39;, $characterImages[_beat.speaker])&gt;&gt;
+&lt;&lt;/if&gt;&gt;
 &lt;&lt;run $(&#39;.speaker-box&#39;).removeClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;run $(&#39;#rightSpeaker&#39;).addClass(&#39;speaking&#39;)&gt;&gt;
 &lt;&lt;else&gt;&gt;
@@ -3187,6 +3212,8 @@ _beat.text
   var layers = _beat.layers || (_beat.fullText ? [_beat.fullText] : []);
   var label = _label;
   var side = _beat.side;
+  var target = _target;
+  var bubbleEl = $(&#39;&lt;div class=&quot;chat-line &#39; + side + &#39;&quot;&gt;&lt;/div&gt;&#39;);
   var speakerEl = $(&#39;&lt;div class=&quot;chat-speaker&quot;&gt;&lt;/div&gt;&#39;).text(label);
   var layersWrap = $(&#39;&lt;div class=&quot;expand-layers&quot;&gt;&lt;/div&gt;&#39;);
   var firstLineEl = $(&#39;&lt;div class=&quot;expand-layer expand-layer-current&quot;&gt;&lt;/div&gt;&#39;).text(_beat.shortText);
@@ -3205,7 +3232,7 @@ _beat.text
         layersWrap.append(newLineEl);
         currentLineEl = newLineEl;
         layerIndex++;
-        $(&#39;#chatLog&#39;).scrollTop($(&#39;#chatLog&#39;)[0].scrollHeight);
+        $(target).scrollTop($(target)[0].scrollHeight);
         if (layerIndex &gt;= layers.length) {
           hintEl.remove();
         } else {
@@ -3221,9 +3248,9 @@ _beat.text
   }
 
   bubbleEl.append(speakerEl).append(layersWrap).append(hintEl);
-  $(&#39;#chatLog&#39;).append(bubbleEl);
-  $(&#39;#chatLog&#39;).append(continueEl);
-  $(&#39;#chatLog&#39;).scrollTop($(&#39;#chatLog&#39;)[0].scrollHeight);
+  $(target).append(bubbleEl);
+  $(target).append(continueEl);
+  $(target).scrollTop($(target)[0].scrollHeight);
 
   continueEl.find(&#39;.expand-continue&#39;).on(&#39;click&#39;, function(){
     continueEl.remove();
@@ -3700,26 +3727,26 @@ Erin&#39;s car, still driving.
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;And what makes you think i want that ;)&quot;, time: &quot;9:43pm&quot;},
   {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;From the way you were moaning for me&quot;, time: &quot;9:44pm&quot;},
   {type: &quot;thought&quot;, text: &quot;My heart beats throughout my body. I haven&#39;t seen him in a while.&quot;},
-  {type: &quot;interject&quot;, text: &quot;You do some background research on this guy. He does not seem like a nice guy in any way.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Didn&#39;t he ghost you like twice? I don&#39;t think you should see him...&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You do some background research on this guy. He does not seem like a nice guy in any way.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Didn&#39;t he ghost you like twice? I don&#39;t think you should see him...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Well he said he was going through something, I mean I guess it&#39;s fair?&quot;},
-  {type: &quot;interject&quot;, text: &quot;You don&#39;t seem too sure about that, Anesu. Just stay home, hang out with Micah or something.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You don&#39;t seem too sure about that, Anesu. Just stay home, hang out with Micah or something.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Micah? He wants nothing to do with me. He&#39;s still mad at me.&quot;},
-  {type: &quot;interject&quot;, text: &quot;So spending it with this asshole is better? At least you know Micah loves you.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;So spending it with this asshole is better? At least you know Micah loves you.&quot;},
   {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;Come over tonight babe&quot;, time: &quot;9:52pm&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;I don&#39;t have my car tonight :((&quot;, time: &quot;9:53pm&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;Come and get me?&quot;, time: &quot;9:53pm&quot;},
-  {type: &quot;interject&quot;, text: &quot;You HAVE no car, NO LICENSE might I add? And what exactly are you gonna tell Mama?&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You HAVE no car, NO LICENSE might I add? And what exactly are you gonna tell Mama?&quot;},
   {type: &quot;expandable&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, shortText: &quot;Telling her nothing, no guy is ever allowed in my life.&quot;, layers: [
     &quot;I can&#39;t say anything. She won&#39;t even be able to begin to understand&quot;,
     &quot;If I tell her, she&#39;ll say I told you so, and I can&#39;t hear that right now — not when I already know she&#39;s right.&quot;
   ], partialImpacts: {anesuGuard: -0.3}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
-  {type: &quot;interject&quot;, text: &quot;And with good reason! They&#39;ve all been dicks and only want you for sex.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;And with good reason! They&#39;ve all been dicks and only want you for sex.&quot;},
   {type: &quot;expandable&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, shortText: &quot;Well I want them for just sex too...&quot;, layers: [
     &quot;Sex can feel good...??&quot;,
     &quot;I don&#39;t, actually. I just want someone to look at me like I matter, and sex is the only version of that I know how to ask for.&quot;
   ], partialImpacts: {familyAwareness: 0.3}, nudgeImpacts: {familyAwareness: 0.5}, skipImpacts: {anesuGuard: 0.5}},
-  {type: &quot;interject&quot;, text: &quot;Then why do you get so upset when they disappear?&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Then why do you get so upset when they disappear?&quot;},
   {type: &quot;breathe&quot;, text: &quot;The silence grows despicably loud.&quot;, duration: 2500},
   {type: &quot;thought&quot;, text: &quot;It was an awful chase of cat and mouse. It was the same result over and over. Insanity manifested. It says it right on the walls at Mirabel — repeating the same behaviours, expecting the same result.&quot;},
   {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;What time?&quot;, time: &quot;10:02pm&quot;},
@@ -3729,16 +3756,16 @@ Erin&#39;s car, still driving.
     &quot;He thinks I&#39;m gorgeous! He likes me!&quot;,
     &quot;I just need someone to think that right now. I don&#39;t care that it&#39;s him. I just need it to be true from somebody.&quot;
   ], partialImpacts: {anesuGuard: -0.2}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
-  {type: &quot;interject&quot;, text: &quot;Correction, he thinks your tits are gorgeous.&quot;},
-  {type: &quot;interject&quot;, text: &quot;And I thought you didn&#39;t like sex? I thought you came to that conclusion with Sheryl?&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Correction, he thinks your tits are gorgeous.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;And I thought you didn&#39;t like sex? I thought you came to that conclusion with Sheryl?&quot;},
   {type: &quot;expandable&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, shortText: &quot;I mean, I could like it with him?&quot;, layers: [
     &quot;He could be kind about it...Maybe he&#39;s the one who can make it enjoyable?&quot;,
     &quot;Maybe the first few times haven&#39;t been exactly how I wanted...m&quot;,
     &quot;Ugh I know I won&#39;t. I know exactly how this goes. But I want to feel wanted, I NEED to feel wanted.&quot;
   ], partialImpacts: {anesuGuard: -0.3}, nudgeImpacts: {anesuGuard: -1, familyAwareness: 0.5}, skipImpacts: {anesuGuard: 1}},
-  {type: &quot;interject&quot;, text: &quot;Oh please, this tool? This fucking guy? You met him on some lame app, we seriously can&#39;t still be doing this.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Maybe this isn&#39;t the time for it. This is the opposite of putting yourself first.&quot;},
-  {type: &quot;interject&quot;, text: &quot;And all of a sudden being okay with having sex is a huge deal out of nowhere. Why the big jump with him? Why not wai—&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Oh please, this tool? This fucking guy? You met him on some lame app, we seriously can&#39;t still be doing this.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Maybe this isn&#39;t the time for it. This is the opposite of putting yourself first.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;And all of a sudden being okay with having sex is a huge deal out of nowhere. Why the big jump with him? Why not wai—&quot;},
   {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m gonna see him tonight&quot;, dest: &quot;B1C2_02_GoingToSeeElias&quot;, impacts: {anesuGuard: 1}},
   {type: &quot;action&quot;, text: &quot;or...&quot;},
   {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;ll stay home&quot;, dest: &quot;V2_03_StayingHome&quot;, impacts: {anesuGuard: -1}}
@@ -3796,14 +3823,14 @@ Anesu&#39;s phone lights up on the bed beside her.
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I am so sorry to rush you, I just completely forgot I had an important event this morning.&quot;},
 {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Elias&quot;, text: &quot;It&#39;s totally fine, don&#39;t gotta say sorry.&quot;},
 {type: &quot;action&quot;, text: &quot;The car is silent apart from the clicking of gel nails on a phone screen. Anesu is furiously typing responses to the family.&quot;},
-{type: &quot;interject&quot;, text: &quot;Now Anesu, you can&#39;t come in hot. Yes, we&#39;re somewhat in the wrong, but they don&#39;t really know that — we cannot come off defensive.&quot;},
+{type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Now Anesu, you can&#39;t come in hot. Yes, we&#39;re somewhat in the wrong, but they don&#39;t really know that — we cannot come off defensive.&quot;},
 {type: &quot;thought&quot;, text: &quot;Yes yes, I get that.&quot;},
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Sooo can I see you next week?&quot;},
 {type: &quot;action&quot;, text: &quot;Elias remains silent, staring ahead.&quot;},
 {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Elias&quot;, text: &quot;Um, I&#39;m not too sure, I&#39;m very busy with work you know?&quot;},
 {type: &quot;action&quot;, text: &quot;Her heart falls a little, not realising she was holding her breath.&quot;, impacts: {anesuGuard: 1}},
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I mean yeah, I am too.&quot;},
-{type: &quot;interject&quot;, text: &quot;Yet you can always make the time, can&#39;t you?&quot;},
+{type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Yet you can always make the time, can&#39;t you?&quot;},
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;We can always call or something? Doesn&#39;t always have to be in person, you know.&quot;},
 {type: &quot;action&quot;, text: &quot;Anesu chuckles lightly and nudges Elias. He smiles weakly.&quot;},
 {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Elias&quot;, text: &quot;Yeah, I&#39;m not really a call type of guy.&quot;},
@@ -3814,7 +3841,7 @@ Anesu&#39;s phone lights up on the bed beside her.
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Oh, just pull up down here, I can walk up.&quot;},
 {type: &quot;action&quot;, text: &quot;She quickly undoes her buckle and faces Elias, gleaming.&quot;},
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I had such a wonderful time with you last night.&quot;},
-{type: &quot;interject&quot;, text: &quot;Come on man, just smile at her.&quot;},
+{type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Come on man, just smile at her.&quot;},
 {type: &quot;action&quot;, text: &quot;Elias turns up the corners of his mouth. There&#39;s a difference.&quot;, impacts: {anesuGuard: 1}},
 {type: &quot;action&quot;, text: &quot;Anesu leans in for a kiss, yet he is pursed. Tight.&quot;},
 {type: &quot;action&quot;, text: &quot;She clambers out, grabbing her bag, making sure to look back at him one more time.&quot;},
@@ -3950,22 +3977,22 @@ The hallway again. Same house, same standoff, higher stakes.
 &lt;&lt;set $currentTime to &quot;6:30pm&quot;&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;hey sorry i didn&#39;t message you much today, things at home were a little hectic.&quot;, time: &quot;6:12pm&quot;},
+{type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;hey sorry i didn&#39;t message you much today, things at home were a little hectic.&quot;, time: &quot;6:12pm&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;thank you so much for last night. i had such a great time!&quot;, time: &quot;6:12pm&quot;},
   {type: &quot;action&quot;, text: &quot;Sending... sending... sending...&quot;},
   {type: &quot;action&quot;, text: &quot;ERROR: message couldn&#39;t be received.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Huh?&quot;},
-  {type: &quot;interject&quot;, text: &quot;...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Lemme just try again.&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;sorry for not messaging today, but thank you so much for last night. i had such a great time with you. see you sooon?&quot;, time: &quot;6:14pm&quot;},
   {type: &quot;action&quot;, text: &quot;Sending... sending... sending...&quot;},
   {type: &quot;action&quot;, text: &quot;ERROR: this message couldn&#39;t be received.&quot;},
-  {type: &quot;action&quot;, text: &quot;The world goes black. Her heart drops to the pit of her stomach. The screen goes blurry, mouth instantly dry.&quot;, impacts: {anesuGuard: 1}},
+  {type: &quot;action&quot;, text: &quot;The world goes black. Her heart drops to the pit of her stomach. The screen goes blurry, mouth instantly dry.&quot;, anesuSide: true, impacts: {anesuGuard: 1}},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;No no no.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu opens the app they met on, watching his profile disappear.&quot;, memoryEntry: {who: &quot;Elias&quot;, text: &quot;He&#39;s a fucking prick. He only wanted me for sex. I don&#39;t know why I ever thought it was more.&quot;}},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;No no no no no no no.&quot;},
-  {type: &quot;action&quot;, text: &quot;Her heart pounds. She chews on her lip ring, unsure what to do with her hands.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Anesu, take a deep breath.&quot;},
+  {type: &quot;action&quot;, text: &quot;Her heart pounds. She chews on her lip ring, unsure what to do with her hands.&quot;, anesuSide: true},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Anesu, take a deep breath.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;NO NO NO NO NO NO NO.&quot;},
   {type: &quot;action&quot;, text: &quot;She keeps messaging, watching each one bounce back.&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;um hey! did i do something wrong? we had such a nice time last night... maybe we can talk???&quot;, time: &quot;6:19pm&quot;},
@@ -3973,35 +4000,39 @@ The hallway again. Same house, same standoff, higher stakes.
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;can we talk about it??&quot;, time: &quot;6:20pm&quot;},
   {type: &quot;action&quot;, text: &quot;Sending... sending...&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;you had such a good time! at least i thought you did...&quot;, time: &quot;6:21pm&quot;},
-  {type: &quot;interject&quot;, text: &quot;Anesu, he&#39;s blocked you. He can&#39;t see these—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Anesu, he&#39;s blocked you. He can&#39;t see these—&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;can we talk this out? maybe i can fix what i did?&quot;, time: &quot;6:22pm&quot;},
   {type: &quot;action&quot;, text: &quot;Sending... sending...&quot;},
-  {type: &quot;interject&quot;, text: &quot;You didn&#39;t do anything, Ne. He&#39;s just an—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You didn&#39;t do anything, Ne. He&#39;s just an—&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;MAYBE I DID DO SOMETHING.&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;i can come over tonight???? we can talk about it???&quot;, time: &quot;6:23pm&quot;},
   {type: &quot;action&quot;, text: &quot;Sending... sending... sending...&quot;},
   {type: &quot;action&quot;, text: &quot;ERROR: your message cannot be received.&quot;},
-  {type: &quot;action&quot;, text: &quot;The tears stream and pour, pooling in her socks.&quot;, impacts: {anesuGuard: 1}},
-  {type: &quot;interject&quot;, text: &quot;Oh, Su. It&#39;s okay, love.&quot;},
+  {type: &quot;action&quot;, text: &quot;The tears stream and pour, pooling in her socks.&quot;, anesuSide: true, impacts: {anesuGuard: 1}},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Oh, Su. It&#39;s okay, love.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;What did I do wrong? I just don&#39;t get it... why did he have to block me? He couldn&#39;t have just said it straight up? WHY DO I ALWAYS DO SOMETHING WRONG?&quot;},
-  {type: &quot;interject&quot;, text: &quot;Anesu, you cannot be so quick to blame yourself. You didn&#39;t do anything wrong.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Anesu, you cannot be so quick to blame yourself. You didn&#39;t do anything wrong.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;It was such a loving night. I mean the way he touched me — who does that?&quot;},
-  {type: &quot;interject&quot;, text: &quot;Someone with severe issues, that&#39;s who.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Someone with severe issues, that&#39;s who.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I mean, what&#39;s wrong with me... am I not pretty enough?&quot;},
-  {type: &quot;action&quot;, text: &quot;Anesu stares at herself in the mirror across the room, eyes bloodshot, nose puffy. She turns side to side, looking at all angles.&quot;, impacts: {familyAwareness: 0.5}},
-  {type: &quot;interject&quot;, text: &quot;I mean, I finally got my skin clear!! Maybe I should wear more makeup, or lose more weight.&quot;},
-  {type: &quot;interject&quot;, text: &quot;This is madness, Anesu. We need to take a step back.&quot;, impacts: {anesuGuard: 1, familyAwareness: 1}},
+  {type: &quot;action&quot;, text: &quot;Anesu stares at herself in the mirror across the room, eyes bloodshot, nose puffy. She turns side to side, looking at all angles.&quot;, anesuSide: true, impacts: {familyAwareness: 0.5}},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I mean, I finally got my skin clear!! Maybe I should wear more makeup, or lose more weight.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;This is madness, Anesu. We need to take a step back.&quot;, impacts: {anesuGuard: 1, familyAwareness: 1}},
   {type: &quot;continueTo&quot;, dest: &quot;CS_ThePlaylist&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
-&lt;div class=&quot;phone-layout&quot;&gt;
+&lt;div class=&quot;opening-layout&quot;&gt;
 &lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
 &lt;div class=&quot;meeting-time&quot;&gt;The worst fucking evening.&lt;/div&gt;
 Anesu stares at her phone, the message bar blinking, waiting.
 &lt;/div&gt;
+&lt;div class=&quot;phone-scene-row&quot;&gt;
+&lt;div class=&quot;side-log&quot; id=&quot;leftLog&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;phone-frame&quot; id=&quot;chatLog&quot;&gt;
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;side-log&quot; id=&quot;rightLog&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="32" name="CS_ThePlaylist" tags="nobr" position="1150,650" size="100,100">&lt;&lt;run $(&#39;body&#39;).addClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;div class=&quot;opening-layout&quot;&gt;
