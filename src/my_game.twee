@@ -7,7 +7,7 @@ As They Saw It
 	"ifid": "C991D40D-3EA5-4ED8-ACFC-F5D97CB54267",
 	"format": "SugarCube",
 	"format-version": "2.37.3",
-	"start": "01_Opening_Monologue",
+	"start": "P_01_Opening_Monologue",
 	"tag-colors": {
 		"StoryInit": "blue",
 		"widget": "yellow"
@@ -82,14 +82,13 @@ As They Saw It
   src: url('assets/fonts/Wyvern.TTF') format('truetype');
 }
 
-
 :root {
-  --bg-main: #182d09;
-  --bg-panel: #2a3d14;
-  --text-main: #cdc19f;
-  --text-muted: #a89f82;
-  --accent-thought: #9fb8ad;
-  --accent-thought-dim: #6d8078;
+  --bg-main: #CEC19F;         /* creamy latte */
+  --bg-panel: #d6bba2;        /* espresso shot */
+  --text-main: #35241d;       /* warm cappuccino */
+  --text-muted: #785136;      /* mocha bean */
+  --accent-thought: #7f9b8a;  /* sage, kept as accent */
+  --accent-thought-dim: #5e7364;
 }
 
 body.scene-night {
@@ -244,18 +243,18 @@ body.scene-night #ui-bar {
   font-family: 'Pixelta', monospace;
   font-size: 0.7em;
   letter-spacing: 1px;
-  color: var(--text-muted);
+  color: rgb(53, 36, 29);
 }
 
 .status-value {
   font-family: 'Pixelta', monospace;
   font-size: 1em;
-  color: var(--text-main);
+  color: rgb(53, 36, 29);
 }
 
 .status-sub {
   font-size: 0.75em;
-  color: var(--text-muted);
+  color: rgb(53, 36, 29);
 }
 
 .continue-arrow {
@@ -936,6 +935,13 @@ body.scene-night #ui-bar {
   overflow-y: auto;
 }
 
+.phone-frame > .continue-link {
+  position: static;   /* ignore the general continue placement */
+  margin-top: auto;   /* push to the bottom of the phone */
+  margin-bottom: 1em; /* sit above the home bar */
+  align-self: center;
+}
+
 .phone-scene-row {
   display: flex;
   justify-content: center;
@@ -1057,6 +1063,100 @@ body.scene-night #ui-bar {
   letter-spacing: 1px;
   color: var(--accent-thought-dim);
   margin-bottom: 0.2em;
+}
+
+/* ============================================================
+   PLAYLIST 
+   ============================================================ */
+.playlist-screen {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4em;
+  overflow: hidden;
+  margin-top: 0;
+  flex: 1 1 auto;   /* fill the phone between the top and continue */
+  min-height: 0;    /* lets it shrink so the songs can scroll */
+}
+
+.playlist-title {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #785136;   /* mocha bean */
+  margin: 1.5em 0 0;
+  text-align: center;
+  padding: 0.3em 1em;                          /* space inside the block */
+  border-radius: 999px;                        /* pill shape */
+  background-color: rgba(53, 36, 29, 0.12);   /* cappuccino tint */
+}
+
+.playlist-subtitle {
+  font-size: 0.7em;
+  color: #785136;        /* mocha bean */
+  opacity: 0.8;          /* a touch softer than the title */
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin: 0 0 0.6em;     /* space before the songs */
+}
+
+.playlist-tracks {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  flex: 1 1 auto;   /* take up the leftover space */
+  min-height: 0;
+  overflow-y: auto; /* scroll the songs when there are too many */
+}
+
+.playlist-track {
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;   /* keep full height so the list scrolls instead of squashing */
+  padding: 0.5em 0.8em;
+  border-radius: 8px;
+  color: #35241d;   /* warm cappuccino */
+  background-color: rgba(53, 36, 29, 0.08);   /* soft cappuccino tint */
+  font-size: 0.85em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playlist-track.playing {
+  color: #CEC19F;   /* creamy latte on the green */
+  background-color: rgba(42, 61, 20, 0.6);
+  border: 1px solid #35241d;
+}
+
+/* same scrollbar look as the texting phone */
+.playlist-tracks::-webkit-scrollbar {
+  width: 8px;
+}
+
+.playlist-tracks::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.playlist-tracks::-webkit-scrollbar-thumb {
+  background-color: #785136;   /* mocha bean */
+  border-radius: 4px;
+}
+
+.phone-frame > .continue-link {
+  position: static;
+  margin-top: auto;
+  margin-bottom: 1em;
+  align-self: center;
+}
+
+.phone-frame > .continue-link a {
+  color: #35241d;          /* warm cappuccino */
+  border-color: #35241d;
 }
 
 /* ============================================================
@@ -2002,7 +2102,7 @@ window.stopAmbience = function() {
   setAmbience(null);
 };
 
-:: 03_Opening_Scene {"position":"650,75","size":"100,100"}
+:: P_03_Opening_Scene {"position":"650,75","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<set $currentDate to "Sun, 21 Apr 2024">>
 <<set $currentTime to "7:15pm">>
@@ -2025,7 +2125,7 @@ window.stopAmbience = function() {
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "Well, you pick one to assist each week. We hear members share and then we guide. We can nudge, suggest, plant the seed so to speak, and can't force one to be sober but rather help them see what they can do to be better, achieve greater things and maybe see a better tomorrow..."},
   {type: "dialogue", side: "player", speaker: "You", text: "So I can pick any person? I'm a god now??"},
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "Mhmm, not exactly. You're a higher power, a guardian angel for the Mirabel meeting. We assist and provide the tools. We cannot force one to be better. Take a look at who is here tonight...Maybe someone will be of interest. I need help with this meeting, it seems to be a popular one.", setVar: "assignedMeeting", setValue: "Mirabel Meeting"},
-  {type: "choice", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "Let's see who's here tonight.", dest: "00_Member_Selection"}
+  {type: "choice", side: "character", speaker: "Guardian Angel", label: "Mabel", text: "Let's see who's here tonight.", dest: "P_00_Member_Selection"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2049,17 +2149,17 @@ You float above an AA meeting in session, observing the many faces and walks of 
 </div>
 
 
-:: 00_Member_Selection {"position":"775,75","size":"100,100"}
+:: P_00_Member_Selection {"position":"775,75","size":"100,100"}
 <div id="memberDisplay">
 <<showMembers>>
 </div>
 
 
-:: V1_01_AnesuChosen {"position":"550,200","size":"100,100"}
+:: B1C1_01_AnesuChosen {"position":"550,200","size":"100,100"}
 <<set $sceneBeats to [
   {type: "action", text: "Anesu looks up, somehow catching your eye across the circle."},
   {type: "action", text: "She gives a meek smile — small, a little unsure, as if she can sense you."},
-  {type: "continueTo", dest: "V1_02_FirstNightwithAnesu"}
+  {type: "continueTo", dest: "B1C1_02_FirstNightwithAnesu"}
 ]>>
 
 <<set $beatIndex to 0>>
@@ -2082,7 +2182,7 @@ You've chosen to follow Anesu this week.
 </div>
 </div>
 
-:: V1_02_FirstNightwithAnesu {"position":"425,225"}
+:: B1C1_02_FirstNightwithAnesu {"position":"425,225"}
 <<run $('body').removeClass('scene-night')>>
 <<set $currentDate to "Sun, 28 Apr 2024">>
 <<set $currentTime to "8:45pm">>
@@ -2099,7 +2199,7 @@ You've chosen to follow Anesu this week.
   {type: "dialogue", side: "character", speaker: "Erin", text: "You know it's no trouble love. Soon you can drive me! When you get your P's!"},
   {type: "action", text: "Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.", sound: "audio/seatbelt_ding.mp3"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Doesn't the dinging bother you?"},
-  {type: "choice", side: "character", speaker: "Erin", text: "What dinging?", dest: "V1_03_AnesuDoorstep"}
+  {type: "choice", side: "character", speaker: "Erin", text: "What dinging?", dest: "B1C1_03_AnesuDoorstep"}
 ]>>
 
 <<set $beatIndex to 0>>
@@ -2125,7 +2225,7 @@ You follow Anesu home, watching her hop in the passenger side of Erin's car.
 </div>
 </div>
 
-:: V1_03_AnesuDoorstep {"position":"900,200","size":"100,100"}   
+:: B1C1_03_AnesuDoorstep {"position":"900,200","size":"100,100"}   
 <<run stopAmbience()>>        
 <<set $sceneBeats to [
   {type: "action", text: "They jolt with a halt, a little too close to the garage door.", sound: "audio/engine_stop.mp3", stopSoundId: "engine"},
@@ -2136,7 +2236,7 @@ You follow Anesu home, watching her hop in the passenger side of Erin's car.
   {type: "action", text: "As Anesu fumbles with her boots, the first door in the hallway cracks open."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "For fucks sake."},
   {type: "action", text: "Her mother appears in the doorway."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Now I have to bloody acknowledge her", dest: "V1_AAMessage_01P1"}
+  {type: "choice", side: "player", speaker: "Anesu", text: "Now I have to bloody acknowledge her", dest: "B1C1_AAMessage_01P1"}
 ]>>
 
 <<set $beatIndex to 0>>
@@ -2161,7 +2261,7 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
 </div>
 </div>
 
-:: V1_04_TalkingtoMama {"position":"875,225"}
+:: B1C1_04_TalkingtoMama {"position":"875,225"}
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Mama", text: "You went to a meeting?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Where else could I have possibly gone? I told you exactly where I went."},
@@ -2198,11 +2298,11 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
   {type: "dialogue", side: "character", speaker: "Mama", text: "Okay, now get ready to blow. Blow i—"},
   {type: "thought", text: "I don't want to fucking do this. \"Your mama loves you\", what the fuck does Erin know?"},   
 {type: "action", text: "Should Anesu..."},
-{type: "choice", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Deny?", dest: "V1_04_DenyReveal"},
+{type: "choice", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Deny?", dest: "B1C1_04_DenyReveal"},
 {type: "action", text: "or..."},
-{type: "choice", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Comply?", dest: "V1_04_ComplyReveal"},
+{type: "choice", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Comply?", dest: "B1C1_04_ComplyReveal"},
 {type: "action", text: "or..."},
-{type: "choice", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Compromise?", dest: "V1_04_CompromiseReveal"}
+{type: "choice", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Compromise?", dest: "B1C1_04_CompromiseReveal"}
 ]>>
 
 <<set $beatIndex to 0>>
@@ -2227,12 +2327,12 @@ She's cold and doesn't move to approach her daughter, just stands in the doorway
 </div>
 </div>
 
-:: V1_04_DenyReveal {"position":"1200,150","size":"100,100"}
+:: B1C1_04_DenyReveal {"position":"1200,150","size":"100,100"}
 <<set $v1Ending to "Deny">>
 <<set $sceneBeats to [
   {type: "dialogue", side: "player", speaker: "Anesu", text: "It's been 5 months of meetings and sobriety. I don't need to do anything."},
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Of course you don't HAVE to do anything, but these are your parents. This is your mama."},
-  {type: "continueTo", dest: "V1_04_Deny"}
+  {type: "continueTo", dest: "B1C1_04_Deny"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2258,7 +2358,7 @@ We deny
 </div>
 </div>
 
-:: V1_04_Deny {"position":"1075,325","size":"100,100"}
+:: B1C1_04_Deny {"position":"1075,325","size":"100,100"}
 <<set $sceneBeats to [
 {type: "dialogue", side: "player", speaker: "Anesu", text: "No, I'm not doing it."},
   {type: "action", text: "Dad winces, waiting for hell to break loose for this one."},
@@ -2305,7 +2405,7 @@ We deny
   {type: "action", text: "A tear falls and she holds her face, trying to push them back in."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "I know hun hun.", memoryEntry: {who: "Dad", text: "He didn't come find me tonight. He stayed with her. I get it..."}},
   {type: "action", text: "The two hold each other in the hallway, standing in embrace. In frustration.", impacts: {anesuGuard: 1}} ,
-  {type: "continueTo", dest: "V1_05_Transition"}
+  {type: "continueTo", dest: "B1C1_05_Transition"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2336,7 +2436,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 </div>
 
-:: V1_05_Transition {"position":"1075,450","size":"100,100"}
+:: B1C1_05_Transition {"position":"1075,450","size":"100,100"}
 <<run $('body').addClass('scene-night')>>
 <<set $currentTime to "9:15pm">>
 <<run updateAngelStatus()>>
@@ -2386,7 +2486,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
   {type: "breathe", text: "Inhale and exhale.", duration: 2500},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Well, you and I both know that there are aliens."},
   {type: "expandable", side: "character", speaker: "Higher Power", shortText: "Now's not the time.", fullText: "Not right now. Now finish that and get inside — that assignment to-do list isn't getting smaller by itself."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Head inside.", dest: "V2_01_Opening"}
+  {type: "choice", side: "player", speaker: "Anesu", text: "Head inside.", dest: "B1C2_01_Opening"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2410,11 +2510,11 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 </div>
 </div>
 
-:: V1_04_ComplyReveal {"position":"1075,150","size":"100,100"}
+:: B1C1_04_ComplyReveal {"position":"1075,150","size":"100,100"}
 <<set $v1Ending to "Comply">>
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Mhmm what did Peter say? \"You might have healed but those who were around you still haven't\"? Go through with it Anesu."},
-  {type: "continueTo", dest: "V1_04_Comply"}
+  {type: "continueTo", dest: "B1C1_04_Comply"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2440,7 +2540,7 @@ We comply.
 </div>
 </div>
 
-:: V1_04_Comply {"position":"1200,325","size":"100,100"}
+:: B1C1_04_Comply {"position":"1200,325","size":"100,100"}
 <<set $sceneBeats to [
   {type: "thought", text: "I swallow the boulder of pride and a little bit of tar loogies in the back of my throat, blow hard into the plastic tubing, flaring spit up and towards mama."},
   {type: "action", text: "It beeps and Ruby yanks it away from her lips, scowling as she reads the numbers."},
@@ -2468,7 +2568,7 @@ We comply.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'm going to bed."},
   {type: "action", text: "Dad stays in the hallway, watching Anesu trudge away slowly, shoulders slumped."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "I love you Anesu. I know you're trying.", impacts: {anesuGuard: -1}, memoryEntry: {who: "Dad", text: "He said he knows I'm trying. He's the only one who says that out loud. I don't know why that's the thing that almost breaks me."}},
-  {type: "continueTo", dest: "V1_05_Transition"}
+  {type: "continueTo", dest: "B1C1_05_Transition"}
 
 ]>>
 <<set $beatIndex to 0>>
@@ -2495,11 +2595,11 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 </div>
 </div>
 
-:: V1_04_CompromiseReveal {"position":"950,150","size":"100,100"}
+:: B1C1_04_CompromiseReveal {"position":"950,150","size":"100,100"}
 <<set $v1Ending to "Compromise">>
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Guardian Angel", label: $playerName, text: "Do what makes you comfortable, and you know Dad is on your team, of course Mama is too but it may not feel like that. Just keep in mind what Erin said..."},
-  {type: "continueTo", dest: "V1_04_Compromise"}
+  {type: "continueTo", dest: "B1C1_04_Compromise"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2525,7 +2625,7 @@ We compromise.
 </div>
 </div>
 
-:: V1_04_Compromise {"position":"950,325","size":"100,100"}
+:: B1C1_04_Compromise {"position":"950,325","size":"100,100"}
 <<set $sceneBeats to [
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'm only doing it if Dad does it."},
   {type: "action", text: "Anesu stares daggers into her father, but he looks straight to Mama."},
@@ -2568,7 +2668,7 @@ We compromise.
   {type: "spacer"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "I love you so much."},
-  {type: "continueTo", dest: "V1_05_Transition"}
+  {type: "continueTo", dest: "B1C1_05_Transition"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -2596,7 +2696,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 
 
-:: V1_AAMessage_01P1 {"position":"700,225"}
+:: B1C1_AAMessage_01P1 {"position":"700,225"}
 <div class="menu-screen">
 <div class="quote-box">
 <div id="dialogueLine">
@@ -2607,7 +2707,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <<link "▼">>\
 <<run addQuote("The alcoholic is like a tornado roaring their way through the lives of others...", "The alcoholic is like a tornado roaring their way through the lives of others. Hearts are broken. Sweet relationships are dead. Affections have been uprooted. Selfish and inconsiderate habits have kept the home in turmoil. We feel a person is unthinking when they say sobriety is enough. They are like the farmer who came out of this cyclone cellar to find his home ruined. To his partner, he remarked, \"Don't see anything the matter here, Ma. Ain't it grand the wind stopped blowin'?\"", "Chapter 6 \"Into Action,\" p. 82, Big Book of Alcoholics Anonymous")>>
 <<replace "#dialoguePrompt">>\
-<div class="continue-link"><<link "continue" "V1_04_TalkingtoMama">><</link>></div>\
+<div class="continue-link"><<link "continue" "B1C1_04_TalkingtoMama">><</link>></div>\
 <</replace>>\
 <</link>>
 </div>
@@ -2615,7 +2715,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 </div>
 
 
-:: 02_Title_Screen {"position":"500,75","size":"100,100"}
+:: P_02_Title_Screen {"position":"500,75","size":"100,100"}
 <div class="menu-screen">
 <div class="title-lines" id="titleLines"></div>
 <div id="dialoguePrompt"></div>
@@ -2626,11 +2726,11 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
     "this is...",
     {text: "As They Saw It", fontSize: "2.5em"}
   ], 100, function(){
-    Wikifier.wikifyEval('<<replace "#dialoguePrompt">><div class="continue-link"><<link "start the story?" "03_Opening_Scene">><</link>></div><</replace>>');
+    Wikifier.wikifyEval('<<replace "#dialoguePrompt">><div class="continue-link"><<link "start the story?" "P_03_Opening_Scene">><</link>></div><</replace>>');
   });
 }, 10)>>
 
-:: 01_Opening_Monologue {"position":"375,75","size":"100,100"}
+:: P_01_Opening_Monologue {"position":"375,75","size":"100,100"}
 <<set $currentDate to "Sun, 21 Apr 2024">>
 <<set $currentTime to "7:15pm">>
 <<set $anesuGuard to 5>>
@@ -2638,14 +2738,13 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <<set $weeksPlayed to 0>>
 <<set $elisBlocked to false>>
 
-/*CHARACTER GIFS*/
 <<set $characterImages to {
   "Anesu": "https://i.imgur.com/PE4PsVq.gif",
   "Erin": "https://i.imgur.com/A4YV3S2.gif",
   "Mama": "https://i.imgur.com/L16jEVN.gif",
   "Dad": "https://i.imgur.com/DSDJ6Y9.gif",
   "Micah": "https://i.imgur.com/bjzAo97.gif",
-  "Julian": "https://imgur.com/5Xz9pGG.gif",
+  "Julian": "https://i.imgur.com/5Xz9pGG.gif"
 }>>
 
 /*UI VARIABLES*/
@@ -2685,11 +2784,11 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
     "Nobody says it gets easier right away. But you're here and that's the part that counts.",
     "No one said it had to be forever. It only has to be a day.."
   ], 45, function(){
-    Wikifier.wikifyEval('<<replace "#dialoguePrompt">><div class="continue-link"><<link "continue" "02_Title_Screen">><</link>></div><</replace>>');
+    Wikifier.wikifyEval('<<replace "#dialoguePrompt">><div class="continue-link"><<link "continue" "P_02_Title_Screen">><</link>></div><</replace>>');
   });
 }, 10)>>
 
-:: 00_Member_Widget [widget] {"position":"1225,0","size":"100,100"}
+:: P_00_Member_Widget [widget] {"position":"1225,0","size":"100,100"}
 <<widget "showMembers">>
 <div class="split-screen">
 <div class="scene-panel">
@@ -2712,7 +2811,7 @@ $members[$memberIndex].name<br>(Chair + Person)
 <<set $weeksPersonSobriety to $members[$memberIndex].sobriety>>
 <<set $members[$memberIndex].justUnlocked to false>>
 <<if $members[$memberIndex].name is "Anesu Song">>
-<<goto "V1_02_FirstNightwithAnesu">>
+<<goto "B1C1_02_FirstNightwithAnesu">>
 <<elseif $members[$memberIndex].name is "Erin Ferguson">>
 <<goto "V4_ErinOpening">>
 <</if>>
@@ -3128,9 +3227,26 @@ _beat.text
   });
 })()>>
 
+<<elseif _beat.type is "showPlaylist">>
+<<run (function(){
+  var wrap = $('<div class="playlist-screen"></div>');
+  wrap.append('<div class="playlist-title">' + _beat.title + '</div>');
+  var list = $('<div class="playlist-tracks"></div>');
+  _beat.tracks.forEach(function(t, i){
+    var track = $('<div class="playlist-track' + (i === 0 ? ' playing' : '') + '"></div>');
+    track.append('<div class="track-name">' + t + '</div>');
+    list.append(track);
+  });
+  wrap.append(list);
+  $('#chatLog').append(wrap);
+  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+})()>>
+<<set $beatIndex += 1>>
+<<showNextPromptText>>
+
 <</if>>
 
-<<if _beat.type isnot "dialogue" and _beat.type isnot "namePrompt" and _beat.type isnot "typedChoice" and _beat.type isnot "freeType" and _beat.type isnot "expandable" and _beat.type isnot "continueTo">>
+<<if _beat.type isnot "dialogue" and _beat.type isnot "namePrompt" and _beat.type isnot "typedChoice" and _beat.type isnot "freeType" and _beat.type isnot "expandable" and _beat.type isnot "continueTo" and _beat.type isnot "showPlaylist">>
 <<showNextPrompt>>
 <</if>>
 
@@ -3150,13 +3266,20 @@ _beat.text
 <<run $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight)>>
 <</widget>>
 
+<<widget "showNextPromptText">>
+<<if $beatIndex lt $sceneBeats.length>>
+<<append "#chatLog">><div class="continue-link"><<link "Continue">><<advanceScene>><</link>></div><</append>>
+<</if>>
+<<run $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight)>>
+<</widget>>
+
 <<widget "showPlayLink">>
 <<replace "#dialoguePrompt">>
-<div class="continue-link"><<link "start the story?" "03_Opening_Scene">><</link>></div>
+<div class="continue-link"><<link "start the story?" "P_03_Opening_Scene">><</link>></div>
 <</replace>>
 <</widget>>
 
-:: V3_01_Opening {"position":"375,625","size":"100,100"}
+:: B1C3_01_Opening {"position":"375,625","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<set $currentDate to "Sat, 4 May 2024">>
 <<set $currentTime to "10:52am">>
@@ -3213,11 +3336,11 @@ _beat.text
   {type: "breathe", text: "The room holds its breath.", duration: 2000},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Su, let's be mindful that it's 11am. We cannot come in hot like this."},
   {type: "action", text: "Should Anesu..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "So what, it's 11am? My feelings are hurt!", dest: "V3_02_Opening_MyFeelingsHurt", impacts: {anesuGuard: 0.5}},
+  {type: "choice", side: "player", speaker: "Anesu", text: "So what, it's 11am? My feelings are hurt!", dest: "B1C3_02_Opening_MyFeelingsHurt", impacts: {anesuGuard: 0.5}},
   {type: "action", text: "or..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Yeah I understand, but this isn't nice — why am I being left out?", dest: "V3_03_Opening_LeftOut", impacts: {familyAwareness: 0.5}},
+  {type: "choice", side: "player", speaker: "Anesu", text: "Yeah I understand, but this isn't nice — why am I being left out?", dest: "B1C3_03_Opening_LeftOut", impacts: {familyAwareness: 0.5}},
   {type: "action", text: "or..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Whatever, I'm going to the gym.", dest: "V3_04_Opening_GoToGym", impacts: {anesuGuard: 1}}
+  {type: "choice", side: "player", speaker: "Anesu", text: "Whatever, I'm going to the gym.", dest: "B1C3_04_Opening_GoToGym", impacts: {anesuGuard: 1}}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3243,7 +3366,7 @@ The kitchen smells like coffee. Everyone's already up.
 
 
 
-:: V2_Transition {"position":"900,550","size":"100,100"}
+:: B1C2_Transition {"position":"900,550","size":"100,100"}
 <<run $('body').addClass('scene-night')>>
 <<set $currentDate to "Thu, 2 May 2024">>
 <<set $currentTime to "11:40pm">>
@@ -3277,7 +3400,7 @@ The kitchen smells like coffee. Everyone's already up.
   {type: "action", text: "Anesu sits up sharply, wiping her face with the back of her hand."},
   {type: "thought", text: "Let's stop dreaming and gallivanting among ridiculous ideas..."},
   {type: "thought", text: "I guess I can just be."},
-  {type: "continueTo", dest: "V3_01_Opening"}
+  {type: "continueTo", dest: "B1C3_01_Opening"}
 ]>>
 <<set $beatIndex to 0>>
 <div class="opening-layout">
@@ -3293,7 +3416,7 @@ Anesu's room. The door is shut. The house is still.
 </div>
 
 
-:: V3_02_Opening_MyFeelingsHurt {"position":"250,750","size":"100,100"}
+:: B1C3_02_Opening_MyFeelingsHurt {"position":"250,750","size":"100,100"}
 <<set $sceneBeats to [
   {type: "interject", text: "That is true, but it's not about you this morning, I'm afraid."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "I seriously don't know how you've made this about yourself. Micah was just telling us something amazing and you've come in and ruined it."},
@@ -3346,7 +3469,7 @@ The kitchen, still. Coffee going cold in her hands.
 </div>
 </div>
 
-:: V3_03_Opening_LeftOut {"position":"500,750","size":"100,100"}
+:: B1C3_03_Opening_LeftOut {"position":"500,750","size":"100,100"}
 <<set $sceneBeats to [
   {type: "interject", text: "You're right, it's not nice. But maybe we can have this discussion another time. I think Micah is trying to relay genuine information."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "I seriously don't know how you've made this about yourself. Micah was just telling us something amazing and you've come in and ruined it."},
@@ -3388,7 +3511,7 @@ The kitchen, tighter now. Nobody's sitting anymore.
 </div>
 </div>
 
-:: V3_04_Opening_GoToGym {"position":"750,750","size":"100,100"}
+:: B1C3_04_Opening_GoToGym {"position":"750,750","size":"100,100"}
 <<set $sceneBeats to [
   {type: "action", text: "Anesu dumps her teaspoon in the sink, and darts up stairs to get changed, grab her bag and walks to the front door "},
   {type: "dialogue", side: "character", speaker: "Dad", text: "Do you want your coffee?"},
@@ -3409,12 +3532,12 @@ She's already halfway to the door.
 </div>
 </div>
 
-:: V3_Transition_Gym {"position":"525,800","size":"100,100"}
+:: B1C3_Transition_Gym{"position":"525,800","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<set $sceneBeats to [
   {type: "narrative", heading: "PLACEHOLDER LOCATION", text: "Placeholder V3 transition beat."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Placeholder line."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Continue", dest: "V4_ErinCheckIn"}
+  {type: "choice", side: "player", speaker: "Anesu", text: "Continue", dest: "B1C4_ErinCheckIn"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3431,7 +3554,7 @@ Placeholder narrative box text.
 </div>
 
 
-:: V4_ErinCheckIn {"position":"1300,225","size":"100,100"}
+:: B1C4_ErinCheckIn {"position":"1300,225","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<set _matchAnswer to "">>
 <<set _matchErinResp to "">>
@@ -3486,9 +3609,9 @@ Placeholder narrative box text.
   {type: "action", text: "[PLACEHOLDER — a beat resolving/landing the hug moment before Erin moves the conversation on. The scene currently jumps straight from the choice to \"anything else happen this week\" with no reaction shown.]"},
   {type: "dialogue", side: "character", speaker: "Erin", text: "Anything else happen this week??"},
   {type: "interject", text: "Are we mentioning Elias? I feel like that was pretty big..."},
-{type: "choice", side: "player", speaker: "Anesu", text: "Yeah... there's actually something.", dest: "V4_ErinCheckIn_EliasReveal"},
+{type: "choice", side: "player", speaker: "Anesu", text: "Yeah... there's actually something.", dest: "B1C4_ErinCheckIn_EliasReveal"},
 {type: "action", text: "or..."},
-{type: "choice", side: "player", speaker: "Anesu", text: "Nah, nothing much else.", dest: "V1_AAMessage_01P2"}
+{type: "choice", side: "player", speaker: "Anesu", text: "Nah, nothing much else.", dest: "B1C1_AAMessage_01P2"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3512,7 +3635,7 @@ Erin's car, on the way to another meeting.
 </div>
 </div>
 
-:: V4_ErinCheckIn_EliasReveal {"position":"1500,225","size":"100,100"}
+:: B1C4_ErinCheckIn_EliasReveal {"position":"1500,225","size":"100,100"}
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Erin", text: "Oh? What's going on?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: $wentToElias ? "I ended up seeing Elias." : "I almost went to see Elias, but I stayed home instead."}
@@ -3525,14 +3648,14 @@ Erin's car, on the way to another meeting.
   {type: "action", text: "Anesu stops. Her hand goes to her cheek, almost involuntarily."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "She hit you?", impacts: {familyAwareness: 1}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
-    {type: "continueTo", dest: "V1_AAMessage_01P2"}
+    {type: "continueTo", dest: "B1C1_AAMessage_01P2"}
 
 )>>
 <<else>>
 <<run $sceneBeats.push(
   {type: "dialogue", side: "character", speaker: "Erin", text: "Good. I'm proud of you for that, love."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "It didn't feel like much of a win at the time."},
-    {type: "continueTo", dest: "V1_AAMessage_01P2"}
+    {type: "continueTo", dest: "B1C1_AAMessage_01P2"}
 
 )>>
 <</if>>
@@ -3558,7 +3681,7 @@ Erin's car, still driving.
 </div>
 </div>
 
-:: V1_AAMessage_01P2 {"position":"1325,700","size":"100,100"}
+:: B1C1_AAMessage_01P2 {"position":"1325,700","size":"100,100"}
 <div class="menu-screen">
 <div class="quote-box">
 <div id="dialogueLine">
@@ -3569,14 +3692,14 @@ Erin's car, still driving.
 <<link "▼">>\
 <<run addQuote("Yes, there is a long period of reconstruction ahead...", "Chapter 6 \"Into Action,\" p. 83, Big Book of Alcoholics Anonymous")>>\
 <<replace "#dialoguePrompt">>\
-<div class="continue-link"><<link "continue" "V4_Meeting_SerenityPrayer">><</link>></div>\
+<div class="continue-link"><<link "continue" "B1C4_Meeting_SerenityPrayer">><</link>></div>\
 <</replace>>\
 <</link>>
 </div>
 </div>
 </div>
 
-:: V2_01_Opening {"position":"375,425","size":"100,100"}
+:: B1C2_01_Opening {"position":"375,425","size":"100,100"}
 <<set $currentDate to "Wed, 1 May 2024">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
@@ -3625,7 +3748,7 @@ Erin's car, still driving.
   {type: "interject", text: "Oh please, this tool? This fucking guy? You met him on some lame app, we seriously can't still be doing this."},
   {type: "interject", text: "Maybe this isn't the time for it. This is the opposite of putting yourself first."},
   {type: "interject", text: "And all of a sudden being okay with having sex is a huge deal out of nowhere. Why the big jump with him? Why not wai—"},
-  {type: "choice", side: "player", speaker: "Anesu", text: "I'm gonna see him tonight", dest: "V2_02_GoingToSeeElias", impacts: {anesuGuard: 1}},
+  {type: "choice", side: "player", speaker: "Anesu", text: "I'm gonna see him tonight", dest: "B1C2_02_GoingToSeeElias", impacts: {anesuGuard: 1}},
   {type: "action", text: "or..."},
   {type: "choice", side: "player", speaker: "Anesu", text: "I'll stay home", dest: "V2_03_StayingHome", impacts: {anesuGuard: -1}}
 ]>>
@@ -3644,7 +3767,7 @@ Anesu's phone lights up on the bed beside her.
 </div>
 </div>
 
-:: V2_02_GoingToSeeElias {"position":"500,550","size":"100,100"}
+:: B1C2_02_GoingToSeeElias {"position":"500,550","size":"100,100"}
 <<set $wentToElias to true>>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
@@ -3711,7 +3834,7 @@ Anesu's phone lights up on the bed beside her.
 {type: "action", text: "His eyes remain on the road as he responds."},
 {type: "dialogue", side: "character", speaker: "Elias", text: "I will.", time: "8:14am", impacts: {familyAwareness: 0.5}, memoryEntry: {who: "Elias", text: "He's amazing. So sweet. I don't care what anyone says — last night was real."}},
 {type: "thought", text: "This walk to the front door is long and dreadful. I fell asleep at his house. I wasn't meant to. It just happened..."},
-{type: "choice", side: "player", speaker: "Anesu", text: "Well. Here we fucking go.", dest: "V2_04_Argument"}
+{type: "choice", side: "player", speaker: "Anesu", text: "Well. Here we fucking go.", dest: "B1C2_04_Argument"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3735,7 +3858,7 @@ Anesu's phone lights up on the bed beside her.
 </div>
 
 
-:: V2_04_Argument {"position":"625,550","size":"100,100"}
+:: B1C2_04_Argument {"position":"625,550","size":"100,100"}
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
   {type: "action", text: "As soon as her keys kiss the lock on the flyscreen, the door swings open — the matriarchal pair staring daggers into one another."},
@@ -3817,7 +3940,7 @@ Anesu's phone lights up on the bed beside her.
   {type: "action", text: "They all turn to face him — three solemn expressions."},
   {type: "action", text: "Anesu slips her shoes off and tightens her grip on her bag."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I was done a long time ago.", time: "8:33am", impacts: {anesuGuard: 2}, memoryEntry: {who: "Mama", text: {blind: "She slapped me and somehow it's still my fault. That's who she is.", uncertain: "She hit me. My own mama hit me. I don't know what to do with that yet.", aware: "She hit me because she has no other language left for how scared she is. It doesn't make it okay. It just makes it clearer — she hasn't moved, and maybe she can't."}}},
-  {type: "continueTo", dest: "V2_05_Blocked"}
+  {type: "continueTo", dest: "B1C2_05_Blocked"}
 
 ]>>
 <<set $beatIndex to 0>>
@@ -3842,7 +3965,7 @@ The hallway again. Same house, same standoff, higher stakes.
 </div>
 
 
-:: V2_05_Blocked {"position":"750,550","size":"100,100"}
+:: B1C2_05_Blocked {"position":"750,550","size":"100,100"}
 <<set $currentDate to "Thu, 2 May 2024">>
 <<set $currentTime to "6:30pm">>
 <<run updateAngelStatus()>>
@@ -3888,7 +4011,7 @@ The hallway again. Same house, same standoff, higher stakes.
   {type: "action", text: "Anesu stares at herself in the mirror across the room, eyes bloodshot, nose puffy. She turns side to side, looking at all angles.", impacts: {familyAwareness: 0.5}},
   {type: "interject", text: "I mean, I finally got my skin clear!! Maybe I should wear more makeup, or lose more weight."},
   {type: "interject", text: "This is madness, Anesu. We need to take a step back.", impacts: {anesuGuard: 1, familyAwareness: 1}},
-  {type: "continueTo", dest: "V2_Transition"}
+  {type: "continueTo", dest: "CS_ThePlaylist"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3902,8 +4025,35 @@ Anesu stares at her phone, the message bar blinking, waiting.
 </div>
 </div>
 
+:: CS_ThePlaylist [nobr] {"position":"1150,650","size":"100,100"}
+<<run $('body').addClass('scene-night')>>
+<div class="opening-layout">
+<div class="narrative-box" id="sceneNarrative">
+<div class="meeting-time">one of many playlists for the forlorn heart</div>
+</div>
+<div class="conversation-row solo">
+<div class="phone-frame">
+<div class="playlist-screen">
+<div class="playlist-title">isn't he gorgeous?</div>
+<div class="playlist-subtitle">created by su</div>
+<div class="playlist-tracks">
+<div class="playlist-track playing"><div class="track-name">Kicking My Feet - Ruel</div></div>
+<div class="playlist-track"><div class="track-namse">Dive - Olivia Dean</div></div>
+<div class="playlist-track"><div class="track-name">A Couple Minutes (A COLORS SHOW) - Olivia Dean</div></div>
+<div class="playlist-track"><div class="track-name">Homebody - Billy Raffoul</div></div>
+<div class="playlist-track"><div class="track-name">The Angels - Labrinth</div></div>
+<div class="playlist-track"><div class="track-name">What if I miss you for the rest of my life? - Janine Berdin</div></div>
+<div class="playlist-track"><div class="track-name">Devotion - Justin Bieber & Dijon</div></div>
+<div class="playlist-track"><div class="track-name">The Dress - Dijon</div></div>
+<div class="playlist-track"><div class="track-name">I THINK YOU'RE SPECIAL - Justin Bieber & Tems</div></div>
+</div>
+</div>
+<div class="continue-link"><<link "continue" "B1C2_Transition">><</link>></div>
+</div>
+</div>
+</div>
 
-:: V4_Meeting_SerenityPrayer {"position":"1450,700","size":"100,100"}
+:: B1C4_Meeting_SerenityPrayer {"position":"1450,700","size":"100,100"}
 <<if not $members>>
 <<set $characterImages to {
   "Anesu": "https://i.imgur.com/PE4PsVq.gif",
@@ -3989,7 +4139,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
 }, 3800)>>
 
 
-:: V2_StayingHome {"position":"700,750","size":"100,100"}
+:: B1C2_StayingHome{"position":"700,750","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<run updateAngelStatus()>>
 <<set _baseBeats to [
@@ -4037,8 +4187,6 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "dialogue", side: "character", speaker: "Mama", text: "Why is it automatically your fault? Are you actively picking dickheads?"},
   {type: "action", text: "Anesu licks the tears and snot building up on her lips, wiping away the uncontrollable jealousy and resentment she now felt."},
   {type: "thought", text: "See? You're a fucking mess, girl. Crying over a man who doesn't care."},
-  {type: "interject", text: "Wait, I thought you were saying this is Su's fault... now it's his? We can't go both barrels from both ends."},
-  {type: "thought", text: "He doesn't care because she said no, making her a waste of his time. But then again, the fact you thought he liked you is a fucking laugh."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "No I'm no—"},
   {type: "dialogue", side: "character", speaker: "Mama", text: "So then why is it that YOU'RE the issue? I clearly must be missing something."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'm the common denominator."},
@@ -4129,7 +4277,7 @@ The kitchen, evening. Anesu wipes the same spot on the counter, over and over.
 </div>
 
 
-:: V5_Erin_Opening {"position":"1450,700","size":"100,100"}
+:: B2C1_01_Erin_Opening{"position":"1450,700","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
@@ -4172,6 +4320,86 @@ Erin's car, pulling away from Anesu's house.
 </div>
 <div class="speaker-box" id="rightSpeaker">
 <div class="speaker-name" id="rightSpeakerName"></div>
+</div>
+</div>
+</div>
+
+:: B2C1_02_HomeAlone {"position":"400,400","size":"100,100"}
+<<set $sceneBeats to [
+  {type: "action", text: "She turns the car off and slams the door behind her, walking to the door ever so slowly."},
+  {type: "action", text: "Her key hits the cold silver hole and she pauses, inhaling deeply."},
+  {type: "action", text: "The ridges slide through as she exhales shakily, turning it with an echoing click."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Honey, I'm home."},
+  {type: "action", text: "She croaks it out, eyes dragging to the end of the hallway."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "This hurts my heart. I know I can't feel it, but geez."},
+  {type: "action", text: "Erin hangs her purse on the hook, not before grabbing her deck of smokes and lavender lighter her eldest got for her many moons ago. The label has faded since then. Her thumb grazes over the non-existent typography."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "What did it used to say?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Oh, this?"},
+  {type: "action", text: "She chuckles and sighs."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Mackenzie and Oscar got it for me for Mother's Day. She was 13 and he was 9... I apparently smoked so often they got me a personalised lighter saying \"best mama in the world.\" Ever since they left, I've been thumbing over the engraving. It's smoothed out and faded now."},
+  {type: "action", text: "Erin keeps her slippers on, and makes her way to a mantle in the centre of the hall. She picks up an extravagant jade urn, holding it tightly, walking to the back to smoke by the empty fire pit."},
+  {type: "action", text: "She sits in her chair — a much larger one sits next to hers, looking as if it hasn't been sat in in years."},
+  {type: "action", text: "She lights it haphazardly and inhales hard, staring deeply at the chair, placing the jade piece, nestled in the blanket that never moves. Rain or shine."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "How was your day?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Is she talking to me?"},
+  {type: "action", text: "Erin nods and exhales, raising her brow as if she is agreeing to something."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Yeah, it can be like that sometimes."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Oohhh."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Did you make it to work on time? Those works can be a real bitch."},
+  {type: "action", text: "She inhales again, knee bouncing up and down."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "I'm glad you made it. Were there many orders today? You sounded busy on the phone this morning."},
+  {type: "action", text: "..."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Oh, Erin..."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Oh no, it's okay, I understand. Work can be like that sometimes. Did you manage to speak to Ethan?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Who is Ethan?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Oh, his boss. He can be a bit of a dick sometimes."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Ahh, okay."},
+  {type: "action", text: "..."},
+  {type: "action", text: "The cigarette burns out between her fingers, staining and burning her index."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Might want to put that out."},
+  {type: "action", text: "She jolts out of the way before the ash falls on her skirt, and watches the whole thing fall."},
+  {type: "action", text: "Without hesitation she lights another one, nodding."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Well, I'm glad you stood up to him, Robert. It was about time."},
+  {type: "action", text: "She chuckles and bites her lip."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Is Robert okay?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Yeah, he's just been going back and forth with his boss for weeks now. He deserves a pay rise but apparently it's \"not in the budget.\" Typical."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Yeah, that's where they get you! How long has he been working there for?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "10 years! Can you believe it? And he hasn't asked for a raise till now!"},
+  {type: "action", text: "Her nails tap and crackle against the arm of her chair, emphasising the decade-long achievement."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "So what does he do?"},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "He works at a manufacturing company, specifically for smart watches. He calibrates and maintains the machines that make them. He's very smart. Way smarter than me."},
+  {type: "action", text: "Ash falls onto her skirt and seeps into the grooves of the knitted wool."},
+  {type: "action", text: "She watches it burn a hole and fall through to her skin, burning out slowly."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Sorry, what did you say, honey?"},
+  {type: "action", text: "..."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Ah yes, the children are fine. You know how it goes."},
+  {type: "action", text: "You wander around the yard as Erin chats with Robert. The dead roses and patches of dirt in the grass... the old swing and tattered rope. A dilapidated dog house with a bowl full of dirt."},
+  {type: "action", text: "Her yard, her home, reflected her soul. Melancholy and suffering. Pure detriment and hopelessness."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Well, I have to go put supper on for us. Sweet potato or potato?"},
+  {type: "action", text: "..."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Potato it is."},
+  {type: "action", text: "She throws the butt into the fire pit, orange filters piled high. She scoops Robert up and walks them both inside, her grip ever so tight on the love of her life."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "I loved potato."},
+  {type: "continueTo", dest: "B2C1_03_FamilyDinner"}
+]>>
+<<set $beatIndex to 0>>
+
+<div class="opening-layout">
+<div class="narrative-box" id="sceneNarrative">
+<div class="meeting-time"></div>
+Erin's home. Quiet, apart from her.
+</div>
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Erin']">
+<div class="speaker-name" id="leftSpeakerName">Erin</div>
+</div>
+<div class="chat-log" id="chatLog">
+<div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<img @src="$characterImages['Higher Power']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Higher Power</div>
 </div>
 </div>
 </div>
