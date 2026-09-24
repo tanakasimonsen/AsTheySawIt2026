@@ -1859,7 +1859,7 @@ window.updateAngelStatus = function () {
     $('<div id="angel-status"></div>').insertAfter('#menu');
   }
   if ($('#memory-bank-link').length === 0) {
-    $('<a id="memory-bank-link" style="display:block; cursor:pointer; margin-top:0.5em;">📖 Memory Bank</a>').insertAfter('#menu');
+   $('<a id="memory-bank-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">📖 Memory Bank</a>').insertAfter('#menu');
   }
   var v = State.variables;
   var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';
@@ -3721,11 +3721,11 @@ Erin&#39;s car, still driving.
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="28" name="B1C2_01_Opening" tags="" position="375,425" size="100,100">&lt;&lt;set $currentDate to &quot;Wed, 1 May 2024&quot;&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;Hey, you free tonight? 😉&quot;, time: &quot;9:40pm&quot;},
-  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;Maybe... what&#39;s in it for me?&quot;, time: &quot;9:41pm&quot;},
-  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;You spending the night with me... taking care of you&quot;, time: &quot;9:42pm&quot;},
-  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;And what makes you think i want that ;)&quot;, time: &quot;9:43pm&quot;},
-  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;From the way you were moaning for me&quot;, time: &quot;9:44pm&quot;},
+  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;Hey, you free tonight? 😉&quot;, time: &quot;9:40pm&quot;, sound: &quot;audio/notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;Maybe... what&#39;s in it for me?&quot;, time: &quot;9:41pm&quot;, sound: &quot;audio/send_notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;You spending the night with me... taking care of you&quot;, time: &quot;9:42pm&quot;, sound: &quot;audio/notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;And what makes you think i want that ;)&quot;, time: &quot;9:43pm&quot;, sound: &quot;audio/send_notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;From the way you were moaning for me&quot;, time: &quot;9:44pm&quot;, sound: &quot;audio/notif.mp3&quot;},
   {type: &quot;thought&quot;, text: &quot;My heart beats throughout my body. I haven&#39;t seen him in a while.&quot;},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You do some background research on this guy. He does not seem like a nice guy in any way.&quot;},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Didn&#39;t he ghost you like twice? I don&#39;t think you should see him...&quot;},
@@ -3733,9 +3733,9 @@ Erin&#39;s car, still driving.
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You don&#39;t seem too sure about that, Anesu. Just stay home, hang out with Micah or something.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Micah? He wants nothing to do with me. He&#39;s still mad at me.&quot;},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;So spending it with this asshole is better? At least you know Micah loves you.&quot;},
-  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;Come over tonight babe&quot;, time: &quot;9:52pm&quot;},
-  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;I don&#39;t have my car tonight :((&quot;, time: &quot;9:53pm&quot;},
-  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;Come and get me?&quot;, time: &quot;9:53pm&quot;},
+  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;Come over tonight babe&quot;, time: &quot;9:52pm&quot;, sound: &quot;audio/notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;I don&#39;t have my car tonight :((&quot;, time: &quot;9:53pm&quot;, sound: &quot;audio/send_notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;Come and get me?&quot;, time: &quot;9:53pm&quot;, sound: &quot;audio/send_notif.mp3&quot;},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You HAVE no car, NO LICENSE might I add? And what exactly are you gonna tell Mama?&quot;},
   {type: &quot;expandable&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, shortText: &quot;Telling her nothing, no guy is ever allowed in my life.&quot;, layers: [
     &quot;I can&#39;t say anything. She won&#39;t even be able to begin to understand&quot;,
@@ -3749,9 +3749,9 @@ Erin&#39;s car, still driving.
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Then why do you get so upset when they disappear?&quot;},
   {type: &quot;breathe&quot;, text: &quot;The silence grows despicably loud.&quot;, duration: 2500},
   {type: &quot;thought&quot;, text: &quot;It was an awful chase of cat and mouse. It was the same result over and over. Insanity manifested. It says it right on the walls at Mirabel — repeating the same behaviours, expecting the same result.&quot;},
-  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;What time?&quot;, time: &quot;10:02pm&quot;},
-  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;10pm??&quot;, time: &quot;10:03pm&quot;},
-  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;I&#39;ll see you then gorgeous&quot;, time: &quot;10:04pm&quot;},
+  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;What time?&quot;, time: &quot;10:02pm&quot;, sound: &quot;audio/notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;10pm??&quot;, time: &quot;10:03pm&quot;, sound: &quot;audio/send_notif.mp3&quot;},
+  {type: &quot;text&quot;, side: &quot;them&quot;, text: &quot;I&#39;ll see you then gorgeous&quot;, time: &quot;10:04pm&quot;, sound: &quot;audio/notif.mp3&quot;},
   {type: &quot;expandable&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, shortText: &quot;See? He thinks I&#39;m gorgeous.&quot;, layers: [
     &quot;He thinks I&#39;m gorgeous! He likes me!&quot;,
     &quot;I just need someone to think that right now. I don&#39;t care that it&#39;s him. I just need it to be true from somebody.&quot;

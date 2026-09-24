@@ -3730,11 +3730,11 @@ Erin's car, still driving.
 <<set $currentDate to "Wed, 1 May 2024">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
-  {type: "text", side: "them", text: "Hey, you free tonight? 😉", time: "9:40pm"},
-  {type: "text", side: "me", text: "Maybe... what's in it for me?", time: "9:41pm"},
-  {type: "text", side: "them", text: "You spending the night with me... taking care of you", time: "9:42pm"},
-  {type: "text", side: "me", text: "And what makes you think i want that ;)", time: "9:43pm"},
-  {type: "text", side: "them", text: "From the way you were moaning for me", time: "9:44pm"},
+  {type: "text", side: "them", text: "Hey, you free tonight? 😉", time: "9:40pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "Maybe... what's in it for me?", time: "9:41pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "You spending the night with me... taking care of you", time: "9:42pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "And what makes you think i want that ;)", time: "9:43pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "From the way you were moaning for me", time: "9:44pm", sound: "audio/notif.mp3"},
   {type: "thought", text: "My heart beats throughout my body. I haven't seen him in a while."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "You do some background research on this guy. He does not seem like a nice guy in any way."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Didn't he ghost you like twice? I don't think you should see him..."},
@@ -3742,9 +3742,9 @@ Erin's car, still driving.
   {type: "freeType", side: "character", speaker: "Higher Power", text: "You don't seem too sure about that, Anesu. Just stay home, hang out with Micah or something."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Micah? He wants nothing to do with me. He's still mad at me."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "So spending it with this asshole is better? At least you know Micah loves you."},
-  {type: "text", side: "them", text: "Come over tonight babe", time: "9:52pm"},
-  {type: "text", side: "me", text: "I don't have my car tonight :((", time: "9:53pm"},
-  {type: "text", side: "me", text: "Come and get me?", time: "9:53pm"},
+  {type: "text", side: "them", text: "Come over tonight babe", time: "9:52pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "I don't have my car tonight :((", time: "9:53pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "me", text: "Come and get me?", time: "9:53pm", sound: "audio/send_notif.mp3"},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "You HAVE no car, NO LICENSE might I add? And what exactly are you gonna tell Mama?"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Telling her nothing, no guy is ever allowed in my life.", layers: [
     "I can't say anything. She won't even be able to begin to understand",
@@ -3758,9 +3758,9 @@ Erin's car, still driving.
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Then why do you get so upset when they disappear?"},
   {type: "breathe", text: "The silence grows despicably loud.", duration: 2500},
   {type: "thought", text: "It was an awful chase of cat and mouse. It was the same result over and over. Insanity manifested. It says it right on the walls at Mirabel — repeating the same behaviours, expecting the same result."},
-  {type: "text", side: "them", text: "What time?", time: "10:02pm"},
-  {type: "text", side: "me", text: "10pm??", time: "10:03pm"},
-  {type: "text", side: "them", text: "I'll see you then gorgeous", time: "10:04pm"},
+  {type: "text", side: "them", text: "What time?", time: "10:02pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "10pm??", time: "10:03pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "I'll see you then gorgeous", time: "10:04pm", sound: "audio/notif.mp3"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "See? He thinks I'm gorgeous.", layers: [
     "He thinks I'm gorgeous! He likes me!",
     "I just need someone to think that right now. I don't care that it's him. I just need it to be true from somebody."
