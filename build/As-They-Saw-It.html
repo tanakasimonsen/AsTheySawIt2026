@@ -483,28 +483,133 @@ body.scene-night #ui-bar {
   animation: talk-wobble 0.15s steps(2) infinite;
 }
 
+#titleBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://imgur.com/q0uNbFy.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  z-index: -1;
+}
+
+#titleBackdrop.visible {
+  opacity: 1;
+}
+
+.title-highlight {
+  display: inline-block;
+  background-color: #CEC19F;
+  padding: 0.3em 0.8em;
+  border-radius: 4px;
+  position: relative;
+}
+
+.title-highlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #CEC19F;
+  opacity: 0.4;
+  border-radius: 4px;
+  z-index: -1;
+}
 /* ============================================================
    QUOTE BOX (AA Big Book passages)
    ============================================================ */
 .quote-box {
   width: 100%;
-  max-width: 750px;
+  max-width: 650px;
   background-color: var(--bg-panel);
   border: 3px solid var(--text-main);
   border-radius: 6px;
-  padding: 2.5em 3em;
+  padding: 1.5em 2em;
   margin: 0 auto;
   text-align: left;
-  line-height: 1.7;
+  line-height: 1.5;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .quote-box p {
-  margin: 0 0 1.2em 0;
+  margin: 0 0 0.9em 0;
 }
 
 .quote-box .quote-prompt {
   text-align: center;
-  margin-top: 1em;
+  margin-top: 0.75em;
+}
+
+.book-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1.5em 0;
+}
+
+.book {
+  display: flex;
+  width: 100%;
+  max-width: 850px;
+  min-height: 420px;
+  background-color: var(--bg-panel);
+  border: 4px solid var(--text-main);
+  box-shadow:
+    inset 0 0 0 2px var(--bg-main),
+    inset 0 0 0 4px var(--text-main);
+}
+
+.book-page {
+  flex: 1;
+  padding: 2em 1.8em;
+  box-sizing: border-box;
+}
+
+.book-page-left {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 26px,
+    rgba(205, 193, 159, 0.08) 26px,
+    rgba(205, 193, 159, 0.08) 27px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-page-left::before {
+  content: "❧";
+  font-size: 2.5em;
+  color: var(--accent-thought-dim);
+  opacity: 0.5;
+}
+
+.book-spine {
+  width: 14px;
+  flex-shrink: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--text-main) 0px,
+    var(--text-main) 8px,
+    var(--bg-main) 8px,
+    var(--bg-main) 16px
+  );
+}
+
+.book-page-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.book-page-right p {
+  margin: 0 0 0.9em 0;
 }
 
 /* ============================================================
@@ -712,7 +817,7 @@ body.scene-night #ui-bar {
 }
 
 .narrative-box .chapter-heading {
-  font-size: 1.8em;
+  font-size: 1em;
   letter-spacing: 2px;
   font-family: 'Pixelta', monospace;
   color: var(--text-main);
@@ -822,7 +927,7 @@ body.scene-night #ui-bar {
 
 .chat-line.player {
   font-family: 'reindeer-modern', monospace;
-  font-size: 1em;
+  font-size: 0.8em;
   align-self: flex-start;
   text-align: left;
   background-color: rgba(42, 61, 20, 0.6);
@@ -868,7 +973,7 @@ body.scene-night #ui-bar {
 
 #namePromptBox input[type="text"] {
   font-family: 'reindeer-modern', monospace;
-  font-size: 0.5em;
+  font-size: 0.8em;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid var(--text-main);
@@ -1700,8 +1805,30 @@ $(document).on(':passagedisplay', function() {
   setupDebugToggle();
 });
 
+window.characterSpeeds = {
+  "Erin": 45,
+  "Higher Power": 20,
+  "Mama": 15,
+  "Anesu": 25,
+  "Dad": 30,
+  "Micah": 20
+};
+
+window.getTypeSpeed = function(speaker, override) {
+  if (override) return override;
+  if (window.characterSpeeds[speaker]) return window.characterSpeeds[speaker];
+  return 25;
+};
+
 $(document).on(':passagedisplay', function () {
   $('#story-title').text('created by titikormetsi studios');
+});
+
+$(document).on(':passagestart', function() {
+  if (window.titleScreenTimers) {
+    window.titleScreenTimers.forEach(function(t){ clearTimeout(t); });
+    window.titleScreenTimers = [];
+  }
 });
 
 window.scrollAllLogs = function() {
@@ -2205,22 +2332,22 @@ window.stopAmbience = function() {
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;???&quot;, text: &quot;\&quot;Don&#39;t worry, the seeped scent of cigarette smoke will wear off.\&quot;&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;???&quot;, text: &quot;\&quot;Don&#39;t worry, the seeped scent of cigarette smoke will wear off.\&quot;&quot;},
   {type: &quot;action&quot;, text: &quot;You hear a light chuckle and rough throat clear.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;???&quot;, text: &quot;They say it is described to be a circle of sadness. I&#39;d say it is quite the opposite. It&#39;s the birth of hope. I can&#39;t lie, my first time here I thought it was an outtake of Fight Club. I kinda stumbled across this place on my way to a church. Was meant to assist a grieving widow. I take care of these people. Somewhat...&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;Mabel&quot;, text: &quot;My name is Mabel, a Guardian Angel of this meeting. Now I have help!&quot;, setVar: &quot;bossName&quot;, setValue: &quot;Mabel&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;Mabel&quot;, text: &quot;I&#39;m assuming you&#39;re new?&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;Mabel&quot;, text: &quot;What can I call you?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;???&quot;, text: &quot;They say it is described to be a circle of sadness. I&#39;d say it is quite the opposite. It&#39;s the birth of hope. I can&#39;t lie, my first time here I thought it was an outtake of Fight Club. I kinda stumbled across this place on my way to a church. Was meant to assist a grieving widow. I take care of these people. Somewhat...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;My name is Mabel, a Guardian of this meeting. Now I have help!&quot;, setVar: &quot;bossName&quot;, setValue: &quot;Mabel&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;I&#39;m assuming you&#39;re new?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;What can I call you?&quot;},
   {type: &quot;namePrompt&quot;},
   {type: &quot;typedChoice&quot;, options: [
     {text: &quot;I am new here, but what am I doing exactly?&quot;},
     {text: &quot;Yeah, first time. What&#39;s my job here?&quot;},
     {text: &quot;I don&#39;t really understand what&#39;s happening.&quot;}
   ]},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;Mabel&quot;, text: &quot;Well, you pick one to assist each week. We hear members share and then we guide. We can nudge, suggest, plant the seed so to speak, and can&#39;t force one to be sober but rather help them see what they can do to be better, achieve greater things and maybe see a better tomorrow...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;Well, you pick one to assist each week. We hear members share and then we guide. We can nudge, suggest, plant the seed so to speak, and can&#39;t force one to be sober but rather help them see what they can do to be better, achieve greater things and maybe see a better tomorrow...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;You&quot;, text: &quot;So I can pick any person? I&#39;m a god now??&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;Mabel&quot;, text: &quot;Mhmm, not exactly. You&#39;re a higher power, a guardian angel for the Mirabel meeting. We assist and provide the tools. We cannot force one to be better. Take a look at who is here tonight...Maybe someone will be of interest. I need help with this meeting, it seems to be a popular one.&quot;, setVar: &quot;assignedMeeting&quot;, setValue: &quot;Mirabel Meeting&quot;},
-  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: &quot;Mabel&quot;, text: &quot;Let&#39;s see who&#39;s here tonight.&quot;, dest: &quot;P_00_Member_Selection&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;Mhmm, not exactly. You&#39;re a higher power, a guardian angel for the Mirabel meeting. We assist and provide the tools. We cannot force one to be better. Take a look at who is here tonight...Maybe someone will be of interest. I need help with this meeting, it seems to be a popular one.&quot;, setVar: &quot;assignedMeeting&quot;, setValue: &quot;Mirabel Meeting&quot;},
+  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;Let&#39;s see who&#39;s here tonight.&quot;, dest: &quot;P_00_Member_Selection&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
@@ -2237,7 +2364,7 @@ You float above an AA meeting in session, observing the many faces and walks of 
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Guardian Angel&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;????&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2268,14 +2395,15 @@ You&#39;ve chosen to follow Anesu this week.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="B1C1_02_FirstNightwithAnesu" tags="" position="425,225" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
-&lt;&lt;set $currentDate to &quot;Sun, 28 Apr 2024&quot;&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Sun, 21 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;8:45pm&quot;&gt;&gt;
 &lt;&lt;run setAmbience(&#39;audio/meeting_exterior.mp3&#39;)&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 
 &lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Well that was a lovely meeting! Andy finally shared.&quot;},
-  {type: &quot;thought&quot;, text: &quot;I never know how to respond to someone saying a \&quot;good meeting\&quot;, they can be so depressing sometimes, and so was Andy&#39;s share. And Jordan! God man you&#39;re 40 something years old, get your shit together!&quot;},
+  {type: &quot;thought&quot;, text: &quot;I never know how to respond to someone saying a \&quot;good meeting\&quot;, 
+    they can be so depressing sometimes, and so was Andy&#39;s share. And Jordan! God man you&#39;re 40 something years old, get your shit together!&quot;},
   {type: &quot;action&quot;, text: &quot;Erin&#39;s door thuds shut.&quot;, sound: &quot;audio/car_door.mp3&quot;},
   {type: &quot;action&quot;, text: &quot;With Anesu a beat after.&quot;, sound: &quot;audio/car_door.mp3&quot;},
   {type: &quot;action&quot;, text: &quot;The engine turns over.&quot;, sound: &quot;audio/engine_start.mp3&quot;, soundId: &quot;engine&quot;, soundPersist: true},
@@ -2291,7 +2419,7 @@ You&#39;ve chosen to follow Anesu this week.
 &lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
 &lt;div class=&quot;chapter-heading&quot;&gt;Chapter One: First Night with Anesu&lt;/div&gt;
 &lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
-You follow Anesu home, watching her hop in the passenger side of Erin&#39;s car.
+You follow Anesu home, watching her hop in the passenger side of Erin&#39;s car. 
 &lt;/div&gt;
 
 &lt;div class=&quot;conversation-row&quot;&gt;
@@ -2310,7 +2438,9 @@ You follow Anesu home, watching her hop in the passenger side of Erin&#39;s car.
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="B1C1_03_AnesuDoorstep" tags="" position="900,200" size="100,100">&lt;&lt;run stopAmbience()&gt;&gt;        
 &lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;They jolt with a halt, a little too close to the garage door.&quot;, sound: &quot;audio/engine_stop.mp3&quot;, stopSoundId: &quot;engine&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good rest of your week hun! Remember, your mother loves you very much.&quot;, memoryEntry: {who: &quot;Erin&quot;, text: &quot;My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mum like they&#39;re friends, which they very much are not.&quot;}},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good rest of your week hun! Remember, your mother 
+    loves you very much.&quot;, memoryEntry: {who: &quot;Erin&quot;, text: &quot;My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mama 
+    like she knows her, which she very much does not.&quot;}},
   {type: &quot;action&quot;, text: &quot;Erin flashes her lights and drives off, her home a few kms down the road.&quot;},
   {type: &quot;thought&quot;, text: &quot;Okay, just shoes off and straight to your room, don&#39;t even hesitate.&quot;},
   {type: &quot;action&quot;, text: &quot;Unlocking the door was a success but now comes the shoes...&quot;, sound: &quot;audio/door_unlock.mp3&quot;},
@@ -2346,7 +2476,7 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Just because you told me, it doesn&#39;t mean that you went.&quot;},
   {type: &quot;action&quot;, text: &quot;Her tone is cold, holding a scowl between her brows.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu stays fighting her second shoelace.&quot;},
-  {type: &quot;thought&quot;, text: &quot;I shake my head disappointingly but I shouldn&#39;t be surprised. Of course she&#39;s fucking chastising me. It&#39;s only a matter of—&quot;},
+  {type: &quot;thought&quot;, text: &quot;I shake my head disappointingly but I shouldn&#39;t be surprised. Of course she&#39;s fucking chastising me. It&#39;s only a matter of—&quot;, interrupted: true},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You reek of cigarettes.&quot;},
   {type: &quot;thought&quot;, text: &quot;And there it is.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;That&#39;s what you came out of bed to tell me? You don&#39;t talk to me all day and this is what you say?&quot;},
@@ -2358,9 +2488,9 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Drop your bag sisi, I&#39;m getting the breathalyser.&quot;},
   {type: &quot;action&quot;, text: &quot;The air drops. Anesu&#39;s eyes dart to Dad, mentally begging him to stop this.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Are we still fucking on this?&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;I don&#39;t think—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;I don&#39;t think—&quot;, interrupted: true},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Language!&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;—That is necessary Ruby, she just came back from a meeting. I saw Er—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;—That is necessary Ruby, she just came back from a meeting. I saw Er—&quot;, interrupted: true},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;JUST BECAUSE she said she went, does NOT MEAN she did so.&quot;},
   {type: &quot;action&quot;, text: &quot;Mama trods off to get the breathalyser. Anesu and Dad stand in the hallway, blankly staring at one another.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I went to the meeting, Dad.&quot;},
@@ -2372,15 +2502,15 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
   {type: &quot;action&quot;, text: &quot;Mama comes back to the hallway with a fresh mouthpiece and a torch.&quot;},
   {type: &quot;thought&quot;, text: &quot;I roll my eyes and stand in a T position, looking Dad dead in the eyes while she frisks me for the 9th time this week. I watch her eyes judge me all over. Go on Ruby, breathe in that cigarette smoke.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Where the hell would she hide booze on her?&quot;},
-  {type: &quot;thought&quot;, text: &quot;I watch him squint once more, not because of the hour of the night, but to check if his eyes didn&#39;t deceive him. But yes, this is his wife. Frisking their 19 year old in a dark hallway. And unfortunately, I am their daughter.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Okay, now get ready to blow. Blow i—&quot;},
-  {type: &quot;thought&quot;, text: &quot;I don&#39;t want to fucking do this. \&quot;Your mama loves you\&quot;, what the fuck does Erin know?&quot;},   
-{type: &quot;action&quot;, text: &quot;Should Anesu...&quot;},
-{type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: $playerName, text: &quot;Deny?&quot;, dest: &quot;B1C1_04_DenyReveal&quot;},
-{type: &quot;action&quot;, text: &quot;or...&quot;},
-{type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: $playerName, text: &quot;Comply?&quot;, dest: &quot;B1C1_04_ComplyReveal&quot;},
-{type: &quot;action&quot;, text: &quot;or...&quot;},
-{type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: $playerName, text: &quot;Compromise?&quot;, dest: &quot;B1C1_04_CompromiseReveal&quot;}
+  {type: &quot;thought&quot;, text: &quot;I watch him squint once more, not because of the hour of the night, but to check if his eyes didn&#39;t deceive him. But yes, this is his wife. Frisking their 20 year old in a dark hallway. And unfortunately, I am their daughter.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Okay, now get ready to blow. Blow i—&quot;, interrupted: true},
+  {type: &quot;thought&quot;, text: &quot;I don&#39;t want to fucking do this. \&quot;Your mama loves you\&quot;, what the fuck does Erin know?&quot;},
+  {type: &quot;action&quot;, text: &quot;Should Anesu...&quot;},
+  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: $playerName, text: &quot;Deny?&quot;, dest: &quot;B1C1_04_DenyReveal&quot;},
+  {type: &quot;action&quot;, text: &quot;or...&quot;},
+  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: $playerName, text: &quot;Comply?&quot;, dest: &quot;B1C1_04_ComplyReveal&quot;},
+  {type: &quot;action&quot;, text: &quot;or...&quot;},
+  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: $playerName, text: &quot;Compromise?&quot;, dest: &quot;B1C1_04_CompromiseReveal&quot;}
 ]&gt;&gt;
 
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -2406,7 +2536,7 @@ She&#39;s cold and doesn&#39;t move to approach her daughter, just stands in the
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="7" name="B1C1_04_DenyReveal" tags="" position="1200,150" size="100,100">&lt;&lt;set $v1Ending to &quot;Deny&quot;&gt;&gt;
 &lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;It&#39;s been 5 months of meetings and sobriety. I don&#39;t need to do anything.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: $playerName, text: &quot;Of course you don&#39;t HAVE to do anything, but these are your parents. This is your mama.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: $playerName, text: &quot;Of course you don&#39;t HAVE to do anything, but these are your parents. This is your mama.&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B1C1_04_Deny&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -2427,7 +2557,7 @@ We deny
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Guardian Angel&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2573,13 +2703,13 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Guardian Angel&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="B1C1_04_ComplyReveal" tags="" position="1075,150" size="100,100">&lt;&lt;set $v1Ending to &quot;Comply&quot;&gt;&gt;
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: $playerName, text: &quot;Mhmm what did Peter say? \&quot;You might have healed but those who were around you still haven&#39;t\&quot;? Go through with it Anesu.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: $playerName, text: &quot;Mhmm what did Peter say? \&quot;You might have healed but those who were around you still haven&#39;t\&quot;? Go through with it Anesu.&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B1C1_04_Comply&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -2600,7 +2730,7 @@ We comply.
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Guardian Angel&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2658,7 +2788,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="B1C1_04_CompromiseReveal" tags="" position="950,150" size="100,100">&lt;&lt;set $v1Ending to &quot;Compromise&quot;&gt;&gt;
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Guardian Angel&quot;, label: $playerName, text: &quot;Do what makes you comfortable, and you know Dad is on your team, of course Mama is too but it may not feel like that. Just keep in mind what Erin said...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: $playerName, text: &quot;Do what makes you comfortable, and you know Dad is on your team, of course Mama is too but it may not feel like that. Just keep in mind what Erin said...&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B1C1_04_Compromise&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -2679,7 +2809,7 @@ We compromise.
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Guardian Angel&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2689,7 +2819,7 @@ We compromise.
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;No, your father is tired. I&#39;m doing this.&quot;, impacts: {anesuGuard: 0.5}},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;He doesn&#39;t look very tired, if he was tired he wouldn&#39;t have come out of bed to see me.&quot;},
   {type: &quot;thought&quot;, text: &quot;What this nigga can&#39;t speak for himself? Let the man speak for himself.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Yeah, I can do it. Let me get my gla—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Yeah, I can do it. Let me get my gla—&quot;, interrupted: true},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You&#39;re not doing it Gerald. She does not get to have her way all the time.&quot;, impacts: {anesuGuard: 1}},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;I&#39;m pretty sure she can decide who is gonna test her. I don&#39;t even know why we&#39;re doing it, I just saw Erin drive off.&quot;, impacts: {familyAwareness: 0.5}},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;And how do we know that was Erin?&quot;},
@@ -2749,39 +2879,63 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Mama&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="B1C1_AAMessage_01P1" tags="" position="700,225" size="100,100">&lt;div class=&quot;menu-screen&quot;&gt;
-&lt;div class=&quot;quote-box&quot;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="B1C1_AAMessage_01P1" tags="" position="700,225" size="100,100">&lt;div class=&quot;book-wrapper&quot;&gt;
+&lt;div class=&quot;book&quot;&gt;
+&lt;div class=&quot;book-page book-page-left&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;book-spine&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;book-page book-page-right&quot;&gt;
 &lt;div id=&quot;dialogueLine&quot;&gt;
 &lt;p&gt;&quot;The alcoholic is like a tornado roaring their way through the lives of others. Hearts are broken. Sweet relationships are dead. Affections have been uprooted. Selfish and inconsiderate habits have kept the home in turmoil. We feel a person is unthinking when they say sobriety is enough. They are like the farmer who came out of this cyclone cellar to find his home ruined. To his partner, he remarked, &quot;Don&#39;t see anything the matter here, Ma. Ain&#39;t it grand the wind stopped blowin&#39;?&quot;&quot;&lt;/p&gt;
 &lt;p class=&quot;chat-citation&quot;&gt;Chapter 6 &quot;Into Action,&quot; p. 82, Big Book of Alcoholics Anonymous&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&quot;dialoguePrompt&quot; class=&quot;quote-prompt&quot;&gt;
 &lt;&lt;link &quot;▼&quot;&gt;&gt;\
-&lt;&lt;run addQuote(&quot;The alcoholic is like a tornado roaring their way through the lives of others...&quot;, &quot;The alcoholic is like a tornado roaring their way through the lives of others. Hearts are broken. Sweet relationships are dead. Affections have been uprooted. Selfish and inconsiderate habits have kept the home in turmoil. We feel a person is unthinking when they say sobriety is enough. They are like the farmer who came out of this cyclone cellar to find his home ruined. To his partner, he remarked, \&quot;Don&#39;t see anything the matter here, Ma. Ain&#39;t it grand the wind stopped blowin&#39;?\&quot;&quot;, &quot;Chapter 6 \&quot;Into Action,\&quot; p. 82, Big Book of Alcoholics Anonymous&quot;)&gt;&gt;
+&lt;&lt;run addQuote(&quot;The alcoholic is like a tornado roaring their way through the lives of others...&quot;, &quot;Chapter 6 \&quot;Into Action,\&quot; p. 82, Big Book of Alcoholics Anonymous&quot;)&gt;&gt;
 &lt;&lt;replace &quot;#dialoguePrompt&quot;&gt;&gt;\
 &lt;div class=&quot;continue-link&quot;&gt;&lt;&lt;link &quot;continue&quot; &quot;B1C1_04_TalkingtoMama&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;\
 &lt;&lt;/replace&gt;&gt;\
 &lt;&lt;/link&gt;&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="P_02_Title_Screen" tags="" position="500,75" size="100,100">&lt;div class=&quot;menu-screen&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="P_02_Title_Screen" tags="" position="600,225" size="100,100">&lt;div id=&quot;titleBackdrop&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;menu-screen&quot;&gt;
 &lt;div class=&quot;title-lines&quot; id=&quot;titleLines&quot;&gt;&lt;/div&gt;
 &lt;div id=&quot;dialoguePrompt&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;&lt;run setTimeout(function(){
-  typeSequenceLines(&#39;titleLines&#39;, [
-    &quot;this is...&quot;,
-    {text: &quot;As They Saw It&quot;, fontSize: &quot;2.5em&quot;}
-  ], 100, function(){
-    Wikifier.wikifyEval(&#39;&lt;&lt;replace &quot;#dialoguePrompt&quot;&gt;&gt;&lt;div class=&quot;continue-link&quot;&gt;&lt;&lt;link &quot;start the story?&quot; &quot;P_03_Opening_Scene&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;&lt;&lt;/replace&gt;&gt;&#39;);
-  });
-}, 10)&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="P_01_Opening_Monologue" tags="" position="375,75" size="100,100">&lt;&lt;set $currentDate to &quot;Sun, 21 Apr 2024&quot;&gt;&gt;
+&lt;&lt;run (function(){
+  window.titleScreenTimers = [];
+  var t1 = setTimeout(function(){
+    typeSequenceLines(&#39;titleLines&#39;, [
+      {text: &quot;this is...&quot;, wrapClass: &quot;title-highlight&quot;}
+    ], 100, function(){
+      var t2 = setTimeout(function(){
+        $(&#39;#titleBackdrop&#39;).addClass(&#39;visible&#39;);
+        var t3 = setTimeout(function(){
+          if ($(&#39;#titleLines&#39;).length) {
+            Wikifier.wikifyEval(&#39;&lt;&lt;replace &quot;#titleLines&quot;&gt;&gt;&lt;span class=&quot;title-highlight&quot; style=&quot;font-size:2.5em;&quot;&gt;As They Saw It&lt;/span&gt;&lt;&lt;/replace&gt;&gt;&#39;);
+          }
+          var t4 = setTimeout(function(){
+            if ($(&#39;#dialoguePrompt&#39;).length) {
+              Wikifier.wikifyEval(&#39;&lt;&lt;replace &quot;#dialoguePrompt&quot;&gt;&gt;&lt;div class=&quot;continue-link title-highlight&quot;&gt;&lt;&lt;link &quot;start the story?&quot; &quot;P_03_Opening_Scene&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;&lt;&lt;/replace&gt;&gt;&#39;);
+            }
+          }, 1200);
+          window.titleScreenTimers.push(t4);
+        }, 2600);
+        window.titleScreenTimers.push(t3);
+      }, 600);
+      window.titleScreenTimers.push(t2);
+    });
+  }, 10);
+  window.titleScreenTimers.push(t1);
+})()&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="P_01_Opening_Monologue" tags="" position="375,75" size="100,100">&lt;&lt;set $currentDate to &quot;Sun, 21 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;7:15pm&quot;&gt;&gt;
 &lt;&lt;set $anesuGuard to 5&gt;&gt;
 &lt;&lt;set $familyAwareness to 0&gt;&gt;
 &lt;&lt;set $weeksPlayed to 0&gt;&gt;
 &lt;&lt;set $elisBlocked to false&gt;&gt;
+&lt;&lt;set $wentToElias to false&gt;&gt;
 
 &lt;&lt;set $characterImages to {
   &quot;Anesu&quot;: &quot;https://i.imgur.com/PE4PsVq.gif&quot;,
@@ -2992,6 +3146,12 @@ _beat.text
   target.scrollTop(target[0].scrollHeight);
 })()&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
+&lt;&lt;if _beat.interrupted&gt;&gt;
+&lt;&lt;run setTimeout(function(){ Wikifier.wikifyEval(&#39;&lt;&lt;advanceScene&gt;&gt;&#39;); }, 600)&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;&lt;elseif _beat.type is &quot;namePrompt&quot;&gt;&gt;
+&lt;&lt;askForName&gt;&gt;
 
 &lt;&lt;elseif _beat.type is &quot;spacer&quot;&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-spacer&quot;&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
@@ -3006,6 +3166,7 @@ _beat.text
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-action&quot;&gt;_beat.text&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
 &lt;&lt;run setTimeout(function(){ $(&#39;.chat-log&#39;).removeClass(&#39;breathing&#39;); }, window.fastMode ? 50 : (_beat.duration ? _beat.duration : 3000))&gt;&gt;
+
 &lt;&lt;elseif _beat.type is &quot;text&quot;&gt;&gt;
 &lt;&lt;set _sender to _beat.side is &quot;them&quot; ? (_beat.senderName ? _beat.senderName : &quot;Elias&quot;) : &quot;Anesu&quot;&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div @class=&quot;&#39;text-bubble &#39; + _beat.side&quot;&gt;&lt;div class=&quot;text-sender&quot;&gt;_sender&lt;/div&gt;_beat.text&lt;&lt;if _beat.time&gt;&gt;&lt;div class=&quot;chat-timestamp&quot;&gt;_beat.time&lt;/div&gt;&lt;&lt;/if&gt;&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
@@ -3022,6 +3183,7 @@ _beat.text
 &lt;&lt;elseif _beat.type is &quot;continueTo&quot;&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;continue-link&quot;&gt;&lt;&lt;link &quot;continue&quot; _beat.dest&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
+
 &lt;&lt;elseif _beat.type is &quot;dialogue&quot; or _beat.type is &quot;choice&quot;&gt;&gt;
 &lt;&lt;set _label to _beat.label ? _beat.label : ((_beat.speaker is &quot;You&quot; or _beat.speaker is &quot;Higher Power&quot;) and $playerName isnot &quot;&quot; ? $playerName : _beat.speaker)&gt;&gt;
 &lt;&lt;set _target to ($(&#39;#leftLog&#39;).length and _beat.side is &quot;player&quot;) ? &quot;#leftLog&quot; : (($(&#39;#rightLog&#39;).length and _beat.side is &quot;character&quot;) ? &quot;#rightLog&quot; : &quot;#chatLog&quot;)&gt;&gt;
@@ -3043,8 +3205,12 @@ _beat.text
 &lt;&lt;if _beat.type is &quot;dialogue&quot;&gt;&gt;
 &lt;&lt;append _target&gt;&gt;&lt;div @class=&quot;&#39;chat-line &#39; + _beat.side + &#39; font-&#39; + _beat.speaker.toLowerCase().replace(/\s/g,&#39;-&#39;)&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;_label&lt;/div&gt;&lt;span class=&quot;type-target&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
-&lt;&lt;run typewriterEffect($(_target + &#39; .type-target&#39;).last()[0], _beat.text, 25, _beat.speaker, function() {
-  $(document).trigger(&#39;:scene-typing-done&#39;);
+&lt;&lt;run typewriterEffect($(_target + &#39; .type-target&#39;).last()[0], _beat.text, getTypeSpeed(_beat.speaker, _beat.speed), _beat.speaker, function() {
+  if (_beat.interrupted) {
+    setTimeout(function(){ Wikifier.wikifyEval(&#39;&lt;&lt;advanceScene&gt;&gt;&#39;); }, 200);
+  } else {
+    $(document).trigger(&#39;:scene-typing-done&#39;);
+  }
 })&gt;&gt;
 
 &lt;&lt;else&gt;&gt;
@@ -3066,22 +3232,6 @@ _beat.text
 &lt;&lt;/for&gt;&gt;\
 &lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
-&lt;&lt;elseif _beat.type is &quot;namePrompt&quot;&gt;&gt;
-&lt;&lt;append &quot;#chatLog&quot;&gt;&gt;
-&lt;div class=&quot;chat-line player&quot; id=&quot;namePromptBox&quot;&gt;
-&lt;div class=&quot;chat-speaker&quot;&gt;You&lt;/div&gt;
-&lt;&lt;textbox &quot;$playerName&quot; &quot;&quot; autofocus&gt;&gt;
-&lt;&lt;link &quot;Submit&quot;&gt;&gt;
-&lt;&lt;if $playerName is &quot;&quot;&gt;&gt;&lt;&lt;set $playerName to &quot;Anesu&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
-&lt;&lt;replace &quot;#leftSpeakerName&quot;&gt;&gt;$playerName&lt;&lt;/replace&gt;&gt;
-&lt;&lt;replace &quot;#namePromptBox&quot;&gt;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;You&lt;/div&gt;$playerName&lt;&lt;/replace&gt;&gt;
-&lt;&lt;run updateAngelStatus()&gt;&gt;
-&lt;&lt;run $(&#39;.dialogue-prompt&#39;).remove()&gt;&gt;
-&lt;&lt;set $beatIndex += 1&gt;&gt;
-&lt;&lt;showNextPrompt&gt;&gt;
-&lt;&lt;/link&gt;&gt;
-&lt;/div&gt;
-&lt;&lt;/append&gt;&gt;
 
 &lt;&lt;elseif _beat.type is &quot;typedChoice&quot;&gt;&gt;
 &lt;&lt;set _opts to _beat.options&gt;&gt;
@@ -3113,7 +3263,7 @@ _beat.text
       State.variables.beatIndex += 1;
       var label = State.variables.playerName !== &quot;&quot; ? State.variables.playerName : &quot;You&quot;;
       $(&#39;#chatLog&#39;).append(&#39;&lt;div class=&quot;chat-line player&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;&#39; + label + &#39;&lt;/div&gt;&lt;span class=&quot;type-target&quot;&gt;&lt;/span&gt;&lt;/div&gt;&#39;);
-      typewriterEffect($(&#39;#chatLog .type-target&#39;).last()[0], chosen.text, 25, label, function(){
+      typewriterEffect($(&#39;#chatLog .type-target&#39;).last()[0], chosen.text, getTypeSpeed(label, chosen.speed), label, function(){
         if (chosen.dest) {
           Wikifier.wikifyEval(&#39;&lt;&lt;goto &quot;&#39; + chosen.dest + &#39;&quot;&gt;&gt;&#39;);
         } else {
@@ -3191,7 +3341,6 @@ _beat.text
   $(&#39;#chatLog&#39;).scrollTop($(&#39;#chatLog&#39;)[0].scrollHeight);
 })()&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
-
 
 &lt;&lt;elseif _beat.type is &quot;expandable&quot;&gt;&gt;
 &lt;&lt;set _target to ($(&#39;#leftLog&#39;).length and _beat.side is &quot;player&quot;) ? &quot;#leftLog&quot; : (($(&#39;#rightLog&#39;).length and _beat.side is &quot;character&quot;) ? &quot;#rightLog&quot; : &quot;#chatLog&quot;)&gt;&gt;
@@ -3298,7 +3447,7 @@ _beat.text
 
 &lt;&lt;/if&gt;&gt;
 
-&lt;&lt;if _beat.type isnot &quot;dialogue&quot; and _beat.type isnot &quot;namePrompt&quot; and _beat.type isnot &quot;typedChoice&quot; and _beat.type isnot &quot;freeType&quot; and _beat.type isnot &quot;expandable&quot; and _beat.type isnot &quot;continueTo&quot; and _beat.type isnot &quot;showPlaylist&quot;&gt;&gt;
+&lt;&lt;if _beat.type isnot &quot;dialogue&quot; and _beat.type isnot &quot;namePrompt&quot; and _beat.type isnot &quot;typedChoice&quot; and _beat.type isnot &quot;freeType&quot; and _beat.type isnot &quot;expandable&quot; and _beat.type isnot &quot;continueTo&quot; and _beat.type isnot &quot;showPlaylist&quot; and not (_beat.type is &quot;thought&quot; and _beat.interrupted)&gt;&gt;
 &lt;&lt;showNextPrompt&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
@@ -3329,6 +3478,29 @@ _beat.text
 &lt;&lt;replace &quot;#dialoguePrompt&quot;&gt;&gt;
 &lt;div class=&quot;continue-link&quot;&gt;&lt;&lt;link &quot;start the story?&quot; &quot;P_03_Opening_Scene&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;&lt;/replace&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;widget &quot;askForName&quot;&gt;&gt;
+&lt;&lt;append &quot;#chatLog&quot;&gt;&gt;
+&lt;div class=&quot;chat-line player&quot; id=&quot;namePromptBox&quot;&gt;
+&lt;div class=&quot;chat-speaker&quot;&gt;You&lt;/div&gt;
+&lt;&lt;textbox &quot;$playerName&quot; &quot;&quot; autofocus&gt;&gt;
+&lt;&lt;link &quot;Submit&quot;&gt;&gt;
+&lt;&lt;if $playerName.trim() is &quot;&quot;&gt;&gt;
+&lt;&lt;replace &quot;#namePromptBox&quot;&gt;&gt;&lt;&lt;/replace&gt;&gt;
+&lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-line character&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;Mabel&lt;/div&gt;Sorry, I didn&#39;t quite catch that.&lt;/div&gt;&lt;&lt;/append&gt;&gt;
+&lt;&lt;askForName&gt;&gt;
+&lt;&lt;else&gt;&gt;
+&lt;&lt;replace &quot;#leftSpeakerName&quot;&gt;&gt;$playerName&lt;&lt;/replace&gt;&gt;
+&lt;&lt;replace &quot;#namePromptBox&quot;&gt;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;You&lt;/div&gt;$playerName&lt;&lt;/replace&gt;&gt;
+&lt;&lt;run updateAngelStatus()&gt;&gt;
+&lt;&lt;run $(&#39;.dialogue-prompt&#39;).remove()&gt;&gt;
+&lt;&lt;set $beatIndex += 1&gt;&gt;
+&lt;&lt;showNextPrompt&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;/link&gt;&gt;
+&lt;/div&gt;
+&lt;&lt;/append&gt;&gt;
 &lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="B1C3_01_Opening" tags="" position="375,625" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Sat, 4 May 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;10:52am&quot;&gt;&gt;
