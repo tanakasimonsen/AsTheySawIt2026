@@ -680,14 +680,13 @@ body.scene-night #ui-bar {
   letter-spacing: 1px;
 }
 
-.new-badge {
+.card-new-badge {
   display: inline-block;
-  background-color: #c0453f;
-  color: #fff;
-  font-size: 0.65em;
-  padding: 0.15em 0.5em;
-  border-radius: 3px;
-  letter-spacing: 1px;
+  width: 16px;
+  height: 16px;
+  background-image: url('assets/UnreadDot_V002.png');
+  background-size: contain;
+  background-repeat: no-repeat;
   margin-left: 0.5em;
   vertical-align: middle;
 }
@@ -1426,6 +1425,13 @@ body.scene-night #ui-bar {
   padding-bottom: 0.3em;
 }
 
+.family-status {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 0.2em;
+}
+
 #memory-bank-dialog .memory-person {
   border-bottom: 1px dashed var(--text-muted);
   padding: 1em 0;
@@ -1704,12 +1710,14 @@ window.updateDebugPanel = function() {
   var awareness = v.familyAwareness || 0;
   var tier = awareness >= 6 ? "aware" : awareness >= 3 ? "uncertain" : "blind";
   var html = '<div class="debug-title">DEBUG — LIVE VARIABLES</div>';
-  html += '<div class="debug-row"><span>anesuGuard</span><span>' + (v.anesuGuard !== undefined ? v.anesuGuard.toFixed(2) : '—') + '</span></div>';
-  html += '<div class="debug-row"><span>familyAwareness</span><span>' + (v.familyAwareness !== undefined ? v.familyAwareness.toFixed(2) : '—') + ' (' + tier + ')</span></div>';
-  html += '<div class="debug-row"><span>v1Ending</span><span>' + (v.v1Ending || '—') + '</span></div>';
-  html += '<div class="debug-row"><span>wentToElias</span><span>' + (v.wentToElias !== undefined ? v.wentToElias : '—') + '</span></div>';
-  html += '<div class="debug-row"><span>weeksPerson</span><span>' + (v.weeksPerson || '—') + '</span></div>';
-  html += '<div class="debug-row"><span>beatIndex</span><span>' + (v.beatIndex !== undefined ? v.beatIndex : '—') + ' / ' + (v.sceneBeats ? v.sceneBeats.length : '—') + '</span></div>';
+  html += '<div class="debug-row">guard: ' + (v.anesuGuard !== undefined ? v.anesuGuard.toFixed(1) : '—') + ' (' + guardAdjective(v.anesuGuard) + ')</div>';
+  html += '<div class="debug-row">awareness: ' + (v.familyAwareness !== undefined ? v.familyAwareness.toFixed(1) : '—') + ' (' + awarenessAdjective(v.familyAwareness) + ')</div>';
+  html += '<div class="debug-row">mamaTrust: ' + (v.mamaTrust !== undefined ? v.mamaTrust.toFixed(1) : '—') + ' (' + trustAdjective(v.mamaTrust) + ')</div>';
+  html += '<div class="debug-row">dadTrust: ' + (v.dadTrust !== undefined ? v.dadTrust.toFixed(1) : '—') + ' (' + trustAdjective(v.dadTrust) + ')</div>';
+  html += '<div class="debug-row">micahTrust: ' + (v.micahTrust !== undefined ? v.micahTrust.toFixed(1) : '—') + ' (' + trustAdjective(v.micahTrust) + ')</div>';
+  html += '<div class="debug-row">endingZone: ' + getEndingZone() + '</div>';
+  html += '<div class="debug-row">wentToElias: ' + v.wentToElias + '</div>';
+  html += '<div class="debug-row">eliasBlocked: ' + v.eliasBlocked + '</div>';
   $('#debug-panel').html(html);
 };
 
@@ -1725,6 +1733,7 @@ window.setupDebugToggle = function() {
     updateDebugPanel();
   });
 };
+
 $(document).on(':passagedisplay', function() {
   setupDebugToggle();
 });
@@ -1736,6 +1745,30 @@ window.characterSpeeds = {
   "Anesu": 25,
   "Dad": 30,
   "Micah": 20
+};
+
+window.guardAdjective = function(g) {
+  g = g || 0;
+  if (g >= 7) return "volatile";
+  if (g >= 5) return "walled off";
+  if (g >= 3) return "wary";
+  return "open";
+};
+
+window.awarenessAdjective = function(a) {
+  a = a || 0;
+  if (a >= 8) return "lucid";
+  if (a >= 6) return "stirring";
+  if (a >= 3) return "uncertain";
+  return "blind";
+};
+
+window.trustAdjective = function(t) {
+  t = t || 0;
+  if (t >= 8) return "close";
+  if (t >= 5) return "steady";
+  if (t >= 3) return "strained";
+  return "distant";
 };
 
 window.getTypeSpeed = function(speaker, override) {
@@ -1986,6 +2019,24 @@ function renderQuotesTab() {
   });
   return html;
 }
+
+function renderFamilyTab() {
+  var people = [
+    {name: "Mama", value: State.variables.mamaTrust},
+    {name: "Dad", value: State.variables.dadTrust},
+    {name: "Micah", value: State.variables.micahTrust}
+  ];
+  var html = "";
+  people.forEach(function(p){
+    var word = trustAdjective(p.value);
+    html += '<div class="memory-person">';
+    html += '<div class="memory-person-name">' + p.name + '</div>';
+    html += '<div class="family-status">' + word + '</div>';
+    html += '</div>';
+  });
+  return html;
+}
+
 window.openMemoryBank = function(startTab) {
   var activeTab = startTab || "people";
   function renderPeopleTab() {
@@ -2026,24 +2077,24 @@ window.openMemoryBank = function(startTab) {
   });
   return html;
 }
-
   function render() {
-    var body = activeTab === "people" ? renderPeopleTab() : renderQuotesTab();
-    var html = '<div class="memory-tabs">';
-    html += '<span class="memory-tab' + (activeTab === "people" ? ' active' : '') + '" data-tab="people">People</span>';
-    html += '<span class="memory-tab' + (activeTab === "quotes" ? ' active' : '') + '" data-tab="quotes">Quotes</span>';
-    html += '</div>';
-    html += '<div class="memory-tab-body">' + body + '</div>';
-    Dialog.setup("Memory Bank", "memory-bank-dialog");
-    Dialog.wiki(html);
-    Dialog.open();
-    $('.memory-tab').off('click').on('click', function(){
-      activeTab = $(this).data('tab');
-      render();
-    });
-    $('.memory-history-toggle').off('click').on('click', function(){
-      $('#history-' + $(this).data('who').replace(/\s/g,'')).toggle();
-    });
+  var body = activeTab === "people" ? renderPeopleTab() : activeTab === "family" ? renderFamilyTab() : renderQuotesTab();
+  var html = '<div class="memory-tabs">';
+  html += '<span class="memory-tab' + (activeTab === "people" ? ' active' : '') + '" data-tab="people">People</span>';
+  html += '<span class="memory-tab' + (activeTab === "family" ? ' active' : '') + '" data-tab="family">Family</span>';
+  html += '<span class="memory-tab' + (activeTab === "quotes" ? ' active' : '') + '" data-tab="quotes">Quotes</span>';
+  html += '</div>';
+  html += '<div class="memory-tab-body">' + body + '</div>';
+  Dialog.setup("Memory Bank", "memory-bank-dialog");
+  Dialog.wiki(html);
+  Dialog.open();
+  $('.memory-tab').off('click').on('click', function(){
+    activeTab = $(this).data('tab');
+    render();
+  });
+  $('.memory-history-toggle').off('click').on('click', function(){
+    $('#history-' + $(this).data('who').replace(/\s/g,'')).toggle();
+  });
     $('.quote-entry').off('click').on('click', function(){
       var idx = $(this).data('index');
       openQuoteModal(State.variables.quotesUnlocked[idx]);
@@ -2053,6 +2104,7 @@ window.openMemoryBank = function(startTab) {
   State.variables.memoryBankUnread = false;
   updateAngelStatus();
 };
+
 window.openQuoteModal = function(q) {
   $('#quote-modal-overlay').remove();
   var $overlay = $('<div id="quote-modal-overlay"></div>');
@@ -2437,7 +2489,7 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Mama", text: "You went to a meeting?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Where else could I have possibly gone? I told you exactly where I went."},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "Just because you told me, it doesn't mean that you went."},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Just because you told me, it doesn't mean that you went.", impacts: {mamaTrust: -0.5}}
   {type: "action", text: "Her tone is cold, holding a scowl between her brows."},
   {type: "action", text: "Anesu stays fighting her second shoelace."},
   {type: "thought", text: "I shake my head disappointingly but I shouldn't be surprised. Of course she's fucking chastising me. It's only a matter of—", interrupted: true},
@@ -2445,7 +2497,7 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
   {type: "thought", text: "And there it is."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "That's what you came out of bed to tell me? You don't talk to me all day and this is what you say?"},
   {type: "action", text: "Dad appears behind Mama, glasses on the tip of his nose, earphones dangling from his left ear."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "People smoke at meetings all the time hun. She might not have even smoked. At least she is going."},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "People smoke at meetings all the time hun. She might not have even smoked. At least she is going.", impacts: {dadTrust: 0.5}}
   {type: "thought", text: "Dad always comes in clutch, see he gets it! And he knew I had a few cigarettes, he's not daft; he's just trying to keep the peace."},
   {type: "action", text: "Mama glares at Dad over her shoulder, still unhappy with how this conversation is going."},
   {type: "thought", text: "It's as almost as if we all knew that."},
@@ -2502,7 +2554,7 @@ She's cold and doesn't move to approach her daughter, just stands in the doorway
 :: B1C1_04_DenyReveal {"position":"1200,150","size":"100,100"}
 <<set $v1Ending to "Deny">>
 <<set $sceneBeats to [
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "It's been 5 months of meetings and sobriety. I don't need to do anything."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "It's been 6 months of meetings and sobriety. I don't need to do anything."},
   {type: "dialogue", side: "character", speaker: "Higher Power", label: $playerName, text: "Of course you don't HAVE to do anything, but these are your parents. This is your mama."},
   {type: "continueTo", dest: "B1C1_04_Deny"}
 ]>>
@@ -2510,7 +2562,7 @@ She's cold and doesn't move to approach her daughter, just stands in the doorway
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
 <div class="meeting-time">Her Hallway</div>
 We deny
 </div>
@@ -2539,14 +2591,14 @@ We deny
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I said, I am not doing a breath test. I'm an adult, it is my body."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You're an adult in the eyes of the law, yes. In this house, in THIS HOME, you will do what I say.", impacts: {anesuGuard: 1}},
   {type: "thought", text: "There's the famous speech. IN MY HOUSE BLAH FUCKING BLAH BLAH. NO ONE CARES."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "She's done a test every night this week hun. I think it's time we sta—"},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "She's done a test every night this week hun. I think it's time we sta—", interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "THERE WILL BE NO SUCH THING!"},
   {type: "action", text: "She raises her voice and shakes her arm. Micah comes out into the hallway, wondering what's going on. Anesu eyes him but darts back to Mama."},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "YOU LOST THE OPPORTUNITY TO BE AN ADULT WHEN YOU DECIDED TO DRINK LUDICROUSLY. YOU HAVE LOST THE PRIVILEGE OF YOUR PRIVACY, YOUR AGENCY AND INDEPENDENCE.", impacts: {anesuGuard: 1.5}, memoryEntry: {who: "Mama", text: {
+  {type: "dialogue", side: "character", speaker: "Mama", text: "YOU LOST THE OPPORTUNITY TO BE AN ADULT WHEN YOU DECIDED TO DRINK LUDICROUSLY. YOU HAVE LOST THE PRIVILEGE OF YOUR PRIVACY, YOUR AGENCY AND INDEPENDENCE.", impacts: {anesuGuard: 1.5, mamaTrust: -1.5}, memoryEntry: {who: "Mama", text: {
     blind: "She says I lost the right to be an adult. Fine. Maybe she's right. Maybe I did. But I never wanted to be an adult, I shouldn't have lived for this long",
     uncertain: "She says I lost my privacy,my independence — like flipping a switch. As if six months doesn't count for anything.",
     aware: "She still talks about it like it's a punishment she's handing down, not love she's trying to give. I think that's just how it comes out of her, care disguised as instruction, warmth turned into contro. I don't know if she knows how to do it any other way."}}},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "Ruby hun, it's ok—"},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "Ruby hun, it's ok—", interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "IT IS NOT OKAY! WHY MUST YOU ALWAYS SIDE WITH HER."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "There are no sides. We're a team. We all are!"},
   {type: "dialogue", side: "character", speaker: "Micah", text: "Do we really have to yell though?"},
@@ -2555,7 +2607,7 @@ We deny
   {type: "dialogue", side: "player", speaker: "Anesu", text: "No! She does not get to dictate what I can and cannot do. I already have my door open, I already have a 9pm curfew and I HAVE MY LOCATION ON CONSTANTLY."},
   {type: "thought", text: "I've lost all independence! Rehab or be kicked out? Of course I went to fucking rehab. I HAD NO CHOICE.", impacts: {anesuGuard: 1}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "And go to fucking bed Micah, I mean Jesus Christ man."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "Micah is a part of this family.", impacts: {familyAwareness: 1}},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "Micah is a part of this family.", impacts: {familyAwareness: 1, dadTrust: 0.5}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "But he doesn't need to be all up in my business!"},
   {type: "dialogue", side: "character", speaker: "Mama", text: "YES! IF IT'S HIS SISTER DRINKING HER LIFE AWAY!"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'M NOT AN ADDICT!", impacts: {anesuGuard: 1}},
@@ -2592,7 +2644,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
-<div class="speaker-name">Anesu</div>
+<div class="speaker-name" id="leftSpeakerName">Anesu</div>
 </div>
 
 <div class="chat-log" id="chatLog">
@@ -2610,62 +2662,62 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 :: B1C1_05_Transition {"position":"1075,450","size":"100,100"}
 <<run $('body').addClass('scene-night')>>
-<<set $currentTime to "9:15pm">>
+<<set $currentTime to "10:15pm">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
-  {type: "action", text: "Anesu waits till Mama has gone to sleep, then checks Dad's Xbox room — he seems to be extremely locked in. She stands and stares, watching him."},
-  {type: "action", text: "Dad pulls out an earphone and looks to Anesu."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "You having a filthy cigarette?"},
-  {type: "action", text: "Anesu nods."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Want one of my disgusting foul smokes?"},
-  {type: "action", text: "Dad shakes his head."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "Nah, I'm good. You need to stop smoking."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah yeah, it's on the agenda."},
-  {type: "thought", text: "He thinks I'm smoking straight tobacco, but my smokes are always a little happy."},
-  {type: "action", text: "Anesu turns on her heel and walks to the back door, stopping at the pantry to grab some plain tuna."},
-  {type: "action", text: "She slides it open ever so slightly, the creaking obnoxiously loud."},
-  {type: "thought", text: "Normally Dad would've fixed this by now. Maybe I should do it... no expectations, hey?"},
-  {type: "thought", text: "Yeah, Dad knows I smoke, but I don't really like Micah knowing. I mean, yeah, he's a grown man, but still."},
-  {type: "action", text: "Anesu walks around the corner, following the brick path Dad made when he realised they had spare bricks in the garage."},
-  {type: "action", text: "Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up.", sound: "audio/spark_up.mp3"},
-  {type: "action", text: "Meow meow."},
-  {type: "showCharacter", speaker: "Julian"},
-  {type: "thought", text: "I hate cats... the way they run, how they have to be all over you, that they could kill me. Slowly. But it would be the worst fucking death."},
-  {type: "thought", text: "But for some reason, this cat is growing on me. Like a cancer."},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "He's walking along the colourbond fence, eyeing you carefully. Pretty sure he's a stray. Or maybe he just loves the smell of weed..."},
-  {type: "action", text: "She's named him Julian."},
-  {type: "thought", text: "He doesn't touch me, he keeps his distance — almost as if he knows I'm allergic to him."},
-  {type: "spacer"},
-  {type: "expandable", side: "character", speaker: "Higher Power", shortText: "Smoking again?", fullText: "Maybe we take Dad's advice."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah, I gotta stop at some point. Of course that's what Mama wants."},
-  {type: "breathe", text: "Anesu inhales and exhales deeply, flicking the butt.", duration: 3000},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "What she wants?"},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "It's always what she wants. She said homeless OR rehab. What am I just gonna walk out onto the street and say okay BYE? It's almost ALWAYS exactly what she fucking wants."},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "And so what? That didn't help you? Let's be 100% honest if we're talking in absolutes — those Woolies bags were growing pretty big in that closet.", impacts: {anesuGuard: 0.5}},
-  {type: "action", text: "The world goes quiet. Anesu stares blankly at the trimmed bushes, arm's length away."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Let's do absolutes, yeah? I was drinking for 8 mon—"},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "You and I both know that time doesn't matter. It's that hole in the soul you were trying to fill.", impacts: {familyAwareness: 1}},
-  {type: "breathe", text: "Inhale and exhale.", duration: 2500},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "God forbid a girl get hammered — isn't that the point of drinking? To get drunk?"},
-  {type: "expandable", side: "character", speaker: "Higher Power", shortText: "Not exactly.", fullText: "Yes, there are certain individuals who think the same — but their reason behind drinking is different. I mean, why do you want to be drunk?"},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "It's better than living sober."},
-  {type: "breathe", text: "Inhale and exhale.", duration: 2500},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Being sober is awful, becau—"},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "You feel more?"},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "A whole lot fucking more."},
-  {type: "breathe", text: "Inhale and exhale.", duration: 2500},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "But isn't it sort of fantastic, though? We get to feel — to love and lose, to experience triumph and failure, to learn from such. As far as I'm concerned, we're the only animals in the universe that can do that.", impacts: {familyAwareness: 1}},
-  {type: "breathe", text: "Inhale and exhale.", duration: 2500},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Well, you and I both know that there are aliens."},
-  {type: "expandable", side: "character", speaker: "Higher Power", shortText: "Now's not the time.", fullText: "Not right now. Now finish that and get inside — that assignment to-do list isn't getting smaller by itself."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Head inside.", dest: "B1C2_01_Opening"}
+{type: "action", text: "Anesu waits till Mama has gone to sleep, then checks Dad's Xbox room — he seems to be extremely locked in. She stands and stares, watching him."},
+{type: "action", text: "Dad pulls out an earphone and looks to Anesu."},
+{type: "dialogue", side: "character", speaker: "Dad", text: "You having a filthy cigarette?"},
+{type: "action", text: "Anesu nods."},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Want one of my disgusting foul smokes?"},
+{type: "action", text: "Dad shakes his head."},
+{type: "dialogue", side: "character", speaker: "Dad", text: "Nah, I'm good. You need to stop smoking."},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah yeah, it's on the agenda."},
+{type: "thought", text: "He thinks I'm smoking straight tobacco, but my smokes are always a little happy."},
+{type: "action", text: "Anesu turns on her heel and walks to the back door, stopping at the pantry to grab some plain tuna."},
+{type: "action", text: "She slides it open ever so slightly, the creaking obnoxiously loud."},
+{type: "thought", text: "Normally Dad would've fixed this by now. Maybe I should do it... no expectations, hey?"},
+{type: "thought", text: "Yeah, Dad knows I smoke, but I don't really like Micah knowing. I mean, yeah, he's a grown man, but still."},
+{type: "action", text: "Anesu walks around the corner, following the brick path Dad made when he realised they had spare bricks in the garage."},
+{type: "action", text: "Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up.", sound: "audio/spark_up.mp3"},
+{type: "action", text: "Meow meow."},
+{type: "showCharacter", speaker: "Julian"},
+{type: "thought", text: "I hate cats... the way they run, how they have to be all over you, that they could kill me. Slowly. But it would be the worst fucking death."},
+{type: "thought", text: "But for some reason, this cat is growing on me. Like a cancer."},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "He's walking along the colourbond fence, eyeing you carefully. Pretty sure he's a stray. Or maybe he just loves the smell of weed..."},
+{type: "action", text: "She's named him Julian."},
+{type: "thought", text: "He doesn't touch me, he keeps his distance — almost as if he knows I'm allergic to him."},
+{type: "spacer"},
+{type: "expandable", side: "character", speaker: "Higher Power", shortText: "Smoking again?", layers: ["Maybe we take Dad's advice."], nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah, I gotta stop at some point. Of course that's what Mama wants."},
+{type: "breathe", text: "Anesu inhales and exhales deeply, flicking the butt.", duration: 3000},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "What she wants?"},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "It's always what she wants. She said homeless OR rehab. What am I just gonna walk out onto the street and say okay BYE? It's almost ALWAYS exactly what she fucking wants."},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "And so what? That didn't help you? Let's be 100% honest if we're talking in absolutes — those Woolies bags were growing pretty big in that closet.", impacts: {anesuGuard: 0.5}},
+{type: "action", text: "The world goes quiet. Anesu stares blankly at the trimmed bushes, arm's length away."},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Let's do absolutes, yeah? I was drinking for 8 mon—"},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "You and I both know that time doesn't matter. It's that hole in the soul you were trying to fill.", impacts: {familyAwareness: 1}},
+{type: "breathe", text: "Inhale and exhale.", duration: 2500},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "God forbid a girl get hammered — isn't that the point of drinking? To get drunk?"},
+{type: "expandable", side: "character", speaker: "Higher Power", shortText: "Not exactly.", layers: ["Yes, there are certain individuals who think the same — but their reason behind drinking is different. I mean, why do you want to be drunk?"], nudgeImpacts: {anesuGuard: -0.5, familyAwareness: 0.5}, skipImpacts: {anesuGuard: 0.5}},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "It's better than living sober."},
+{type: "breathe", text: "Inhale and exhale.", duration: 2500},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Being sober is awful, becau—"},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "You feel more?"},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "A whole lot fucking more."},
+{type: "breathe", text: "Inhale and exhale.", duration: 2500},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "But isn't it sort of fantastic, though? We get to feel — to love and lose, to experience triumph and failure, to learn from such. As far as I'm concerned, we're the only animals in the universe that can do that.", impacts: {familyAwareness: 1}},
+{type: "breathe", text: "Inhale and exhale.", duration: 2500},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Well, you and I both know that there are aliens."},
+{type: "expandable", side: "character", speaker: "Higher Power", shortText: "Now's not the time.", layers: ["Not right now. Now finish that and get inside — that assignment to-do list isn't getting smaller by itself."], nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
+{type: "choice", side: "player", speaker: "Anesu", text: "Head inside.", dest: "B1C2_01_Opening"}
 ]>>
 <<set $beatIndex to 0>>
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
 <div class="chapter-heading">Chapter One: First Night with Anesu</div>
-<div class="meeting-time">Sunday... A little too late.</div>
+<div class="meeting-time">Sunday after the meeting... A little too late.</div>
 </div>
 <div class="conversation-row">
 <div class="speaker-box">
@@ -2692,7 +2744,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
 <div class="meeting-time">Her Hallway</div>
 We comply.
 </div>
@@ -2720,15 +2772,15 @@ We comply.
   {type: "dialogue", side: "character", speaker: "Dad", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "See?"},
   {type: "dialogue", side: "character", speaker: "Mama", text: "...What a surprise!", impacts: {anesuGuard: 1}},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "Hun, that's not entirely fai—"},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "Hun, that's not entirely fai—", interrupted: true},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "WOW! So that's how we're gonna play it? I've been sober for 6 months! Been following ALL your meticulous and may I say, BULL rules. I canno—", impacts: {anesuGuard: 1}},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Language!"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I. DIDN'T. SWEAR!"},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "It's almost 9:30, let's start heading off t—"},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "It's almost 9:30, let's start heading off t—", interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Why must you always defend her? She is an addict! And here you are enabling her be—", impacts: {anesuGuard: 0.5}},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "I am not enabling, I am just trying to have both perspectives being heard between you two. You both talk at each other, but not one of you is actually bloody listening.", impacts: {familyAwareness: 1}, memoryEntry: {who: "Dad", text: "He's the only one who ever says it plainly — that neither of us is actually listening. I don't think Mama's ever going to hear that. I don't know if I really have either."}},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "I am not enabling, I am just trying to have both perspectives being heard between you two. You both talk at each other, but not one of you is actually bloody listening.", impacts: {familyAwareness: 1, dadTrust: 0.5}, memoryEntry: {who: "Dad", text: "He's the only one who ever says it plainly — that neither of us is actually listening. I don't think Mama's ever going to hear that. I don't know if I really have either."}},
   {type: "thought", text: "I try so fucking hard and this bitch keeps fucking with me! I'm staying sober for this? Nah, fuck this."},
-  {type: "action", text: "Anesu balls her fists up behind her back, gnawing on her lip piercing, she turns on her heel and—"},
+  {type: "action", text: "Anesu balls her fists up behind her back, gnawing on her lip piercing, she turns on her heel and—", interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Who said you could leave?", impacts: {anesuGuard: 1}},
   {type: "action", text: "Dad inhales deeply, headphones now out of his ear and swinging against his chest. Anesu stops dead in her tracks, also inhaling deeply. Growing up, everyone has said Dad and I are much alike. Facial features, mannerisms, temper, alcohol... through gritted teeth..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "May I go to bed?"},
@@ -2755,7 +2807,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <div class="conversation-row">
 <div class="speaker-box">
 <img @src="$characterImages['Anesu']">
-<div class="speaker-name">Anesu</div>
+<div class="speaker-name" id="leftSpeakerName">Anesu</div>
 </div>
 <div class="chat-log" id="chatLog">
 <div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
@@ -2777,7 +2829,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="chapter-heading">Chapter One: First Night with Anesu [Scene Title]</div>
+<div class="chapter-heading">Chapter One: First Night with Anesu</div>
 <div class="meeting-time">Her Hallway</div>
 We compromise.
 </div>
@@ -2824,20 +2876,19 @@ We compromise.
   {type: "action", text: "The three stand silently in the hallway, Mama and Anesu staring coldly at one another and Dad in the middle, unsure of where to look."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "She is sober and that's all that matters. Right Ruby?", impacts: {familyAwareness: 0.5}},
   {type: "thought", text: "She couldn't care fucking less. She just wants to catch me out and then scream at me."},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "I'm going to bed.", impacts: {anesuGuard: 1}, memoryEntry: {who: "Mama", text: {
+  {type: "dialogue", side: "character", speaker: "Mama", text: "I'm going to bed.", impacts: {anesuGuard: 1, mamaTrust: -1}, memoryEntry: {who: "Mama", text: {
     blind: "She just left. Didn't even try. Typical.",
     uncertain: "She walked away instead of fighting for once. I don't know if that's worse or better than the yelling.",
     aware: "She didn't storm off because she doesn't care. She left because staying would've meant admitting something she's not ready to admit. I've done the same thing to people. I recognize it now."
   }}},
   {type: "action", text: "Mama turns on her heel, and storms to bed, closing the door behind her, leaving Anesu and Dad in the hallway. Tears begin to well in Anesu's eyes. Dad opens his arms but Anesu just walks into him, arms by her side."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "I love you Anesu. I know you're trying.", impacts: {anesuGuard: -1}},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "I love you Anesu. I know you're trying.", impacts: {anesuGuard: -1, dadTrust: 1}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
   {type: "action", text: "Anesu stays being held, not really one for hugs but knows that's how Dad shows his love, his attention, his concern. They stay for what feels like hours. He was waiting for her to raise her arms."},
   {type: "thought", text: "Fine, you got me."},
   {type: "action", text: "Anesu wraps her arms around her father, and feels his heart skip a beat. He tightens his grip and breathes in her hair."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "My little girl...", impacts: {anesuGuard: -1}, memoryEntry: {who: "Dad", text: "He called me his little girl. I'm nineteen. I let it happen anyway, because for once it didn't feel like a cage, it felt like something I'd been missing."}},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "My little girl...", impacts: {anesuGuard: -1, dadTrust: 1.5}, memoryEntry: {who: "Dad", text: "He called me his little girl. I'm nineteen. I let it happen anyway, because for once it didn't feel like a cage, it felt like something I'd been missing."}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
-  {type: "spacer"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "I love you so much."},
   {type: "continueTo", dest: "B1C1_05_Transition"}
@@ -2931,8 +2982,11 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <<set $anesuGuard to 5>>
 <<set $familyAwareness to 0>>
 <<set $weeksPlayed to 0>>
-<<set $elisBlocked to false>>
+<<set $eliasBlocked to false>>
 <<set $wentToElias to false>>
+<<set $mamaTrust to 5>>
+<<set $dadTrust to 5>>
+<<set $micahTrust to 5>>
 
 <<set $characterImages to {
   "Anesu": "https://i.imgur.com/PE4PsVq.gif",
@@ -2952,18 +3006,18 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 /*AA MEMBERS*/
 <<set $members to [
-  {name: "Anesu Song", age: "20", sobriety: "6 months", doc: "Alcohol", story: "Home doesn't feel like home right now. Six months sober, and everyone's still watching to see if it sticks", unlocked: true, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Martha Bonini", age: "39", sobriety: "3 weeks, 3rd relapse", doc: "Alcohol and prescribed morphine", story: "A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Erin Ferguson", age: "56", sobriety: "4 years & 4 months", doc: "Alcohol", story: "Four kids who don't call anymore. A husband she still isn't used to not having. She's sober now — a little late, in her opinion.", unlocked: false, image: "https://i.imgur.com/A4YV3S2.gif", weeksKnown: 0},
-  {name: "Franco Pitt", age: "24", sobriety: "Not currently sober", doc: "Alcohol and \"occasionally\" cocaine", story: "Landed the job he studied his whole life for. Still doesn't feel like an adult. His relationship isn't helping", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 5", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 6", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 7", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 8", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 9", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 10", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 11", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 12", age: "—", sobriety: "—", doc: "—", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0}
+  {name: "Anesu Song", age: "20", sobriety: "6 months", doc: "Alcohol", service: "", story: "Home doesn't feel like home right now. Six months sober, and everyone's still watching to see if it sticks", unlocked: true, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Martha Bonini", age: "39", sobriety: "3 weeks, 3rd relapse", doc: "Alcohol and prescribed morphine", service: "", story: "A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Erin Ferguson", age: "56", sobriety: "4 years & 4 months", doc: "Alcohol", service: "Anesu's Sponsor", story: "Four kids who don't call anymore. A husband she still isn't used to not having. She's sober now — a little late, in her opinion.", unlocked: false, image: "https://i.imgur.com/A4YV3S2.gif", weeksKnown: 0},
+  {name: "Franco Pitt", age: "24", sobriety: "Not currently sober", doc: "Alcohol and \"occasionally\" cocaine", service: "", story: "Landed the job he studied his whole life for. Still doesn't feel like an adult. His relationship isn't helping", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 5", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 6", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 7", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 8", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 9", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 10", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 11", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Member 12", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0}
 ]>>
 <<set $memberIndex to 0>>
 
@@ -3007,9 +3061,9 @@ $members[$memberIndex].name<br>(Chair + Person)
 <<set $weeksPersonSobriety to $members[$memberIndex].sobriety>>
 <<set $members[$memberIndex].justUnlocked to false>>
 <<if $members[$memberIndex].name is "Anesu Song">>
-<<goto "B1C1_02_FirstNightwithAnesu">>
+<<goto "B1C1_01_AnesuChosen">>
 <<elseif $members[$memberIndex].name is "Erin Ferguson">>
-<<goto "V4_ErinOpening">>
+<<goto "B2C1_01_Erin_Opening">>
 <</if>>
 <</link>>
 <<else>>
@@ -3042,6 +3096,12 @@ $members[$memberIndex].sobriety
 <div class="card-label">Drug of Choice</div>
 $members[$memberIndex].doc
 </div>
+<<if $members[$memberIndex].service isnot "">>
+<div class="card-field">
+<div class="card-label">Service</div>
+$members[$memberIndex].service
+</div>
+<</if>>
 <div class="card-field card-story">
 <div class="card-label">Story</div>
 $members[$memberIndex].story
@@ -3049,6 +3109,7 @@ $members[$memberIndex].story
 </div>
 </div>
 <</widget>>
+
 
 
 :: SceneEngine [widget] {"position":"1350,0","size":"100,100"}
@@ -4203,6 +4264,8 @@ The hallway again. Same house, same standoff, higher stakes.
 <<set $currentDate to "Thu, 2 May 2024">>
 <<set $currentTime to "6:30pm">>
 <<run updateAngelStatus()>>
+<<set $eliasBlocked to true>>
+<<run State.variables.anesuGuard = Math.min(10, State.variables.anesuGuard + 1)>>
 <<set $sceneBeats to [
 {type: "text", side: "me", text: "hey sorry i didn't message you much today, things at home were a little hectic.", time: "6:12pm"},
   {type: "text", side: "me", text: "thank you so much for last night. i had such a great time!", time: "6:12pm"},
@@ -4380,6 +4443,8 @@ Anesu stares at her phone, the message bar blinking, waiting.
 :: B1C2_StayingHome{"position":"700,750","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<run updateAngelStatus()>>
+<<set $eliasBlocked to false>>
+<<run State.variables.familyAwareness = Math.min(10, State.variables.familyAwareness + 0.5)>>
 <<set _baseBeats to [
   {type: "action", text: "Anesu keeps her eyes down as her headphones drown out that yapper, hanging out at the back of her skull."},
   {type: "thought", text: "He's now found someone else. Poof, just like that. You don't matter anymore."},
