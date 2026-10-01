@@ -720,7 +720,7 @@ body.scene-night #ui-bar {
   border-style: solid;
   border-width: 20px;
   border-color: transparent;
-  border-image-source: url('assets/ui/DialogueBox_V002.png');
+  border-image-source: url('assets/ui/DialogueBoxA_V004.png');
   border-image-slice: 33 fill;
   border-image-width: 20px;
   border-image-repeat: stretch;
@@ -798,7 +798,7 @@ body.scene-night #ui-bar {
   border-style: solid;
   border-width: 40px;
   border-color: transparent;
-  border-image-source: url('assets/ui/Speechbox_V001.png');
+  border-image-source: url('assets/ui/DialogueBoxB_V004.png');
   border-image-slice: 40 fill;
   border-image-width: 40px;
   border-image-repeat: stretch;
@@ -3996,14 +3996,14 @@ Erin's car, still driving.
 </div>
 
 :: B1C2_01_Opening {"position":"375,425","size":"100,100"}
-<<set $currentDate to "Wed, 1 May 2024">>
+<<set $currentDate to "Tue, 23 April 2024">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
-  {type: "text", side: "them", text: "Hey, you free tonight? 😉", time: "9:40pm", sound: "audio/notif.mp3"},
-  {type: "text", side: "me", text: "Maybe... what's in it for me?", time: "9:41pm", sound: "audio/send_notif.mp3"},
-  {type: "text", side: "them", text: "You spending the night with me... taking care of you", time: "9:42pm", sound: "audio/notif.mp3"},
-  {type: "text", side: "me", text: "And what makes you think i want that ;)", time: "9:43pm", sound: "audio/send_notif.mp3"},
-  {type: "text", side: "them", text: "From the way you were moaning for me", time: "9:44pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "them", text: "Hey, you free tonight? 😉", time: "7:00pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "Maybe... what's in it for me?", time: "7:15pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "You spending the night with me... taking care of you", time: "7:42pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "And what makes you think i want that ;)", time: "7:43pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "From the way you were moaning for me", time: "7:44pm", sound: "audio/notif.mp3"},
   {type: "thought", text: "My heart beats throughout my body. I haven't seen him in a while."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "You do some background research on this guy. He does not seem like a nice guy in any way."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Didn't he ghost you like twice? I don't think you should see him..."},
@@ -4011,8 +4011,8 @@ Erin's car, still driving.
   {type: "freeType", side: "character", speaker: "Higher Power", text: "You don't seem too sure about that, Anesu. Just stay home, hang out with Micah or something."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Micah? He wants nothing to do with me. He's still mad at me."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "So spending it with this asshole is better? At least you know Micah loves you."},
-  {type: "text", side: "them", text: "Come over tonight babe", time: "9:52pm", sound: "audio/notif.mp3"},
-  {type: "text", side: "me", text: "I don't have my car tonight :((", time: "9:53pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "Come over tonight babe", time: "7:52pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "I don't have my car tonight :((", time: "7:53pm", sound: "audio/send_notif.mp3"},
   {type: "text", side: "me", text: "Come and get me?", time: "9:53pm", sound: "audio/send_notif.mp3"},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "You HAVE no car, NO LICENSE might I add? And what exactly are you gonna tell Mama?"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Telling her nothing, no guy is ever allowed in my life.", layers: [
@@ -4021,32 +4021,32 @@ Erin's car, still driving.
   ], partialImpacts: {anesuGuard: -0.3}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "And with good reason! They've all been dicks and only want you for sex."},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Well I want them for just sex too...", layers: [
-    "Sex can feel good...??",
+    "Sex can feel good...?? Maybe I just being lame.",
     "I don't, actually. I just want someone to look at me like I matter, and sex is the only version of that I know how to ask for."
   ], partialImpacts: {familyAwareness: 0.3}, nudgeImpacts: {familyAwareness: 0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Then why do you get so upset when they disappear?"},
   {type: "breathe", text: "The silence grows despicably loud.", duration: 2500},
-  {type: "thought", text: "It was an awful chase of cat and mouse. It was the same result over and over. Insanity manifested. It says it right on the walls at Mirabel — repeating the same behaviours, expecting the same result."},
-  {type: "text", side: "them", text: "What time?", time: "10:02pm", sound: "audio/notif.mp3"},
-  {type: "text", side: "me", text: "10pm??", time: "10:03pm", sound: "audio/send_notif.mp3"},
-  {type: "text", side: "them", text: "I'll see you then gorgeous", time: "10:04pm", sound: "audio/notif.mp3"},
+  {type: "thought", text: "It is always an awful chase of cat and mouse. It's the same result over and over. Insanity manifested. It says it right on the walls at Mirabel — repeating the same behaviours, expecting the same result."},
+  {type: "text", side: "them", text: "What time?", time: "8:02pm", sound: "audio/notif.mp3"},
+  {type: "text", side: "me", text: "10pm??", time: "8:03pm", sound: "audio/send_notif.mp3"},
+  {type: "text", side: "them", text: "I'll see you then gorgeous", time: "8:04pm", sound: "audio/notif.mp3"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "See? He thinks I'm gorgeous.", layers: [
-    "He thinks I'm gorgeous! He likes me!",
+    "He thinks I'm gorgeous! That means he likes me!",
     "I just need someone to think that right now. I don't care that it's him. I just need it to be true from somebody."
   ], partialImpacts: {anesuGuard: -0.2}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Correction, he thinks your tits are gorgeous."},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "And I thought you didn't like sex? I thought you came to that conclusion with Sheryl?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "And I thought you didn't like sex? I thought you came to that conclusion with Sheryl?"},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "I mean, I could like it with him?", layers: [
     "He could be kind about it...Maybe he's the one who can make it enjoyable?",
     "Maybe the first few times haven't been exactly how I wanted...m",
     "Ugh I know I won't. I know exactly how this goes. But I want to feel wanted, I NEED to feel wanted."
   ], partialImpacts: {anesuGuard: -0.3}, nudgeImpacts: {anesuGuard: -1, familyAwareness: 0.5}, skipImpacts: {anesuGuard: 1}},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Oh please, this tool? This fucking guy? You met him on some lame app, we seriously can't still be doing this."},
-  {type: "freeType", side: "character", speaker: "Higher Power", text: "Maybe this isn't the time for it. This is the opposite of putting yourself first."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Maybe this isn't the time for it. This is the opposite of putting yourself first."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "And all of a sudden being okay with having sex is a huge deal out of nowhere. Why the big jump with him? Why not wai—"},
   {type: "choice", side: "player", speaker: "Anesu", text: "I'm gonna see him tonight", dest: "B1C2_02_GoingToSeeElias", impacts: {anesuGuard: 1}},
   {type: "action", text: "or..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "I'll stay home", dest: "V2_03_StayingHome", impacts: {anesuGuard: -1}}
+  {type: "choice", side: "player", speaker: "Anesu", text: "I'll stay home", dest: "B1C2_StayingHome" , impacts: {anesuGuard: -1}}
 ]>>
 <<set $beatIndex to 0>>
 <div class="opening-layout">
