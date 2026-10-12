@@ -2493,9 +2493,7 @@ You follow Anesu home, watching her hop in the passenger side of Erin's car.
 <<run stopAmbience()>>        
 <<set $sceneBeats to [
   {type: "action", text: "They jolt with a halt, a little too close to the garage door.", sound: "audio/engine_stop.mp3", stopSoundId: "engine"},
-  {type: "dialogue", side: "character", speaker: "Erin", text: "Have a good rest of your week hun! Remember, your mother 
-    loves you very much.", memoryEntry: {who: "Erin", text: "My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mama 
-    like she knows her, which she very much does not."}},
+  {type: "dialogue", side: "character", speaker: "Erin", text: "Have a good rest of your week hun! Remember, your mother loves you very much.", memoryEntry: {who: "Erin", text: "My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mama like she knows her, which she very much does not."}},
   {type: "action", text: "Erin flashes her lights and drives off, her home a few kms down the road."},
   {type: "thought", text: "Okay, just shoes off and straight to your room, don't even hesitate."},
   {type: "action", text: "Unlocking the door was a success but now comes the shoes...", sound: "audio/door_unlock.mp3"},
@@ -4680,7 +4678,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "action", text: "Her hand... it's always been cold. It's not smooth. It's not soft. But it's true, and Anesu can feel the determination, dripping down her knuckles."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi. I don't always say it right."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Thank you, Mama."},
-  {type: "dialogue", side: "character", speaker: "Higher Power", text:"See? She really does care for you."}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text:"See? She really does care for you."},
   {type: "continueTo", dest: "B1C2_Transition"}
 ]>>
 <<elseif $v1Ending is "Comply">>
@@ -4692,7 +4690,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "action", text: "She exhales shakily, an unnoticed weight alleviated somewhat."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I am??"},
   {type: "action", text: "She almost doesn't let herself believe it. Almost."},
-  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You truly are, Anesu."}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You truly are, Anesu."},
   {type: "continueTo", dest: "B1C2_Transition"}
 ]>>
 <<else>>
@@ -4702,7 +4700,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi."},
   {type: "action", text: "She exhales shakily, an unnoticed weight alleviated somewhat."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I am??"},
-  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You truly are, Anesu."}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You truly are, Anesu."},
   {type: "continueTo", dest: "B1C2_Transition"}
 ]>>
 <</if>>

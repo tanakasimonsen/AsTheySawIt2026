@@ -3633,19 +3633,19 @@ _beat.text
 &lt;/div&gt;
 &lt;&lt;/append&gt;&gt;
 &lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="B1C3_01_Opening" tags="" position="375,625" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
-&lt;&lt;set $currentDate to &quot;Sat, 4 May 2024&quot;&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Sat 27 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;10:52am&quot;&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 &lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;The sun bleeds through the beige curtains, tickling Anesu&#39;s eyelids.&quot;},
   {type: &quot;thought&quot;, text: &quot;Mhmmmmm.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Yeah it is a little bright hey? But gosh it&#39;s so warm. Isn&#39;t it glorious? I wouldn&#39;t mind being able to feel sun again.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Yeah it is a little bright hey? But gosh it&#39;s so warm. Isn&#39;t it glorious? I wouldn&#39;t mind being able to feel sun again.&quot;},
   {type: &quot;action&quot;, text: &quot;She opens an eye, darting around to find the alarm clock. 10:52am.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;How the hell is it 10:52??&quot;},
-  {type: &quot;interject&quot;, text: &quot;This is why we shouldn&#39;t be up and out smoking. We should start reading again or something.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;This is why we shouldn&#39;t be up and out smoking. We should start reading again or something.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Yeah yeah, smoking is fun.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu coughs hard, nose flaring with each inhale and exhale.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Is it though?&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Is it though?&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu rolls her eyes, hawking back the phlegm, scraping eye boogies out. She sits up higher and focuses in on the noises in her home.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Damn, everyone&#39;s already at it.&quot;},
   {type: &quot;action&quot;, text: &quot;She whips off the warm sage covers and slips on her uggs, scratching her tummy as she trods down the stairs.&quot;},
@@ -3669,15 +3669,17 @@ _beat.text
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Why didn&#39;t you say anything?? I mean over a year??&quot;, impacts: {anesuGuard: 0.5}},
   {type: &quot;action&quot;, text: &quot;I pour some water into the plant next to the stove and boil the rest, clicking it quickly.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;So? Why not say anything, man? I&#39;m your sister.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Yeah but you haven&#39;t been around dude.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Yeah but you haven&#39;t been around dude.&quot;, impacts: {micahTrust: -0.5}},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Haven&#39;t been around?? It&#39;s been 6 months!&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Yeah but he&#39;s saying before that. This all happened while you were drinking.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Okay, I understand that, but were you all just never going to say anything? I&#39;m part of this family too.&quot;},
   {type: &quot;action&quot;, text: &quot;Mama crosses her arms, and purses her lips.&quot;},
   {type: &quot;action&quot;, text: &quot;The kettle continues to boil, the bubbles speeding up as the pressure in the room builds.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I mean you all talk about everything, why can&#39;t I be included?&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Well you weren&#39;t there, and I didn&#39;t bother to update you because there&#39;s a lot of backstory.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I did my amendments, how is this not enough?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Well you weren&#39;t there, and I didn&#39;t bother to update you because there&#39;s a lot of backstory.&quot;, impacts: {micahTrust: -0.5}},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I did my amends, how is this not enough?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Yeah but have you really changed though? I mean, you&#39;re still kinda that volatile addict.&quot;, impacts: {micahTrust: -1}, memoryEntry: {who: &quot;Micah&quot;, text: {blind: &quot;He doesn&#39;t care to let me in or want me a part of his life.&quot;, uncertain: &quot;What else can I possibly do? Where do I go from here?&quot;, aware: &quot;That&#39;s just not who I am anymore... But I don&#39;t think he will ever see that.&quot;}}},
+  {type: &quot;thought&quot;, text: &quot;Well, there it is. I fucking knew it.&quot;},
   {type: &quot;breathe&quot;, text: &quot;The kitchen goes quiet for a moment.&quot;, duration: 2000},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;I know, but sometimes it takes more time. You&#39;ve grown and you keep growing — maybe they are still stuck from the day you went to rehab.&quot;, impacts: {familyAwareness: 1}},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Sisi, you weren&#39;t there when this all happened, and it&#39;s just kept going on and on.&quot;},
@@ -3687,12 +3689,11 @@ _beat.text
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;How am I supposed to ask about something I don&#39;t know about?&quot;},
   {type: &quot;breathe&quot;, text: &quot;The room holds its breath.&quot;, duration: 2000},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Su, let&#39;s be mindful that it&#39;s 11am. We cannot come in hot like this.&quot;},
-  {type: &quot;action&quot;, text: &quot;Should Anesu...&quot;},
-  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;So what, it&#39;s 11am? My feelings are hurt!&quot;, dest: &quot;B1C3_02_Opening_MyFeelingsHurt&quot;, impacts: {anesuGuard: 0.5}},
+  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;So what, it&#39;s 11am? My feelings are hurt!&quot;, dest: &quot;B1C3_02_MyFeelingsHurt&quot;, impacts: {anesuGuard: 0.5}},
   {type: &quot;action&quot;, text: &quot;or...&quot;},
-  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Yeah I understand, but this isn&#39;t nice — why am I being left out?&quot;, dest: &quot;B1C3_03_Opening_LeftOut&quot;, impacts: {familyAwareness: 0.5}},
+  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Yeah I understand, but this isn&#39;t nice — why am I being left out?&quot;, dest: &quot;B1C3_03_LeftOut&quot;, impacts: {familyAwareness: 0.5}},
   {type: &quot;action&quot;, text: &quot;or...&quot;},
-  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Whatever, I&#39;m going to the gym.&quot;, dest: &quot;B1C3_04_Opening_GoToGym&quot;, impacts: {anesuGuard: 1}}
+  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Whatever, I&#39;m going to the gym.&quot;, dest: &quot;B1C3_04_GoToGym&quot;, impacts: {anesuGuard: 1}}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
@@ -3760,8 +3761,8 @@ Anesu&#39;s room. The door is shut. The house is still.
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="B1C3_02_Opening_MyFeelingsHurt" tags="" position="250,750" size="100,100">&lt;&lt;set $sceneBeats to [
-  {type: &quot;interject&quot;, text: &quot;That is true, but it&#39;s not about you this morning, I&#39;m afraid.&quot;},
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="21" name="B1C3_02_MyFeelingsHurt" tags="" position="250,750" size="100,100">&lt;&lt;set $sceneBeats to [
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;That is true.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;I seriously don&#39;t know how you&#39;ve made this about yourself. Micah was just telling us something amazing and you&#39;ve come in and ruined it.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Okay I wouldn&#39;t say ruined it...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;That&#39;s a bit much mum.&quot;},
@@ -3781,14 +3782,14 @@ Anesu&#39;s room. The door is shut. The house is still.
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m gonna go to the gym.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu pours off the milk as tears build in her eyes, feeling the snot build on her upper lip.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;Good. You do that.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Okay well, now she&#39;s just being rude.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Okay well, now she&#39;s just being rude.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu looks up at her mother, yet she remains looking to Micah.&quot;},
-  {type: &quot;interject&quot;, text: &quot;It&#39;s okay Su, he&#39;s going to tell you. Remember what Sheryl taught us? While you were away at her stay in rehab, and learning all these tools and ways of navigating life and thinking, it doesn&#39;t mean the people we&#39;ve left at home are growing with you. They may, and most likely still, think of you as your addicted and selfish self. You must be able to balance that in your responses and ways of communicating.&quot;, impacts: {familyAwareness: 1.5}, memoryEntry: {who: &quot;Sheryl&quot;, text: &quot;Her lesson again, right on time. Growing doesn&#39;t mean they grew too. I know that. Knowing it and living inside it are two different things.&quot;}},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;It&#39;s okay Su, he&#39;s going to tell you. Remember what Sheryl taught us? While you were away at her stay in rehab, and learning all these tools and ways of navigating life and thinking, it doesn&#39;t mean the people we&#39;ve left at home are growing with you. They may, and most likely still, think of you as your addicted and selfish self. You must be able to balance that in your responses and ways of communicating.&quot;, impacts: {familyAwareness: 1.5}, memoryEntry: {who: &quot;Sheryl&quot;, text: &quot;Her lesson again, right on time. Growing doesn&#39;t mean they grew too. I know that. Knowing it and living inside it are two different things.&quot;}},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Well you don&#39;t need to be like that.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;No, I&#39;m not being like anything.&quot;},
   {type: &quot;action&quot;, text: &quot;Micah and Dad look to each other and then to Anesu, who remains stirring her coffee.&quot;},
   {type: &quot;action&quot;, text: &quot;Her grip tigthens on the mug, slowly bringing it to her lips for a sip. She dumps the spoon in the sink, and pours her coffee onto a keep cup.&quot;},
-    {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m gonna go catch the bus...&quot;, impacts: {anesuGuard: -1}, dest: &quot;V3_Transition_Gym&quot;}
+    {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m gonna go catch the bus...&quot;, impacts: {anesuGuard: -1}, dest: &quot;B1C3_Transition_Gym&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
@@ -3810,8 +3811,8 @@ The kitchen, still. Coffee going cold in her hands.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Mama&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="B1C3_03_Opening_LeftOut" tags="" position="500,750" size="100,100">&lt;&lt;set $sceneBeats to [
-  {type: &quot;interject&quot;, text: &quot;You&#39;re right, it&#39;s not nice. But maybe we can have this discussion another time. I think Micah is trying to relay genuine information.&quot;},
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="22" name="B1C3_03_LeftOut" tags="" position="500,750" size="100,100">&lt;&lt;set $sceneBeats to [
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You&#39;re right, it&#39;s not nice. But maybe we can have this discussion another time.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;I seriously don&#39;t know how you&#39;ve made this about yourself. Micah was just telling us something amazing and you&#39;ve come in and ruined it.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu stops stirring and looks to her mother instead of the pouring milk.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Make it about myself? All I&#39;m asking is why hadn&#39;t I been told?! I feel like that&#39;s a fair question to freaking ask.&quot;},
@@ -3827,7 +3828,7 @@ The kitchen, still. Coffee going cold in her hands.
     blind: &quot;She said I make everything about myself. She isn&#39;t 100% right.&quot;,
     uncertain: &quot;I don&#39;t know why I couldn&#39;t just let it go this time. I usually can.&quot;,
     aware: &quot;She just knows what will set me off. She&#39;s too good. As soon as she said ruined, I saw red.&quot;,
-  }}, dest: &quot;V3_Transition_Gym&quot;}
+  }}, dest: &quot;B1C3_Transition_Gym&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
@@ -3849,11 +3850,11 @@ The kitchen, tighter now. Nobody&#39;s sitting anymore.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Mama&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="B1C3_04_Opening_GoToGym" tags="" position="750,750" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="B1C3_04_GoToGym" tags="" position="750,750" size="100,100">&lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;Anesu dumps her teaspoon in the sink, and darts up stairs to get changed, grab her bag and walks to the front door &quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Do you want your coffee?&quot;},
   {type: &quot;action&quot;, text: &quot;SLAM&quot;},
-  {type: &quot;continueTo&quot;, dest: &quot;V3_Transition_Gym&quot;}
+  {type: &quot;continueTo&quot;, dest: &quot;B1C3_Transition_Gym&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
@@ -3862,27 +3863,97 @@ The kitchen, tighter now. Nobody&#39;s sitting anymore.
 &lt;div class=&quot;meeting-time&quot;&gt;Saturday Morning&lt;/div&gt;
 She&#39;s already halfway to the door.
 &lt;/div&gt;
-&lt;div class=&quot;conversation-row solo&quot;&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Anesu&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Anesu&lt;/div&gt;
+&lt;/div&gt;
 &lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Dad&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Dad&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="24" name="B1C3_Transition_Gym" tags="" position="525,800" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
+&lt;/div&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="24" name="B1C3_Transition_Gym" tags="" position="375,900" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
+&lt;&lt;set $currentTime to &quot;11:30am&quot;&gt;&gt;
+&lt;&lt;run updateAngelStatus()&gt;&gt;
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;narrative&quot;, heading: &quot;PLACEHOLDER LOCATION&quot;, text: &quot;Placeholder V3 transition beat.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Placeholder line.&quot;},
-  {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Continue&quot;, dest: &quot;B1C4_ErinCheckIn&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;So what are you hitting today?&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu dumps her bag in one of the empty pigeon holes and fills her water bottle.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Back and biceps. Missed a session last week.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Oh nice.&quot;},
+  {type: &quot;action&quot;, text: &quot;She storms to the treadmill, connecting her headphones.&quot;},
+  {type: &quot;action&quot;, text: &quot;Power on, battery low.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;For fuck&#39;s sake.&quot;},
+  {type: &quot;action&quot;, text: &quot;Connected.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Oh, thank goodness.&quot;},
+  {type: &quot;action&quot;, text: &quot;Now playing: Get JACKed, playlist created by Su.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Are we just not going to talk about what happened?&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu increases the incline and adjusts her bodysuit. She shrugs her shoulders.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m never gonna be able to be a part of the family again. Micah is never gonna let me in. I don&#39;t know what else I can possibly do...&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu checks the clock, 2 out of 5 minutes.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I ask how he is, how class is. If there are any girls in his life... how his friends are. If he wants to hang out with me... if I can join him and his friends.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;It&#39;s never enough!&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;It just takes time, Su.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;But how much time?! I did my amends but that clearly wasn&#39;t enough. So where does it end? When can the new chapter begin?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;It will begin when he is ready...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;But how much more time will we waste? Will he waste? We&#39;ll just drift further and further apart until he won&#39;t even give me the time of day.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu hops off the treadmill and makes her way to the free weights, grabbing a 10kg dumbbell. She kneels her left leg on a bench and begins to row the weight.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Never seen you do this exercise before.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Yeah, learnt it from a gym friend a few weeks ago. Apparently it&#39;s better than the cable row.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;But why do you have to prove to Micah that you&#39;re better?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Because I want my brother back! I want him to tell me things, involve me in his life. Doesn&#39;t he want me in his life?&quot;},
+  {type: &quot;action&quot;, text: &quot;Set one done.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;He does, Su, it&#39;s just hard for him.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;What is so fucking hard? What could possibly be so difficult?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;He doesn&#39;t know if you&#39;re going to go back, Su. He needs stability, just as much as you do. If not more. You&#39;re his big sister, the rock that finally rolled over.&quot;, impacts: {familyAwareness: 1, micahTrust: 0.5}},
+  {type: &quot;action&quot;, text: &quot;Set three done.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu re-racks her weights and walks over to the lat pulldown.&quot;},
+  {type: &quot;action&quot;, text: &quot;Set one.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Lord, we&#39;re only 2 years apart. It&#39;s not like I&#39;m some huge figure in his life.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;He&#39;s still the baby you were waiting for from the hospital.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Now we need to start managing our expectations, otherwise you&#39;re gonna be hurt over and over.&quot;},
+  {type: &quot;action&quot;, text: &quot;Set two.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Not this again.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Well, it&#39;s the truth, you expected Micah to start telling you things and letting you in. But then he didn&#39;t, the realisation and disappointment is what&#39;s crushing you. So we need to manage that. Because he will not change overnight.&quot;},
+  {type: &quot;action&quot;, text: &quot;Set three.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;So what am I supposed to do now? Push my feelings aside?&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu lumbers over to the cable machine and attaches the double ropes. She sets the weight and pulls the rope down with her into a sitting position.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Not push your feelings aside... Clean your side of the street. You acknowledge your feelings. That&#39;s great. They now need to go somewhere while we wait for those we love to grow alongside us.&quot;, impacts: {anesuGuard: -0.5}},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;We write them down, or hand it over to your Higher Power. Like we&#39;re doing right now.&quot;},
+  {type: &quot;action&quot;, text: &quot;Set one.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Acknowledge the feelings, but don&#39;t push them down, hand them over to me so it doesn&#39;t weigh you down and come out in heated moments. And come out with the wrong words.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;How long do I have to do that for? Hide and filter my feelings.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;No one said hide or filter, it&#39;s just managing them so you don&#39;t drown.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;It&#39;ll take as long as it takes. Remember you only have to do it for a day.&quot;},
+  {type: &quot;action&quot;, text: &quot;Set two.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu pauses before she begins, looking at her reflection in the mirror ahead.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;A day?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Yep. Just one more day.&quot;, impacts: {anesuGuard: -1}},
+  {type: &quot;action&quot;, text: &quot;Anesu sighs and readjusts her grip.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Now finish your workout, you don&#39;t need me in your ear for the rest of it.&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B1C4_ErinCheckIn&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
 &lt;div class=&quot;opening-layout&quot;&gt;
 &lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
-&lt;div class=&quot;meeting-time&quot;&gt;Placeholder Time&lt;/div&gt;
-Placeholder narrative box text.
+&lt;div class=&quot;meeting-time&quot;&gt;Saturday, Late Morning&lt;/div&gt;
+The gym hums with machines and other people&#39;s music leaking out of their headphones.
 &lt;/div&gt;
-&lt;div class=&quot;conversation-row solo&quot;&gt;
+&lt;div class=&quot;conversation-row&quot;&gt;
+&lt;div class=&quot;speaker-box&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Anesu&#39;]&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Anesu&lt;/div&gt;
+&lt;/div&gt;
 &lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
 &lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
+&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
+&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="25" name="B1C4_ErinCheckIn" tags="" position="1300,225" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
