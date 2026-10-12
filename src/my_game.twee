@@ -125,6 +125,34 @@ a, .dialogue-prompt a, .chat-line a, .select-row a, .scene-nav a, .continue-link
 
 tw-story a.link-internal { text-decoration: none; }
 
+body.title-mode .menu-screen {
+  margin-left: 0;
+  left: 50%;
+}
+
+body.title-mode #ui-bar {
+  display: none !important;
+}
+body.title-mode #screen-clock {
+  display: none !important;
+}
+body.title-mode #story {
+  margin-left: 0 !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('assets/ui/TitleScreen_V001.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* ============================================================
    DEBUG PANEL
    ============================================================ */
@@ -213,8 +241,8 @@ tw-story a.link-internal { text-decoration: none; }
 
 #ui-bar {
   width: clamp(10em, 13vw, 15em) !important;
-  background-color: #2b2420;
-  background-image: url('assets/ui/UIBar_Day.png');
+  background-color: var(--bg-panel);
+  background-image: none;
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -552,6 +580,9 @@ body.scene-night #ui-bar {
   color: var(--text-muted);
   font-size: 1em;
   text-align: center;
+  background-image: url('assets/AASEAT_V003.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .scene-box img, .speaker-box img {
@@ -580,13 +611,13 @@ body.scene-night #ui-bar {
 
 .card-box {
   width: clamp(500px, 82vh, 950px);
-  height: auto;
-  max-height: clamp(450px, 70vh, 700px);
+  height: clamp(450px, 70vh, 700px);
   border: 3px dashed var(--text-main);
   padding: clamp(0.5em, 1vw, 0.8em);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .card-box {
@@ -598,13 +629,13 @@ body.scene-night #ui-bar {
   font-family: 'Pixelta', monospace;
   flex-shrink: 0;
   border-bottom: 1px dashed var(--text-muted);
-  padding: 0.05em 0;
+  padding: 0.03em 0;
   margin: 0 -0.6em;
   padding-left: 0.3em;
   padding-right: 0.3em;
   color: var(--text-muted);
-  font-size: 0.75em;
-  line-height: 1.3;
+  font-size: 0.7em;
+  line-height: 1.2;
 }
 
 .card-box .card-field br {
@@ -613,14 +644,18 @@ body.scene-night #ui-bar {
 
 .card-box .card-story {
   font-family: 'Pixelta', monospace;
+  font-size: 0.78em;
+  line-height: 1.25;
   flex-shrink: 1;
-  min-height: 120px;
   flex-grow: 1;
+  min-height: 80px;
   border-top: 1px dashed var(--text-muted);
-  margin-top: 0.5em;
-  overflow: visible;
-  padding-right: 0.8em;
+  margin-top: 0.4em;
+  padding-right: 0.5em;
+  padding-top: 0.3em;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* .card-box .card-story::-webkit-scrollbar {
@@ -1738,6 +1773,15 @@ $(document).on(':passagedisplay', function() {
   setupDebugToggle();
 });
 
+$(document).on(':passagedisplay', function(ev) {
+  var titlePassages = ["P_01_Opening_Monologue", "P_02_Title_Screen"];
+  if (titlePassages.indexOf(ev.passage.title) !== -1) {
+    $('body').addClass('title-mode');
+  } else {
+    $('body').removeClass('title-mode');
+  }
+});
+
 window.characterSpeeds = {
   "Erin": 45,
   "Higher Power": 20,
@@ -2409,11 +2453,9 @@ You've chosen to follow Anesu this week.
 <<set $currentTime to "8:45pm">>
 <<run setAmbience('audio/meeting_exterior.mp3')>>
 <<run updateAngelStatus()>>
-
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Erin", text: "Well that was a lovely meeting! Andy finally shared."},
-  {type: "thought", text: "I never know how to respond to someone saying a \"good meeting\", 
-    they can be so depressing sometimes, and so was Andy's share. And Jordan! God man you're 40 something years old, get your shit together!"},
+  {type: "thought", text: "I never know how to respond to someone saying a \"good meeting\", they can be so depressing sometimes, and so was Andy's share. And Jordan! God man you're 40 something years old, get your shit together!"},
   {type: "action", text: "Erin's door thuds shut.", sound: "audio/car_door.mp3"},
   {type: "action", text: "With Anesu a beat after.", sound: "audio/car_door.mp3"},
   {type: "action", text: "The engine turns over.", sound: "audio/engine_start.mp3", soundId: "engine", soundPersist: true},
@@ -2489,7 +2531,7 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Mama", text: "You went to a meeting?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Where else could I have possibly gone? I told you exactly where I went."},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "Just because you told me, it doesn't mean that you went.", impacts: {mamaTrust: -0.5}}
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Just because you told me, it doesn't mean that you went.", impacts: {mamaTrust: -0.5}},
   {type: "action", text: "Her tone is cold, holding a scowl between her brows."},
   {type: "action", text: "Anesu stays fighting her second shoelace."},
   {type: "thought", text: "I shake my head disappointingly but I shouldn't be surprised. Of course she's fucking chastising me. It's only a matter of—", interrupted: true},
@@ -2497,7 +2539,7 @@ The porch light is on. The house is quiet, for now. You perch yourself on a tree
   {type: "thought", text: "And there it is."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "That's what you came out of bed to tell me? You don't talk to me all day and this is what you say?"},
   {type: "action", text: "Dad appears behind Mama, glasses on the tip of his nose, earphones dangling from his left ear."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "People smoke at meetings all the time hun. She might not have even smoked. At least she is going.", impacts: {dadTrust: 0.5}}
+  {type: "dialogue", side: "character", speaker: "Dad", text: "People smoke at meetings all the time hun. She might not have even smoked. At least she is going.", impacts: {dadTrust: 0.5}},
   {type: "thought", text: "Dad always comes in clutch, see he gets it! And he knew I had a few cigarettes, he's not daft; he's just trying to keep the peace."},
   {type: "action", text: "Mama glares at Dad over her shoulder, still unhappy with how this conversation is going."},
   {type: "thought", text: "It's as almost as if we all knew that."},
@@ -3571,19 +3613,19 @@ _beat.text
 
 :: B1C3_01_Opening {"position":"375,625","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
-<<set $currentDate to "Sat, 4 May 2024">>
+<<set $currentDate to "Sat 27 Apr 2024">>
 <<set $currentTime to "10:52am">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
   {type: "action", text: "The sun bleeds through the beige curtains, tickling Anesu's eyelids."},
   {type: "thought", text: "Mhmmmmm."},
-  {type: "interject", text: "Yeah it is a little bright hey? But gosh it's so warm. Isn't it glorious? I wouldn't mind being able to feel sun again."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Yeah it is a little bright hey? But gosh it's so warm. Isn't it glorious? I wouldn't mind being able to feel sun again."},
   {type: "action", text: "She opens an eye, darting around to find the alarm clock. 10:52am."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "How the hell is it 10:52??"},
-  {type: "interject", text: "This is why we shouldn't be up and out smoking. We should start reading again or something."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "This is why we shouldn't be up and out smoking. We should start reading again or something."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah yeah, smoking is fun."},
   {type: "action", text: "Anesu coughs hard, nose flaring with each inhale and exhale."},
-  {type: "interject", text: "Is it though?"},
+  {type: "freeType", side: "character", speaker: "Higher Power", text: "Is it though?"},
   {type: "action", text: "Anesu rolls her eyes, hawking back the phlegm, scraping eye boogies out. She sits up higher and focuses in on the noises in her home."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Damn, everyone's already at it."},
   {type: "action", text: "She whips off the warm sage covers and slips on her uggs, scratching her tummy as she trods down the stairs."},
@@ -3607,15 +3649,17 @@ _beat.text
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Why didn't you say anything?? I mean over a year??", impacts: {anesuGuard: 0.5}},
   {type: "action", text: "I pour some water into the plant next to the stove and boil the rest, clicking it quickly."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "So? Why not say anything, man? I'm your sister."},
-  {type: "dialogue", side: "character", speaker: "Micah", text: "Yeah but you haven't been around dude."},
+  {type: "dialogue", side: "character", speaker: "Micah", text: "Yeah but you haven't been around dude.", impacts: {micahTrust: -0.5}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Haven't been around?? It's been 6 months!"},
   {type: "dialogue", side: "character", speaker: "Dad", text: "Yeah but he's saying before that. This all happened while you were drinking."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Okay, I understand that, but were you all just never going to say anything? I'm part of this family too."},
   {type: "action", text: "Mama crosses her arms, and purses her lips."},
   {type: "action", text: "The kettle continues to boil, the bubbles speeding up as the pressure in the room builds."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I mean you all talk about everything, why can't I be included?"},
-  {type: "dialogue", side: "character", speaker: "Micah", text: "Well you weren't there, and I didn't bother to update you because there's a lot of backstory."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "I did my amendments, how is this not enough?"},
+  {type: "dialogue", side: "character", speaker: "Micah", text: "Well you weren't there, and I didn't bother to update you because there's a lot of backstory.", impacts: {micahTrust: -0.5}},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I did my amends, how is this not enough?"},
+  {type: "dialogue", side: "character", speaker: "Micah", text: "Yeah but have you really changed though? I mean, you're still kinda that volatile addict.", impacts: {micahTrust: -1}, memoryEntry: {who: "Micah", text: {blind: "He doesn't care to let me in or want me a part of his life.", uncertain: "What else can I possibly do? Where do I go from here?", aware: "That's just not who I am anymore... But I don't think he will ever see that."}}},
+  {type: "thought", text: "Well, there it is. I fucking knew it."},
   {type: "breathe", text: "The kitchen goes quiet for a moment.", duration: 2000},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "I know, but sometimes it takes more time. You've grown and you keep growing — maybe they are still stuck from the day you went to rehab.", impacts: {familyAwareness: 1}},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Sisi, you weren't there when this all happened, and it's just kept going on and on."},
@@ -3625,12 +3669,11 @@ _beat.text
   {type: "dialogue", side: "player", speaker: "Anesu", text: "How am I supposed to ask about something I don't know about?"},
   {type: "breathe", text: "The room holds its breath.", duration: 2000},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "Su, let's be mindful that it's 11am. We cannot come in hot like this."},
-  {type: "action", text: "Should Anesu..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "So what, it's 11am? My feelings are hurt!", dest: "B1C3_02_Opening_MyFeelingsHurt", impacts: {anesuGuard: 0.5}},
+  {type: "choice", side: "player", speaker: "Anesu", text: "So what, it's 11am? My feelings are hurt!", dest: "B1C3_02_MyFeelingsHurt", impacts: {anesuGuard: 0.5}},
   {type: "action", text: "or..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Yeah I understand, but this isn't nice — why am I being left out?", dest: "B1C3_03_Opening_LeftOut", impacts: {familyAwareness: 0.5}},
+  {type: "choice", side: "player", speaker: "Anesu", text: "Yeah I understand, but this isn't nice — why am I being left out?", dest: "B1C3_03_LeftOut", impacts: {familyAwareness: 0.5}},
   {type: "action", text: "or..."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Whatever, I'm going to the gym.", dest: "B1C3_04_Opening_GoToGym", impacts: {anesuGuard: 1}}
+  {type: "choice", side: "player", speaker: "Anesu", text: "Whatever, I'm going to the gym.", dest: "B1C3_04_GoToGym", impacts: {anesuGuard: 1}}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3658,7 +3701,7 @@ The kitchen smells like coffee. Everyone's already up.
 
 :: B1C2_Transition {"position":"900,550","size":"100,100"}
 <<run $('body').addClass('scene-night')>>
-<<set $currentDate to "Thu, 2 May 2024">>
+<<set $currentDate to "Wed, 24 April 2024">>
 <<set $currentTime to "11:40pm">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
@@ -3706,9 +3749,9 @@ Anesu's room. The door is shut. The house is still.
 </div>
 
 
-:: B1C3_02_Opening_MyFeelingsHurt {"position":"250,750","size":"100,100"}
+:: B1C3_02_MyFeelingsHurt {"position":"250,750","size":"100,100"}
 <<set $sceneBeats to [
-  {type: "interject", text: "That is true, but it's not about you this morning, I'm afraid."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "That is true."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "I seriously don't know how you've made this about yourself. Micah was just telling us something amazing and you've come in and ruined it."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "Okay I wouldn't say ruined it..."},
   {type: "dialogue", side: "character", speaker: "Micah", text: "That's a bit much mum."},
@@ -3728,14 +3771,14 @@ Anesu's room. The door is shut. The house is still.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'm gonna go to the gym."},
   {type: "action", text: "Anesu pours off the milk as tears build in her eyes, feeling the snot build on her upper lip."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Good. You do that."},
-  {type: "interject", text: "Okay well, now she's just being rude."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Okay well, now she's just being rude."},
   {type: "action", text: "Anesu looks up at her mother, yet she remains looking to Micah."},
-  {type: "interject", text: "It's okay Su, he's going to tell you. Remember what Sheryl taught us? While you were away at her stay in rehab, and learning all these tools and ways of navigating life and thinking, it doesn't mean the people we've left at home are growing with you. They may, and most likely still, think of you as your addicted and selfish self. You must be able to balance that in your responses and ways of communicating.", impacts: {familyAwareness: 1.5}, memoryEntry: {who: "Sheryl", text: "Her lesson again, right on time. Growing doesn't mean they grew too. I know that. Knowing it and living inside it are two different things."}},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "It's okay Su, he's going to tell you. Remember what Sheryl taught us? While you were away at her stay in rehab, and learning all these tools and ways of navigating life and thinking, it doesn't mean the people we've left at home are growing with you. They may, and most likely still, think of you as your addicted and selfish self. You must be able to balance that in your responses and ways of communicating.", impacts: {familyAwareness: 1.5}, memoryEntry: {who: "Sheryl", text: "Her lesson again, right on time. Growing doesn't mean they grew too. I know that. Knowing it and living inside it are two different things."}},
   {type: "dialogue", side: "character", speaker: "Micah", text: "Well you don't need to be like that."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "No, I'm not being like anything."},
   {type: "action", text: "Micah and Dad look to each other and then to Anesu, who remains stirring her coffee."},
   {type: "action", text: "Her grip tigthens on the mug, slowly bringing it to her lips for a sip. She dumps the spoon in the sink, and pours her coffee onto a keep cup."},
-    {type: "choice", side: "player", speaker: "Anesu", text: "I'm gonna go catch the bus...", impacts: {anesuGuard: -1}, dest: "V3_Transition_Gym"}
+    {type: "choice", side: "player", speaker: "Anesu", text: "I'm gonna go catch the bus...", impacts: {anesuGuard: -1}, dest: "B1C3_Transition_Gym"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3759,9 +3802,9 @@ The kitchen, still. Coffee going cold in her hands.
 </div>
 </div>
 
-:: B1C3_03_Opening_LeftOut {"position":"500,750","size":"100,100"}
+:: B1C3_03_LeftOut {"position":"500,750","size":"100,100"}
 <<set $sceneBeats to [
-  {type: "interject", text: "You're right, it's not nice. But maybe we can have this discussion another time. I think Micah is trying to relay genuine information."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You're right, it's not nice. But maybe we can have this discussion another time."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "I seriously don't know how you've made this about yourself. Micah was just telling us something amazing and you've come in and ruined it."},
   {type: "action", text: "Anesu stops stirring and looks to her mother instead of the pouring milk."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Make it about myself? All I'm asking is why hadn't I been told?! I feel like that's a fair question to freaking ask."},
@@ -3777,7 +3820,7 @@ The kitchen, still. Coffee going cold in her hands.
     blind: "She said I make everything about myself. She isn't 100% right.",
     uncertain: "I don't know why I couldn't just let it go this time. I usually can.",
     aware: "She just knows what will set me off. She's too good. As soon as she said ruined, I saw red.",
-  }}, dest: "V3_Transition_Gym"}
+  }}, dest: "B1C3_Transition_Gym"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3801,12 +3844,12 @@ The kitchen, tighter now. Nobody's sitting anymore.
 </div>
 </div>
 
-:: B1C3_04_Opening_GoToGym {"position":"750,750","size":"100,100"}
+:: B1C3_04_GoToGym {"position":"750,750","size":"100,100"}
 <<set $sceneBeats to [
   {type: "action", text: "Anesu dumps her teaspoon in the sink, and darts up stairs to get changed, grab her bag and walks to the front door "},
   {type: "dialogue", side: "character", speaker: "Dad", text: "Do you want your coffee?"},
   {type: "action", text: "SLAM"},
-  {type: "continueTo", dest: "V3_Transition_Gym"}
+  {type: "continueTo", dest: "B1C3_Transition_Gym"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -3815,30 +3858,100 @@ The kitchen, tighter now. Nobody's sitting anymore.
 <div class="meeting-time">Saturday Morning</div>
 She's already halfway to the door.
 </div>
-<div class="conversation-row solo">
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Anesu']">
+<div class="speaker-name" id="leftSpeakerName">Anesu</div>
+</div>
 <div class="chat-log" id="chatLog">
 <div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<img @src="$characterImages['Dad']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Dad</div>
 </div>
 </div>
 </div>
 
-:: B1C3_Transition_Gym{"position":"525,800","size":"100,100"}
+:: B1C3_Transition_Gym {"position":"375,900","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
+<<set $currentTime to "11:30am">>
+<<run updateAngelStatus()>>
 <<set $sceneBeats to [
-  {type: "narrative", heading: "PLACEHOLDER LOCATION", text: "Placeholder V3 transition beat."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Placeholder line."},
-  {type: "choice", side: "player", speaker: "Anesu", text: "Continue", dest: "B1C4_ErinCheckIn"}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "So what are you hitting today?"},
+  {type: "action", text: "Anesu dumps her bag in one of the empty pigeon holes and fills her water bottle."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Back and biceps. Missed a session last week."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Oh nice."},
+  {type: "action", text: "She storms to the treadmill, connecting her headphones."},
+  {type: "action", text: "Power on, battery low."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "For fuck's sake."},
+  {type: "action", text: "Connected."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Oh, thank goodness."},
+  {type: "action", text: "Now playing: Get JACKed, playlist created by Su."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Are we just not going to talk about what happened?"},
+  {type: "action", text: "Anesu increases the incline and adjusts her bodysuit. She shrugs her shoulders."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I'm never gonna be able to be a part of the family again. Micah is never gonna let me in. I don't know what else I can possibly do..."},
+  {type: "action", text: "Anesu checks the clock, 2 out of 5 minutes."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I ask how he is, how class is. If there are any girls in his life... how his friends are. If he wants to hang out with me... if I can join him and his friends."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "It's never enough!"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "It just takes time, Su."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "But how much time?! I did my amends but that clearly wasn't enough. So where does it end? When can the new chapter begin?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "It will begin when he is ready..."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "But how much more time will we waste? Will he waste? We'll just drift further and further apart until he won't even give me the time of day."},
+  {type: "action", text: "Anesu hops off the treadmill and makes her way to the free weights, grabbing a 10kg dumbbell. She kneels her left leg on a bench and begins to row the weight."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Never seen you do this exercise before."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah, learnt it from a gym friend a few weeks ago. Apparently it's better than the cable row."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "But why do you have to prove to Micah that you're better?"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Because I want my brother back! I want him to tell me things, involve me in his life. Doesn't he want me in his life?"},
+  {type: "action", text: "Set one done."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "He does, Su, it's just hard for him."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "What is so fucking hard? What could possibly be so difficult?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "He doesn't know if you're going to go back, Su. He needs stability, just as much as you do. If not more. You're his big sister, the rock that finally rolled over.", impacts: {familyAwareness: 1, micahTrust: 0.5}},
+  {type: "action", text: "Set three done."},
+  {type: "action", text: "Anesu re-racks her weights and walks over to the lat pulldown."},
+  {type: "action", text: "Set one."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Lord, we're only 2 years apart. It's not like I'm some huge figure in his life."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "He's still the baby you were waiting for from the hospital."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Now we need to start managing our expectations, otherwise you're gonna be hurt over and over."},
+  {type: "action", text: "Set two."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Not this again."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Well, it's the truth, you expected Micah to start telling you things and letting you in. But then he didn't, the realisation and disappointment is what's crushing you. So we need to manage that. Because he will not change overnight."},
+  {type: "action", text: "Set three."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "So what am I supposed to do now? Push my feelings aside?"},
+  {type: "action", text: "Anesu lumbers over to the cable machine and attaches the double ropes. She sets the weight and pulls the rope down with her into a sitting position."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Not push your feelings aside... Clean your side of the street. You acknowledge your feelings. That's great. They now need to go somewhere while we wait for those we love to grow alongside us.", impacts: {anesuGuard: -0.5}},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "We write them down, or hand it over to your Higher Power. Like we're doing right now."},
+  {type: "action", text: "Set one."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Acknowledge the feelings, but don't push them down, hand them over to me so it doesn't weigh you down and come out in heated moments. And come out with the wrong words."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "How long do I have to do that for? Hide and filter my feelings."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "No one said hide or filter, it's just managing them so you don't drown."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "It'll take as long as it takes. Remember you only have to do it for a day."},
+  {type: "action", text: "Set two."},
+  {type: "action", text: "Anesu pauses before she begins, looking at her reflection in the mirror ahead."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "A day?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Yep. Just one more day.", impacts: {anesuGuard: -1}},
+  {type: "action", text: "Anesu sighs and readjusts her grip."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Now finish your workout, you don't need me in your ear for the rest of it."},
+  {type: "continueTo", dest: "B1C4_ErinCheckIn"}
 ]>>
 <<set $beatIndex to 0>>
 
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
-<div class="meeting-time">Placeholder Time</div>
-Placeholder narrative box text.
+<div class="meeting-time">Saturday, Late Morning</div>
+The gym hums with machines and other people's music leaking out of their headphones.
 </div>
-<div class="conversation-row solo">
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Anesu']">
+<div class="speaker-name" id="leftSpeakerName">Anesu</div>
+</div>
 <div class="chat-log" id="chatLog">
 <div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<img @src="$characterImages['Higher Power']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Higher Power</div>
 </div>
 </div>
 </div>
@@ -3997,6 +4110,8 @@ Erin's car, still driving.
 
 :: B1C2_01_Opening {"position":"375,425","size":"100,100"}
 <<set $currentDate to "Tue, 23 April 2024">>
+<<set $currentTime to "7:00pm">>
+<<run $('body').addClass('scene-night')>>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
   {type: "text", side: "them", text: "Hey, you free tonight? 😉", time: "7:00pm", sound: "audio/notif.mp3"},
@@ -4052,7 +4167,7 @@ Erin's car, still driving.
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
 <div class="meeting-time">Wednesday, Late</div>
-Anesu's phone lights up on the bed beside her.
+Anesu's phone lights up on the bed beside her. The name that flashes up causes a surge of excitment and adrenaline. 
 </div>
 <div class="phone-scene-row">
 <div class="side-log" id="leftLog"></div>
@@ -4064,10 +4179,13 @@ Anesu's phone lights up on the bed beside her.
 </div>
 
 :: B1C2_02_GoingToSeeElias {"position":"500,550","size":"100,100"}
+<<set $currentDate to "Tue, 23 April 2024">>
+<<set $currentTime to "10:00pm">>
 <<set $wentToElias to true>>
 <<run updateAngelStatus()>>
+<<run $('body').addClass('scene-night')>>
 <<set $sceneBeats to [
-  {type: "narrative", heading: "10:00PM", text: "The night ages and Anesu climbs into his car.", night: true, time: "10:00pm"},
+{type: "narrative", heading: "10:00PM", text: "The night ages and Anesu climbs into his car.", night: true, time: "10:00pm"},
 {type: "dialogue", side: "character", speaker: "Elias", text: "So did you miss me?"},
 {type: "dialogue", side: "player", speaker: "Anesu", text: "Hmmm not really, you kinda disappeared on me..."},
 {type: "dialogue", side: "character", speaker: "Elias", text: "Yeah yeah I know, I'm sorry baby. I just get so busy..."},
@@ -4078,14 +4196,42 @@ Anesu's phone lights up on the bed beside her.
 {type: "action", text: "Anesu bites her lip and picks at her nails."},
 {type: "dialogue", side: "character", speaker: "Elias", text: "Your nails look gorgeous by the way."},
 {type: "interject", text: "He didn't even look up."},
-{type: "dialogue", side: "player", speaker: "Anesu", text: "Oh really? Thank you! I got them just las—"},
+{type: "dialogue", side: "player", speaker: "Anesu", text: "Oh really? Thank you! I got them just las—", interrupted: true},
 {type: "dialogue", side: "character", speaker: "Elias", text: "They're very nice."},
 {type: "action", text: "Elias turns up the volume on the radio, one hand on the wheel, the other on the gear stick..."},
 {type: "interject", text: "The car's automatic, buddy. Just put a hand on her thigh or something."},
 {type: "action", text: "The two sit in silence, excitement oozing out of Anesu."},
 {type: "thought", text: "I can't believe he's finally seeing me!"},
 {type: "interject", text: "Neither can I..."},
-  {type: "spacer"},
+{type: "continueTo", dest: "B1C2_03_MorningWithElias"}
+]>>
+<<set $beatIndex to 0>>
+
+<div class="opening-layout">
+<div class="narrative-box" id="sceneNarrative">
+<div class="meeting-time">Way too fucking late</div>
+</div>
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Anesu']">
+<div class="speaker-name" id="leftSpeakerName">Anesu</div>
+</div>
+<div class="chat-log" id="chatLog">
+<div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<img @src="$characterImages['Elias']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Elias</div>
+</div>
+</div>
+</div>
+
+:: B1C2_03_MorningWithElias
+<<set $currentDate to "Wed, 24 April 2024">>
+<<set $currentTime to "7:45am">>
+<<set $wentToElias to true>>
+<<run updateAngelStatus()>>
+<<set $sceneBeats to [
 {type: "narrative", heading: "THE NEXT MORNING", text: "Anesu wakes in his bed to a wall of notifications.", night: false, time: "7:45am"},
 {type: "action", text: "6 missed calls from Mama. 5 missed calls from Dad. A message from Micah."},
 
@@ -4154,11 +4300,13 @@ Anesu's phone lights up on the bed beside her.
 </div>
 
 :: B1C2_04_Argument {"position":"625,550","size":"100,100"}
+<<set $currentDate to "Wed, 24 April 2024">>
+<<set $currentTime to "8:16am">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
   {type: "action", text: "As soon as her keys kiss the lock on the flyscreen, the door swings open — the matriarchal pair staring daggers into one another."},
   {type: "thought", text: "Deja vu in the hallway, huh?"},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "Where the bloody hell were you?"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Where the bloody hell were you?", impacts: {mamaTrust: -0.5}},
   {type: "action", text: "Her arms fold hard across her chest — still in her boxers, shirt, and bonnet."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I was out."},
   {type: "action", text: "Dad walks from the kitchen down the hall and scoffs, rolling his eyes."},
@@ -4170,12 +4318,12 @@ Anesu's phone lights up on the bed beside her.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Oh yeah Mama, I was out getting my brains fucked out at some guy's house."},
   {type: "thought", text: "Jesus, Anesu. Okay, let's think of something quickly. I'm not enabling, but we need to de-escalate. And readjust your hoodie, for Christ's sake."},
   {type: "action", text: "Anesu fixes her hoodie, ensuring the monster of a hickey is covered."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "I really was with a friend, her name is Tilly, we—"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I really was with a friend, her name is Tilly, we—", interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "And where, pray tell, did you meet this Tilly?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Uni. We're in a group assignment."},
   {type: "dialogue", side: "character", speaker: "Dad", text: "You hate group assignments."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah, well, this one wasn't optional. Had to be with her."},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "And why did you have to stay the night? Knowing very well you're not allowed.", time: "8:18am"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "And why did you have to stay the night? Knowing very well you're not allowed."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "We got caught up watching some movies."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "I thought you were studying."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Yes, we studied, and then we watched some movies."},
@@ -4186,7 +4334,7 @@ Anesu's phone lights up on the bed beside her.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "What, so I'm not allowed to watch them again? Am I suddenly banned from rewatching films?"},
   {type: "dialogue", side: "character", speaker: "Dad", text: "Don't be smart, Su."},
   {type: "action", text: "Micah's voice echoes from the living room down the hall. He clears his throat."},
-  {type: "dialogue", side: "character", speaker: "Micah", text: "If you're wanting to catch her out on something, asking about movies is not the move."},
+  {type: "dialogue", side: "character", speaker: "Micah", text: "If you're wanting to catch her out on something, asking about movies is not the move.", impacts: {micahTrust: 0.5}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Shut UP, Micah, with that nonsense, Micah."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Hey! If anyone is shutting up with their nonsense, it's you! So why was your location off?"},
   {type: "thought", text: "Did we think of an answer for this?"},
@@ -4202,17 +4350,17 @@ Anesu's phone lights up on the bed beside her.
   {type: "dialogue", side: "character", speaker: "Mama", text: "I'm as serious as a heart attack. We will continue to do what's best for you, since you can't make THOSE DECISIONS FOR YOURSELF!"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Ahhh, okay — so I now have no inhibitions, no drive, no direction. I'm some DOPEY FUCK who can't do anything for herself!"},
   {type: "dialogue", side: "character", speaker: "Mama", text: "LANGUAGE! WATCH YOUR MOUTH!"},
-  {type: "action", text: "Micah sighs, then what sounds like the click of his laptop closing — she watches her brother cross the hall and disappear into his room.", impacts: {familyAwareness: 0.5}},
+  {type: "action", text: "Micah sighs, then what sounds like the click of his laptop closing — she watches her brother cross the hall and disappear into his room.", impacts: {familyAwareness: 0.5, micahTrust: -0.5}},
   {type: "thought", text: "Fair response. It is the FUCKING MORNING."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I LEFT REHAB 6 MONTHS AGO! Have I NOT SHOWN ANY TYPE OF RESPONSIBILITY?", time: "8:25am"},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "You have, Anesu. It's great that you're going to those meetings, going to the gym. You got a new job at the—"},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "AH YES! THE BARE MINIMUM OF BEING AN ADULT.", impacts: {familyAwareness: 1}},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "You have, Anesu. It's great that you're going to those meetings, going to the gym. You got a new job at the—", impacts: {dadTrust: 1} interrupted: true},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "AH YES! THE BARE MINIMUM OF BEING AN ADULT.", impacts: {familyAwareness: 1, mamaTrust: -1}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Wooooowww. You know what, Mama? You're absolutely fucking full of it."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Do NOT speak to me that way!"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Then DON'T SPEAK TO ME THAT WAY! WHAT ARE YOU ON RIGHT NOW? I mean, Jesus Christ."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "LANGUAGE!!!!"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "JE. SUS. CHRIST!!!"},
-  {type: "action", text: "Mama steps forward and slaps her daughter across the face. All three stand frozen in the hallway. A door creaks — Micah stands there, mouth agape. Anesu's eyes water, and for a moment Mama's expression falters — but she hardens up right away.", time: "8:27am"},
+  {type: "action", text: "Mama steps forward and slaps her daughter across the face. All three stand frozen in the hallway. A door creaks — Micah stands there, mouth agape. Anesu's eyes water, and for a moment Mama's expression falters — but she hardens up right away.", time: "8:27am", impacts: {mamaTrust: -2.5}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I've been sober for 6 months. I have done EVERYTHING IN MY POWER to make shit right. I've followed every RULE."},
   {type: "action", text: "Dad nods in agreement, but keeps his eyes on Mama."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I will NEVER be able to make you happy. So yes — I went out and SPENT TIME WITH MY FRIEND, which you SHIT ON ME ABOUT FOR NOT HAVING."},
@@ -4227,14 +4375,14 @@ Anesu's phone lights up on the bed beside her.
   {type: "thought", text: "I will NEVER be able to make you happy. I try so hard."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Stop yelling."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "MAKE ME."},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "Come on, Ne. Please."},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "Come on, Ne. Please.", impacts: {dadTrust: 1}},
   {type: "action", text: "She listens to Dad, and only Dad. She takes the biggest breath she can and locks eyes with him — still speaking to Mama."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Sober for how long? And for what — for this? Nah. I don't need this, Mama.", time: "8:31am"},
   {type: "breathe", text: "Another stand-off. Silence.", duration: 2500},
   {type: "dialogue", side: "character", speaker: "Micah", text: "So... are we done?"},
   {type: "action", text: "They all turn to face him — three solemn expressions."},
   {type: "action", text: "Anesu slips her shoes off and tightens her grip on her bag."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "I was done a long time ago.", time: "8:33am", impacts: {anesuGuard: 2}, memoryEntry: {who: "Mama", text: {blind: "She slapped me and somehow it's still my fault. That's who she is.", uncertain: "She hit me. My own mama hit me. I don't know what to do with that yet.", aware: "She hit me because she has no other language left for how scared she is. It doesn't make it okay. It just makes it clearer — she hasn't moved, and maybe she can't."}}},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "I was done a long time ago.", time: "8:33am", impacts: {anesuGuard: 2, mamaTrust: -1}, memoryEntry: {who: "Mama", text: {blind: "She slapped me and somehow it's still my fault. That's who she is.", uncertain: "She hit me. My own mama hit me. I don't know what to do with that yet.", aware: "She hit me because she has no other language left for how scared she is. It doesn't make it okay. It just makes it clearer — she hasn't moved, and maybe she can't."}}},
   {type: "continueTo", dest: "B1C2_05_Blocked"}
 
 ]>>
@@ -4261,13 +4409,13 @@ The hallway again. Same house, same standoff, higher stakes.
 
 
 :: B1C2_05_Blocked {"position":"750,550","size":"100,100"}
-<<set $currentDate to "Thu, 2 May 2024">>
-<<set $currentTime to "6:30pm">>
+<<set $currentDate to "Wed, 24 April 2024">>
+<<set $currentTime to "6:11pm">>
 <<run updateAngelStatus()>>
 <<set $eliasBlocked to true>>
 <<run State.variables.anesuGuard = Math.min(10, State.variables.anesuGuard + 1)>>
 <<set $sceneBeats to [
-{type: "text", side: "me", text: "hey sorry i didn't message you much today, things at home were a little hectic.", time: "6:12pm"},
+  {type: "text", side: "me", text: "hey sorry i didn't message you much today, things at home were a little hectic.", time: "6:12pm"},
   {type: "text", side: "me", text: "thank you so much for last night. i had such a great time!", time: "6:12pm"},
   {type: "action", text: "Sending... sending... sending..."},
   {type: "action", text: "ERROR: message couldn't be received."},
@@ -4279,7 +4427,7 @@ The hallway again. Same house, same standoff, higher stakes.
   {type: "action", text: "ERROR: this message couldn't be received."},
   {type: "action", text: "The world goes black. Her heart drops to the pit of her stomach. The screen goes blurry, mouth instantly dry.", anesuSide: true, impacts: {anesuGuard: 1}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "No no no."},
-  {type: "action", text: "Anesu opens the app they met on, watching his profile disappear.", memoryEntry: {who: "Elias", text: "He's a fucking prick. He only wanted me for sex. I don't know why I ever thought it was more."}},
+  {type: "action", text: "Anesu opens the app they met on, watching his profile disappear.", impacts: {anesuGuard: 1}, memoryEntry: {who: "Elias", text: "He's a fucking prick. He only wanted me for sex. I don't know why I ever thought it was more."}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "No no no no no no no."},
   {type: "action", text: "Her heart pounds. She chews on her lip ring, unsure what to do with her hands.", anesuSide: true},
   {type: "dialogue", side: "character", speaker: "Higher Power", text: "Anesu, take a deep breath."},
@@ -4290,10 +4438,10 @@ The hallway again. Same house, same standoff, higher stakes.
   {type: "text", side: "me", text: "can we talk about it??", time: "6:20pm"},
   {type: "action", text: "Sending... sending..."},
   {type: "text", side: "me", text: "you had such a good time! at least i thought you did...", time: "6:21pm"},
-  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Anesu, he's blocked you. He can't see these—"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Anesu, he's blocked you. He can't see these—", interrupted: true},
   {type: "text", side: "me", text: "can we talk this out? maybe i can fix what i did?", time: "6:22pm"},
   {type: "action", text: "Sending... sending..."},
-  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You didn't do anything, Ne. He's just an—"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You didn't do anything, Ne. He's just an—", interrupted: true},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "MAYBE I DID DO SOMETHING."},
   {type: "text", side: "me", text: "i can come over tonight???? we can talk about it???", time: "6:23pm"},
   {type: "action", text: "Sending... sending... sending..."},
@@ -4308,7 +4456,7 @@ The hallway again. Same house, same standoff, higher stakes.
   {type: "action", text: "Anesu stares at herself in the mirror across the room, eyes bloodshot, nose puffy. She turns side to side, looking at all angles.", anesuSide: true, impacts: {familyAwareness: 0.5}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I mean, I finally got my skin clear!! Maybe I should wear more makeup, or lose more weight."},
   {type: "freeType", side: "character", speaker: "Higher Power", text: "This is madness, Anesu. We need to take a step back.", impacts: {anesuGuard: 1, familyAwareness: 1}},
-  {type: "continueTo", dest: "CS_ThePlaylist"}
+  {type: "continueTo", dest: "B1C2_CS_ThePlaylist"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -4326,7 +4474,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
 </div>
 </div>
 
-:: CS_ThePlaylist [nobr] {"position":"1150,650","size":"100,100"}
+:: B1C2_CS_ThePlaylist [nobr] {"position":"1150,650","size":"100,100"}
 <<run $('body').addClass('scene-night')>>
 <div class="opening-layout">
 <div class="narrative-box" id="sceneNarrative">
@@ -4336,7 +4484,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
 <div class="phone-frame">
 <div class="playlist-screen">
 <div class="playlist-title">isn't he gorgeous?</div>
-<div class="playlist-subtitle">created by su</div>
+<div class="playlist-subtitle">created by @sisu</div>
 <div class="playlist-tracks">
 <div class="playlist-track playing"><div class="track-name">Kicking My Feet - Ruel</div></div>
 <div class="playlist-track"><div class="track-namse">Dive - Olivia Dean</div></div>
@@ -4441,52 +4589,52 @@ Anesu stares at her phone, the message bar blinking, waiting.
 
 
 :: B1C2_StayingHome{"position":"700,750","size":"100,100"}
+<<set $currentDate to "Wed, 24 April 2024">>
+<<set $currentTime to "8:35pm">>
 <<run $('body').removeClass('scene-night')>>
 <<run updateAngelStatus()>>
 <<set $eliasBlocked to false>>
+<<set $wentToElias to false>>
 <<run State.variables.familyAwareness = Math.min(10, State.variables.familyAwareness + 0.5)>>
 <<set _baseBeats to [
   {type: "action", text: "Anesu keeps her eyes down as her headphones drown out that yapper, hanging out at the back of her skull."},
   {type: "thought", text: "He's now found someone else. Poof, just like that. You don't matter anymore."},
-  {type: "interject", text: "Hey! Shush! You aren't helping."},
+  {type: "freeType", side: "character", speaker: "Higher Power" , text: "Hey! Shush! You aren't helping."},
   {type: "action", text: "Anesu scoffs as she moves the fruit bowl out of the way, wiping away dust and dirt."},
   {type: "action", text: "Ruby looks up from her book, peering over the edge from the couch across the room."},
   {type: "thought", text: "Why did you say no?! This was your chance! You could've been his!"},
-  {type: "interject", text: "Okay there is no way that would've happened! He clearly just wanted Anesu for sex!"},
   {type: "thought", text: "We don't know that now, do we?"},
-  {type: "interject", text: "YES WE DO! Did you not see what he said when she said she wasn't coming over?"},
+  {type: "thought", text: "YES WE DO! Did you not see what he said when she said she wasn't coming over?"},
   {type: "thought", text: "..."},
   {type: "thought", text: "..."},
   {type: "thought", text: "..."},
   {type: "thought", text: "But he was only like that 'cause we said no."},
-  {type: "interject", text: "YEAH, he was a PRICK after setting a BASIC BOUNDARY? That's someone we want for Anesu?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "YEAH, he was a PRICK after setting a BASIC BOUNDARY? That's someone we want for Anesu?"},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Guys, not now..."},
-  {type: "interject", text: "Zip it, Su. We cannot be blaming ourselves here!! You made the right choice."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "He's just gonna block me now... I can feel it. Once they stop messaging for"},
   {type: "action", text: "Anesu checks her phone to see the delivered signage."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "this long, it's game over."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk how to describe it. It's this sinking feeling. My heart is eating my stomach. My intestines are knotting and engulfing my liver and kidneys..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "My bones begin to rattle and my blood stream grinds to a halt. It's an awful sickening feeling of intense incurable rejection and it happens every time..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "It's like a sixth sense... kinda like when deers know when a storm is coming before the wind changes. The first thought that comes to mind is to block them first before they do... but then there's the what if? What if they are different... what if they change this time?"},
-  {type: "interject", text: "Then why do it, Anesu?"},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk bec—"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Then why do it, Anesu?"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Idk bec—", interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Su? I think that spot is clean."},
   {type: "action", text: "Ruby has been watching her mid-wipe the same spot for the past 10 minutes, staring straight ahead, stare never wavering."},
   {type: "action", text: "Anesu shakes it off and clears her throat, swallowing the despair."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "What's wrong, sisi? Something's obviously troubling you."},
-  {type: "interject", text: "Tell her, Su."},
+  {type: "freeType", side: "character", speaker: "Higher Power", text: "Tell her, Su."},
   {type: "thought", text: "No don't, she's just going to bag you and sink her nails in further. You can smoke about it later."},
-  {type: "interject", text: "That is the worst advice you've ever given. Tell her, Su."},
   {type: "action", text: "Anesu takes a deep shaky breath, ringing out the cloth for the seventh time."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Why don't guys want me?"},
   {type: "action", text: "Ruby watches her face crack and tears spill over, the whites of her eyes turned bloodshot. Ruby stays still, watching for the next sentence."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Why can't I just have a date?"},
-  {type: "interject", text: "And there it all goes. The floodgates are shattered and the salt dries her out."},
+  {type: "action", text: "And there it all goes. The floodgates are shattered and the salt dries her out."},
   {type: "action", text: "Ruby stays still, her arms twitch a little to instinctively give a hug, but she remains stoic."},
-  {type: "dialogue", side: "character", speaker: "Mama", text: "Because men are assholes. Especially at this age. They are unable to see outside of themse—"},
+  {type: "dialogue", side: "character", speaker: "Mama", text: "Because men are assholes. Especially at this age. They are unable to see outside of themse—", interrupted: true},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "But why can't I just have it ONE TIME! I don't understand what's so horrible about me!"},
   {type: "action", text: "Ruby's face falters and she scowls at her daughter."},
-  {type: "interject", text: "Uh oh."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Uh oh."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Why is it automatically your fault? Are you actively picking dickheads?"},
   {type: "action", text: "Anesu licks the tears and snot building up on her lips, wiping away the uncontrollable jealousy and resentment she now felt."},
   {type: "thought", text: "See? You're a fucking mess, girl. Crying over a man who doesn't care."},
@@ -4499,14 +4647,13 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "thought", text: "They always need to know what's going on."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "We want you..."},
   {type: "thought", text: "Yeah, fucking right."},
-  {type: "interject", text: "Hush now."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "You know what I mean..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "What is so horrible about me? Am I that ugly? Am I that unlovable? That undesriable? What else do I have to fix??"},
-  {type: "interject", text: "Oh Su, it's not you."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Oh Su, it's not you."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "It's not about you, sisi, it's these awful terrible men that cannot think outside themselves. I do not agree with anything that you're saying. It's completely absurd."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You are such a kind girl, sisi. Too kind for that matter. You've been through too much for some man, some WHITE man, to diminish your light and render you feeling like this."},
-  {type: "interject", text: "Okay I don't think ethnicity has anything to do with this but I like where she's going."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: "Eh, Mama has a thing about white people. Doesn't like them, yet she married one."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Okay I don't think ethnicity has anything to do with this but I like where she's going."},
+  {type: "thought", text: "Eh, Mama has a thing about white people. Doesn't like them, yet she married one."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "It absolutely breaks my heart seeing and hearing you determine your worth and value off what some man says and thinks about you. Because it is most likely ridiculously untrue."},
   {type: "action", text: "Ruby has tried so hard to build her daughter up to never even consider, to never even think twice about what a man could possibly say about her."},
   {type: "action", text: "But it's hard when the outside world tells her everything but."},
@@ -4516,7 +4663,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "So where do I meet them? A bar?? A club?! They're all drunk and sloppy and I can taste the alcohol on them."},
   {type: "thought", text: "..."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Then clearly your Higher Power has something else in store for you."},
-  {type: "interject", text: "*wink*"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "*wink*"},
   {type: "thought", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I'd make such a good partner."},
   {type: "action", text: "She breaks one more time, eyes scrunching up hard. And all Ruby can see is her 4 year old Anesu, standing alone in the kinder yard, finding someone to share her flowers with."},
@@ -4524,35 +4671,39 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: "dialogue", side: "character", speaker: "Mama", text: "You'd be an incredible partner. The man you choose to be your husband will be the luckiest man alive."},
   {type: "thought", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Then why does no one want me?"},
-  {type: "action", text: "The two stand in the kitchen together, foreheads pressed, heat and unconditional love being shared."}
 ]>>
 
 <<if $v1Ending is "Deny">>
 <<set _endingBeats to [
-  {type: "action", text: "The two stand in the kitchen together — but Ruby doesn't lean for her forehead this time. She reaches for her hand instead, holding it a tad too tight, still not sure it'll be allowed."},
+  {type: "action", text: "The two stand in the kitchen together, but Ruby doesn't lean for her forehead this time. She reaches for her hand instead, holding it a tad too tight, still not sure it'll be allowed."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "We want you all the time. All the fights, all the bickering. All the growth."},
   {type: "action", text: "Her hand... it's always been cold. It's not smooth. It's not soft. But it's true, and Anesu can feel the determination, dripping down her knuckles."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi. I don't always say it right."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Thank you, Mama."},
-  {type: "interject", text: "See? She really does."}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text:"See? She really does care for you."}
+  {type: "continueTo", dest: "B1C2_Transition"}
 ]>>
 <<elseif $v1Ending is "Comply">>
 <<set _endingBeats to [
+  {type: "action", text: "The two stand in the kitchen together, foreheads pressed, heat and unconditional love being shared."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "We want you all the time. Of every day."},
-  {type: "action", text: "Anesu stiffens, just slightly, at the closeness — some part of her still braced for the enabling comment, the aftertaste of the breathalyser."},
+  {type: "action", text: "Anesu stiffens, just slightly, at the closeness. Some part of her still braced a backhanded comment, the aftertaste of the breathalyser."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi."},
   {type: "action", text: "She exhales shakily, an unnoticed weight alleviated somewhat."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I am??"},
   {type: "action", text: "She almost doesn't let herself believe it. Almost."},
-  {type: "interject", text: "You truly are, Anesu."}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You truly are, Anesu."}
+  {type: "continueTo", dest: "B1C2_Transition"}
 ]>>
 <<else>>
 <<set _endingBeats to [
+  {type: "action", text: "The two stand in the kitchen together, foreheads pressed, heat and unconditional love being shared."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "We want you all the time. Of every day."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "You're one of the best things that ever happened to me, sisi."},
   {type: "action", text: "She exhales shakily, an unnoticed weight alleviated somewhat."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I am??"},
-  {type: "interject", text: "You truly are, Anesu."}
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You truly are, Anesu."}
+  {type: "continueTo", dest: "B1C2_Transition"}
 ]>>
 <</if>>
 
