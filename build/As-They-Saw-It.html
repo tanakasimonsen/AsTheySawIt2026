@@ -170,6 +170,21 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
   src: url('assets/fonts/Wyvern.TTF') format('truetype');
 }
 
+@font-face {
+  font-family: 'GrapeSoda';
+  src: url('assets/fonts/GrapeSoda.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'dogica';
+  src: url('assets/fonts/dogica.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'dogicabold';
+  src: url('assets/fonts/dogicabold.TTF') format('truetype');
+}
+
 :root {
   --bg-main: #CEC19F;         /* creamy latte */
   --bg-panel: #d6bba2;        /* espresso shot */
@@ -240,6 +255,53 @@ body::before {
   z-index: -1;
   pointer-events: none;
 }
+
+/* ============================================================
+   ACHIEVEMENTS
+   ============================================================ */
+
+.achievement-toast {
+  position: fixed;
+  top: 1.2em;
+  left: 50%;
+  transform: translate(-50%, -10px);
+  background-color: var(--bg-panel);
+  border: 2px solid var(--text-main);
+  color: var(--text-main);
+  padding: 0.5em 1.1em;
+  border-radius: 6px;
+  font-size: 0.9em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 9999;
+}
+.achievement-toast.visible { opacity: 1; transform: translate(-50%, 0); }
+.achievement-toast-label {
+  font-size: 0.7em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent-thought-dim);
+}
+
+#achievements-dialog .achievement-count, .achievements-dialog .achievement-count {
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 1em;
+}
+#achievements-dialog .achievement-entry, .achievements-dialog .achievement-entry {
+  border-bottom: 1px dashed var(--text-muted);
+  padding: 0.7em 0;
+}
+#achievements-dialog .achievement-name, .achievements-dialog .achievement-name { color: var(--text-main); }
+#achievements-dialog .achievement-desc, .achievements-dialog .achievement-desc {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+#achievements-dialog .achievement-entry.locked, .achievements-dialog .achievement-entry.locked { opacity: 0.6; }
 
 /* ============================================================
    DEBUG PANEL
@@ -356,15 +418,15 @@ body.scene-night #ui-bar {
 }
 
 .status-label {
-  font-family: 'Pixelta', monospace;
-  font-size: 0.7em;
+  font-family: inherit;
+  font-size: 0.9em;
   letter-spacing: 1px;
   color: rgb(53, 36, 29);
 }
 
 .status-value {
-  font-family: 'Pixelta', monospace;
-  font-size: 1em;
+  font-family: inherit;
+  font-size: 0.9em;
   color: rgb(53, 36, 29);
 }
 
@@ -668,7 +730,7 @@ body.scene-night #ui-bar {
   color: var(--text-muted);
   font-size: 1em;
   text-align: center;
-  background-image: url('assets/AASEAT_V003.png');
+  background-image: url('assets/ui/AASEAT_V003.png');
   background-size: cover;
   background-position: center;
 }
@@ -807,7 +869,7 @@ body.scene-night #ui-bar {
   display: inline-block;
   width: 16px;
   height: 16px;
-  background-image: url('assets/UnreadDot_V002.png');
+  background-image: url('assets/ui/UnreadDot_V002.png');
   background-size: contain;
   background-repeat: no-repeat;
   margin-left: 0.5em;
@@ -843,7 +905,7 @@ body.scene-night #ui-bar {
   border-style: solid;
   border-width: 20px;
   border-color: transparent;
-  border-image-source: url('assets/ui/DialogueBoxA_V004.png');
+  border-image-source: url('assets/ui/NARRATIVEBox_V005.png');
   border-image-slice: 33 fill;
   border-image-width: 20px;
   border-image-repeat: stretch;
@@ -921,7 +983,7 @@ body.scene-night #ui-bar {
   border-style: solid;
   border-width: 40px;
   border-color: transparent;
-  border-image-source: url('assets/ui/DialogueBoxB_V004.png');
+  border-image-source: url('assets/ui/DIALOGUEBox_V006.png');
   border-image-slice: 40 fill;
   border-image-width: 40px;
   border-image-repeat: stretch;
@@ -1003,6 +1065,7 @@ body.scene-night #ui-bar {
 
 .chat-line.font-micah {
   font-family: 'ZX_Spectrum_7', monospace;
+  font-size: 0.7em;
 }
 
 #namePromptBox input[type="text"] {
@@ -1107,7 +1170,7 @@ body.scene-night #ui-bar {
    THOUGHT BUBBLES (wavy animation)
    ============================================================ */
 .chat-thought {
-  font-family: 'zeldadxt', monospace;
+  font-family: 'GrapeSoda', monospace;
   font-size: 0.7em;
   align-self: flex-start;
   text-align: left;
@@ -1119,7 +1182,7 @@ body.scene-night #ui-bar {
 }
 
 .chat-thought .thought-label {
-  font-family: 'zeldadxt', monospace;
+  font-family: 'GrapeSoda', monospace;
   font-size: 0.75em;
   font-style: normal;
   letter-spacing: 1px;
@@ -1489,6 +1552,66 @@ body.scene-night #ui-bar {
 }
 
 /* ============================================================
+   AA MEETING
+   ============================================================ */
+
+#roomBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2s ease;
+  z-index: -1;
+}
+#roomBackdrop.visible { opacity: 1; }
+
+.share-panel {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 650px;
+  padding: 1em 1.4em 1.2em;
+  text-align: center;
+  font-family: 'Pixelta', monospace;
+}
+.share-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-main);
+  opacity: 0.8;
+  border-radius: 4px;
+  z-index: -1;
+}
+.share-speaker {
+  font-size: 0.6em;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 0.6em;
+}
+.share-text {
+  font-size: 0.7em;
+  line-height: 1.6;
+  min-height: 10em;
+  transition: opacity 0.5s ease;
+}
+.share-skip {
+  text-align: right;
+  font-size: 0.55em;
+  margin-top: 0.6em;
+  visibility: hidden;
+}
+.share-skip a {
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ============================================================
    MEMORY BANK — TOAST, DIALOG, UNREAD DOT
    ============================================================ */
 #memory-toast {
@@ -1854,6 +1977,138 @@ window.setupDebugToggle = function() {
   });
 };
 
+/* ---------- ACHIEVEMENTS ---------- */
+// id: [title, description shown once unlocked] 
+window.achievementDefs = {
+  big_small_talk:        ["Big Small Talk", "Got through the car ride with Erin."],
+  one_day_at_a_time:     ["One Day at a Time", "Made it to the Serenity Prayer."],
+  no_filter:             ["No Filter", "Pushed every nudge in one scene all the way."],
+  held_your_tongue:      ["Held Your Tongue", "Let every nudge in one scene pass."],
+  full_circle:           ["Full Circle", "Seen Comply, Deny and Compromise."],
+  kept_it_from_her:      ["Kept It from Her", "Didn't mention Elias to Erin."],
+  didnt_catch_that:      ["Sorry, Didn't Catch That", "Left the name box empty."],
+  followed_anesu:        ["Followed Anesu Home", "Chose Anesu."],
+  blew_into_tube:        ["Blew Into the Tube", "Took the breathalyser."],
+  not_tonight:           ["Not Tonight", "Refused the breathalyser."],
+  only_if_dad:           ["Only If Dad Does It", "Asked for Dad to do the test."],
+  raised_her_arms:       ["Raised Her Arms", "Hugged Dad back."],
+  julian:                ["A Stray Named Julian", "Met the cat."],
+  got_in_the_car:        ["Got in the Car", "Went to see Elias."],
+  stayed_in:             ["Stayed In", "Stayed home instead of seeing Elias."],
+  both_doors:            ["Both Doors", "Seen both Elias paths."],
+  message_not_delivered: ["Message Not Delivered", "Found out Elias blocked her."],
+  second_thoughts:       ["Second Thoughts", "Changed her mind about someone in the Memory Bank."],
+  best_things:           ["One of the Best Things", "Got through the evening at home."],
+  cold_coffee:           ["Cold Coffee", "Left a coffee behind."],
+  saw_it_clearly:        ["Saw It Clearly", "Wrote a Memory Bank entry with clear eyes."],
+  read_the_file:         ["Read the File", "Opened the Memory Bank."]
+};
+
+window.achievementStore = (function(){
+  var key = 'ats_achievements_v1';
+  var data = {unlocked: {}, seen: {}};
+  try {
+    var raw = window.localStorage.getItem(key);
+    if (raw) data = JSON.parse(raw);
+  } catch (e) {}
+  if (!data.unlocked) data.unlocked = {};
+  if (!data.seen) data.seen = {};
+  return {
+    data: data,
+    save: function(){ try { window.localStorage.setItem(key, JSON.stringify(data)); } catch (e) {} }
+  };
+})();
+
+window.achievementsUnread = false;
+window.achievementQueue = [];
+window.achievementToastBusy = false;
+
+window.showAchievementToast = function(title) {
+  window.achievementQueue.push(title);
+  if (window.achievementToastBusy) return;
+  window.achievementToastBusy = true;
+  (function next(){
+    var t = window.achievementQueue.shift();
+    if (!t) { window.achievementToastBusy = false; return; }
+    var toast = $('<div class="achievement-toast"><span class="achievement-toast-label">Achievement</span><span class="achievement-toast-title"></span></div>');
+    toast.find('.achievement-toast-title').text(t);
+    $('body').append(toast);
+    setTimeout(function(){ toast.addClass('visible'); }, 10);
+    setTimeout(function(){
+      toast.removeClass('visible');
+      setTimeout(function(){ toast.remove(); next(); }, 400);
+    }, 3000);
+  })();
+};
+
+window.unlockAchievement = function(id) {
+  var def = window.achievementDefs[id];
+  if (!def) { console.warn("Unknown achievement:", id); return; }
+  var store = window.achievementStore;
+  if (store.data.unlocked[id]) return;
+  store.data.unlocked[id] = true;
+  store.save();
+  window.achievementsUnread = true;
+  showAchievementToast(def[0]);
+  if (window.updateAngelStatus) updateAngelStatus();
+};
+
+// remembers things seen across playthroughs, and unlocks the "seen them all" ones
+window.recordSeen = function(group, value) {
+  var seen = window.achievementStore.data.seen;
+  if (!seen[group]) seen[group] = [];
+  if (seen[group].indexOf(value) === -1) {
+    seen[group].push(value);
+    window.achievementStore.save();
+  }
+  if (group === 'hallway' && seen.hallway.length >= 3) unlockAchievement('full_circle');
+  if (group === 'elias' && seen.elias.length >= 2) unlockAchievement('both_doors');
+};
+
+// nudge tracking, reset every passage. Needs 2+ nudges in the scene to count.
+window.sceneNudgeStats = {full: 0, skipped: 0};
+$(document).on(':passagestart', function(){ window.sceneNudgeStats = {full: 0, skipped: 0}; });
+window.trackNudge = function(result) {
+  var stats = window.sceneNudgeStats;
+  if (result === 'full') stats.full++;
+  if (result === 'skip') stats.skipped++;
+  var beats = State.variables.sceneBeats || [];
+  var total = beats.filter(function(b){ return b.type === 'expandable'; }).length;
+  if (total >= 2) {
+    if (stats.full === total) unlockAchievement('no_filter');
+    if (stats.skipped === total) unlockAchievement('held_your_tongue');
+  }
+};
+
+window.openAchievements = function() {
+  var unlocked = window.achievementStore.data.unlocked;
+  var ids = Object.keys(window.achievementDefs);
+  var got = ids.filter(function(id){ return unlocked[id]; }).length;
+  var html = '<div class="achievement-count">' + got + ' of ' + ids.length + ' found</div>';
+  ids.forEach(function(id){
+    var def = window.achievementDefs[id];
+    var has = unlocked[id];
+    html += '<div class="achievement-entry' + (has ? '' : ' locked') + '">';
+    html += '<div class="achievement-name">' + (has ? def[0] : '???') + '</div>';
+    html += '<div class="achievement-desc">' + (has ? def[1] : (def[2] || 'Not found yet.')) + '</div>';
+    html += '</div>';
+  });
+  Dialog.setup("Achievements", "achievements-dialog");
+  Dialog.wiki(html);
+  Dialog.open();
+  window.achievementsUnread = false;
+  updateAngelStatus();
+};
+
+// for testing only
+window.resetAchievements = function() {
+  window.achievementStore.data.unlocked = {};
+  window.achievementStore.data.seen = {};
+  window.achievementStore.save();
+  window.achievementsUnread = false;
+  updateAngelStatus();
+};
+
 $(document).on(':passagedisplay', function() {
   setupDebugToggle();
 });
@@ -1910,11 +2165,18 @@ $(document).on(':passagedisplay', function () {
   $('#story-title').text('created by titikormetsi studios');
 });
 
-$(document).on(':passagestart', function() {
+$(document).on(':passagestart', function (ev) {
+  /* clear any leftover title screen timers */
   if (window.titleScreenTimers) {
-    window.titleScreenTimers.forEach(function(t){ clearTimeout(t); });
+    window.titleScreenTimers.forEach(function (t) { clearTimeout(t); });
     window.titleScreenTimers = [];
   }
+
+  /* stop ambience unless this passage keeps it or sets its own */
+  var p = ev.passage;
+  if (p.tags.includes('keep-ambience')) return;
+  if (p.text.indexOf('setAmbience') !== -1) return;
+  stopAmbience();
 });
 
 window.scrollAllLogs = function() {
@@ -2001,24 +2263,58 @@ window.typeSequenceLines = function(containerId, lines, speed, onComplete) {
   next();
 };
 
-window.talkBlip = function(speaker) {
-  var options = window.talkBlipSounds && window.talkBlipSounds[speaker]
-    ? window.talkBlipSounds[speaker]
-    : ["audio/bleeps/bleep001.mp3"];
-  var src = options[Math.floor(Math.random() * options.length)];
-  var blip = new Audio(src);
-  blip.volume = 0.3 * (window.gameVolumes ? window.gameVolumes.sfx : 1);
-  blip.playbackRate = 0.9 + Math.random() * 0.3;
-  blip.play();
-  setTimeout(function() {
-    blip.pause();
-    blip.currentTime = 0;
-  }, 120);
+/* builds a list of bleep files, e.g. bleepRange(11, 20) = bleep011 to bleep020 */
+function bleepRange(from, to) {
+  var list = [];
+  for (var i = from; i <= to; i++) {
+    list.push("audio/bleeps" + String(i).padStart(3, "0") + ".mp3");
+  }
+  return list;
+}
+
+/* the three tones in the pack */
+var MID  = bleepRange(1, 10);
+var LOW  = bleepRange(11, 20);
+var HIGH = bleepRange(21, 30);
+
+/* character voices
+   files:  which bleeps they pick from
+   pitch:  1 = normal, below 1 = deeper, above 1 = higher
+   wobble: how much the pitch changes each bleep (0 = robot, 0.1 = lively)
+   volume: 1 = normal, lower = softer
+   length: how long each bleep plays, in milliseconds */
+window.talkBlipVoices = {
+  "Anesu":        { files: MID,              pitch: 1.0,  wobble: 0.10, volume: 1.0, length: 120 },
+  "Mama":         { files: HIGH,             pitch: 0.95, wobble: 0.08, volume: 0.6, length: 150 },
+  "Micah":        { files: [MID[0], MID[1]], pitch: 0.95, wobble: 0.01, volume: 1.0, length: 110 },
+  "Dad":          { files: [LOW[0], LOW[1]], pitch: 0.85, wobble: 0.02, volume: 1.0, length: 130 },
+  "Erin":         { files: LOW,              pitch: 1.05, wobble: 0.05, volume: 0.8, length: 140 },
+  "Higher Power": { files: MID,              pitch: 1.15, wobble: 0.04, volume: 0.9, length: 120 },
+  "default":      { files: MID,              pitch: 1.0,  wobble: 0.08, volume: 1.0, length: 120 }
 };
 
-window.talkBlipSounds = {
-  "Higher Power": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"],
-  "Guardian Angel": ["audio/bleeps/bleep001.mp3", "audio/bleeps/bleep002.mp3", "audio/bleeps/bleep003.mp3", "audio/bleeps/bleep004.mp3", "audio/bleeps/bleep005.mp3", "audio/bleeps/bleep006.mp3", "audio/bleeps/bleep007.mp3", "audio/bleeps/bleep008.mp3", "audio/bleeps/bleep009.mp3", "audio/bleeps/bleep010.mp3"]
+window.talkBlip = function (speaker) {
+  var voice = window.talkBlipVoices[speaker] || window.talkBlipVoices["default"];
+
+  var src = voice.files[Math.floor(Math.random() * voice.files.length)];
+  var blip = new Audio(src);
+
+  /* let speed change the pitch (browsers keep pitch the same by default) */
+  blip.preservesPitch = false;
+  blip.mozPreservesPitch = false;
+  blip.webkitPreservesPitch = false;
+
+  /* base pitch plus a small random nudge up or down */
+  var nudge = (Math.random() * 2 - 1) * voice.wobble;
+  blip.playbackRate = voice.pitch * (1 + nudge);
+
+  blip.volume = 0.3 * voice.volume * (window.gameVolumes ? window.gameVolumes.sfx : 1);
+  blip.play().catch(function () {});
+
+  setTimeout(function () {
+    blip.pause();
+    blip.currentTime = 0;
+  }, voice.length);
 };
 
 $(document).on('keydown.spacebarAdvance', function(e) {
@@ -2078,6 +2374,11 @@ window.updateAngelStatus = function () {
   var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';
   $('#memory-bank-link').html('📖 Memory Bank' + dot);
   $('#memory-bank-link').off('click').on('click', function(){ openMemoryBank(); });
+    if ($('#achievements-link').length === 0) {
+    $('<a id="achievements-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">★ Achievements</a>').insertAfter('#memory-bank-link');
+  }
+  $('#achievements-link').html('★ Achievements' + (window.achievementsUnread ? '<span class="unread-dot"></span>' : ''));
+  $('#achievements-link').off('click').on('click', function(){ openAchievements(); });
   var html = '';
   html += '<div class="status-row"><span class="status-label">Name</span><span class="status-value">' + (v.playerName || '—') + '</span></div>';
   html += '<div class="status-row"><span class="status-label">Assigned Meeting</span><span class="status-value">' + (v.assignedMeeting || '—') + '</span></div>';
@@ -2098,6 +2399,7 @@ window.showMemoryToast = function(message) {
     setTimeout(function(){ $toast.remove(); }, 400);
   }, 2800);
 };
+
 window.addMemory = function(who, textOrVariants) {
   if (!State.variables.memoryBank) State.variables.memoryBank = {};
   if (!State.variables.memoryBank[who]) State.variables.memoryBank[who] = [];
@@ -2106,6 +2408,7 @@ window.addMemory = function(who, textOrVariants) {
     var awareness = State.variables.familyAwareness || 0;
     if (awareness >= 6 && textOrVariants.aware) {
       finalText = textOrVariants.aware;
+      unlockAchievement("saw_it_clearly");
     } else if (awareness >= 3 && textOrVariants.uncertain) {
       finalText = textOrVariants.uncertain;
     } else {
@@ -2117,10 +2420,12 @@ window.addMemory = function(who, textOrVariants) {
     time: State.variables.currentTime || "",
     text: finalText
   });
+  if (State.variables.memoryBank[who].length > 1) unlockAchievement("second_thoughts");
   State.variables.memoryBankUnread = true;
   updateAngelStatus();
   showMemoryToast();
 };
+
 window.addQuote = function(shortText, fullText, source) {
   if (!State.variables.quotesUnlocked) State.variables.quotesUnlocked = [];
   State.variables.quotesUnlocked.push({
@@ -2450,6 +2755,141 @@ window.getEndingZone = function() {
   if (g < 4 && a >= 6) return "open_clear";
   if (g < 4 && a < 6) return "open_unsettled";
   return "middle";
+};
+
+/* ---------- AA SHARE: types a speech while the clock ticks ---------- */
+window.formatClockTime = function(mins) {
+  var h = Math.floor(mins / 60) % 24;
+  var m = mins % 60;
+  var ap = h >= 12 ? 'pm' : 'am';
+  var h12 = h % 12;
+  if (h12 === 0) h12 = 12;
+  return h12 + ':' + (m < 10 ? '0' : '') + m + ap;
+};
+
+window.clockRef = null;
+
+window.initClock = function(startMins) {
+  var h = document.getElementById('clockHour');
+  var m = document.getElementById('clockMinute');
+  window.clockRef = {
+    mins: startMins,
+    minuteAngle: (startMins % 60) * 6,
+    hourAngle: (Math.floor(startMins / 60) % 12) * 30 + (startMins % 60) * 0.5
+  };
+  [h, m].forEach(function(el){ if (el) el.style.transition = 'none'; });
+  if (m) m.style.transform = 'rotate(' + window.clockRef.minuteAngle + 'deg)';
+  if (h) h.style.transform = 'rotate(' + window.clockRef.hourAngle + 'deg)';
+  if (h) void h.offsetWidth;
+  if (m) void m.offsetWidth;
+  [h, m].forEach(function(el){ if (el) el.style.transition = 'transform 0.35s steps(3, end)'; });
+  State.variables.currentTime = formatClockTime(startMins);
+  if (window.updateScreenClock) updateScreenClock();
+};
+
+// slow = true uses the stylesheet's long stepped sweep (for the time skip)
+window.moveClockTo = function(targetMins, slow) {
+  var ref = window.clockRef;
+  if (!ref) return;
+  var delta = targetMins - ref.mins;
+  var h = document.getElementById('clockHour');
+  var m = document.getElementById('clockMinute');
+  var tr = slow ? '' : 'transform 0.35s steps(3, end)';
+  if (h) { h.style.transition = tr; h.style.transform = 'rotate(' + (ref.hourAngle + delta * 0.5) + 'deg)'; }
+  if (m) { m.style.transition = tr; m.style.transform = 'rotate(' + (ref.minuteAngle + delta * 6) + 'deg)'; }
+  State.variables.currentTime = formatClockTime(targetMins);
+  if (window.updateScreenClock) updateScreenClock();
+};
+
+window.startShare = function(blocks, opts, onDone) {
+  opts = opts || {};
+  var charDelay     = opts.charDelay     || 30;    // ms per character
+  var blockPause    = opts.blockPause    || 1800;  // silence after each paragraph
+  var ellipsisPause = opts.ellipsisPause || 1200;  // pause after "..."
+  var hesitation    = (opts.hesitation !== undefined) ? opts.hesitation : 0.06;  // chance of a pause mid-sentence
+  var startMins     = opts.startMinutes  || (19 * 60 + 15);  // 7:15pm
+  var totalMins     = opts.totalMinutes  || 15;
+  var pauses = {'.': 650, '?': 800, '!': 650, ',': 280, ':': 400, ';': 350};
+
+  var runId = (window.shareRunId = (window.shareRunId || 0) + 1);
+  var finished = false;
+  function alive() { return !finished && window.shareRunId === runId && document.getElementById('shareText'); }
+
+  var items = blocks.map(function(b){ return (typeof b === 'string') ? {text: b} : b; });
+
+  // plan the whole speech first, so the clock knows how long it lasts
+  var totalMs = 0;
+  items.forEach(function(item){
+    var t = item.text;
+    item.delays = [];
+    for (var i = 0; i < t.length; i++) {
+      var c = t.charAt(i), nx = t.charAt(i + 1), pv = i > 0 ? t.charAt(i - 1) : '';
+      var d = charDelay * (0.8 + Math.random() * 0.5);
+      if (c === '.' && nx === '.') d += 120;
+      else if (c === '.' && pv === '.' && nx !== '.') d += ellipsisPause;
+      else if (pauses[c]) d += pauses[c];
+      if (c === ' ' && Math.random() < hesitation) d += 400 + Math.random() * 500;
+      item.delays.push(d);
+      totalMs += d;
+    }
+    item.after = (item.pause !== undefined) ? item.pause : blockPause;
+    totalMs += item.after + 500;
+  });
+
+  initClock(startMins);
+  var lastMinute = -1;
+  function tickClock(progress) {
+    var elapsed = Math.min(totalMins, Math.floor(progress * totalMins));
+    if (elapsed === lastMinute) return;
+    lastMinute = elapsed;
+    moveClockTo(startMins + elapsed);
+  }
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    window.shareRunId++;
+    moveClockTo(startMins + totalMins);
+    if (typeof onDone === 'function') onDone();
+  }
+
+  var skipEl = document.getElementById('shareSkip');
+  if (skipEl) skipEl.addEventListener('click', finish);
+
+  if (window.fastMode) { setTimeout(finish, 300); return; }
+
+  var startTime = Date.now();
+  var clockTimer = setInterval(function(){
+    if (!alive()) { clearInterval(clockTimer); return; }
+    tickClock((Date.now() - startTime) / totalMs);
+  }, 250);
+
+  var panel = document.getElementById('shareText');
+  function typeBlock(bi) {
+    if (!alive()) return;
+    if (bi >= items.length) { setTimeout(function(){ if (alive()) finish(); }, 600); return; }
+    var item = items[bi];
+    panel.textContent = '';
+    panel.style.opacity = 1;
+    if (bi >= 1 && skipEl) skipEl.style.visibility = 'visible';
+    var i = 0;
+    (function tick() {
+      if (!alive()) return;
+      if (i < item.text.length) {
+        panel.textContent += item.text.charAt(i);
+        var d = item.delays[i];
+        i++;
+        setTimeout(tick, d);
+      } else {
+        setTimeout(function(){
+          if (!alive()) return;
+          panel.style.opacity = 0;
+          setTimeout(function(){ typeBlock(bi + 1); }, 500);
+        }, item.after);
+      }
+    })();
+  }
+  typeBlock(0);
 };</script><tw-tag name="StoryInit" color="blue"></tw-tag><tw-tag name="widget" color="yellow"></tw-tag><tw-passagedata pid="1" name="P_03_Opening_Scene" tags="" position="650,75" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Sun, 21 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;7:15pm&quot;&gt;&gt;
@@ -2495,7 +2935,8 @@ You float above an AA meeting in session, observing the many faces and walks of 
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="P_00_Member_Selection" tags="" position="775,75" size="100,100">&lt;div id=&quot;memberDisplay&quot;&gt;
 &lt;&lt;showMembers&gt;&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="3" name="B1C1_01_AnesuChosen" tags="" position="550,200" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="3" name="B1C1_01_AnesuChosen" tags="" position="550,200" size="100,100">&lt;&lt;run unlockAchievement(&quot;followed_anesu&quot;)&gt;&gt;
+&lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;Anesu looks up, somehow catching your eye across the circle.&quot;},
   {type: &quot;action&quot;, text: &quot;She gives a meek smile — small, a little unsure, as if she can sense you.&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B1C1_02_FirstNightwithAnesu&quot;}
@@ -2561,9 +3002,7 @@ You follow Anesu home, watching her hop in the passenger side of Erin&#39;s car.
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="B1C1_03_AnesuDoorstep" tags="" position="900,200" size="100,100">&lt;&lt;run stopAmbience()&gt;&gt;        
 &lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;They jolt with a halt, a little too close to the garage door.&quot;, sound: &quot;audio/engine_stop.mp3&quot;, stopSoundId: &quot;engine&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good rest of your week hun! Remember, your mother 
-    loves you very much.&quot;, memoryEntry: {who: &quot;Erin&quot;, text: &quot;My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mama 
-    like she knows her, which she very much does not.&quot;}},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good rest of your week hun! Remember, your mother loves you very much.&quot;, memoryEntry: {who: &quot;Erin&quot;, text: &quot;My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mama like she knows her, which she very much does not.&quot;}},
   {type: &quot;action&quot;, text: &quot;Erin flashes her lights and drives off, her home a few kms down the road.&quot;},
   {type: &quot;thought&quot;, text: &quot;Okay, just shoes off and straight to your room, don&#39;t even hesitate.&quot;},
   {type: &quot;action&quot;, text: &quot;Unlocking the door was a success but now comes the shoes...&quot;, sound: &quot;audio/door_unlock.mp3&quot;},
@@ -2684,7 +3123,9 @@ We deny
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="B1C1_04_Deny" tags="" position="1075,325" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="B1C1_04_Deny" tags="" position="1075,325" size="100,100">&lt;&lt;run unlockAchievement(&quot;not_tonight&quot;)&gt;&gt;
+&lt;&lt;run recordSeen(&quot;hallway&quot;, &quot;Deny&quot;)&gt;&gt;
+&lt;&lt;set $sceneBeats to [
 {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;No, I&#39;m not doing it.&quot;},
   {type: &quot;action&quot;, text: &quot;Dad winces, waiting for hell to break loose for this one.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;What did you say?&quot;},
@@ -2779,7 +3220,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 {type: &quot;action&quot;, text: &quot;Anesu walks around the corner, following the brick path Dad made when he realised they had spare bricks in the garage.&quot;},
 {type: &quot;action&quot;, text: &quot;Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up.&quot;, sound: &quot;audio/spark_up.mp3&quot;},
 {type: &quot;action&quot;, text: &quot;Meow meow.&quot;},
-{type: &quot;showCharacter&quot;, speaker: &quot;Julian&quot;},
+{type: &quot;showCharacter&quot;, speaker: &quot;Julian&quot;, achievement: &quot;julian&quot;}
 {type: &quot;thought&quot;, text: &quot;I hate cats... the way they run, how they have to be all over you, that they could kill me. Slowly. But it would be the worst fucking death.&quot;},
 {type: &quot;thought&quot;, text: &quot;But for some reason, this cat is growing on me. Like a cancer.&quot;},
 {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;He&#39;s walking along the colourbond fence, eyeing you carefully. Pretty sure he&#39;s a stray. Or maybe he just loves the smell of weed...&quot;},
@@ -2857,7 +3298,9 @@ We comply.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="B1C1_04_Comply" tags="" position="1200,325" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="B1C1_04_Comply" tags="" position="1200,325" size="100,100">&lt;&lt;run unlockAchievement(&quot;blew_into_tube&quot;)&gt;&gt;
+&lt;&lt;run recordSeen(&quot;hallway&quot;, &quot;Comply&quot;)&gt;&gt;
+&lt;&lt;set $sceneBeats to [
   {type: &quot;thought&quot;, text: &quot;I swallow the boulder of pride and a little bit of tar loogies in the back of my throat, blow hard into the plastic tubing, flaring spit up and towards mama.&quot;},
   {type: &quot;action&quot;, text: &quot;It beeps and Ruby yanks it away from her lips, scowling as she reads the numbers.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You&#39;re sober...&quot;},
@@ -2936,7 +3379,9 @@ We compromise.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;$playerName&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="B1C1_04_Compromise" tags="" position="950,325" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="B1C1_04_Compromise" tags="" position="950,325" size="100,100">&lt;&lt;run unlockAchievement(&quot;only_if_dad&quot;)&gt;&gt;
+&lt;&lt;run recordSeen(&quot;hallway&quot;, &quot;Compromise&quot;)&gt;&gt;
+&lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m only doing it if Dad does it.&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu stares daggers into her father, but he looks straight to Mama.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;No, your father is tired. I&#39;m doing this.&quot;, impacts: {anesuGuard: 0.5}},
@@ -2972,7 +3417,7 @@ We compromise.
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;...&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu stays being held, not really one for hugs but knows that&#39;s how Dad shows his love, his attention, his concern. They stay for what feels like hours. He was waiting for her to raise her arms.&quot;},
   {type: &quot;thought&quot;, text: &quot;Fine, you got me.&quot;},
-  {type: &quot;action&quot;, text: &quot;Anesu wraps her arms around her father, and feels his heart skip a beat. He tightens his grip and breathes in her hair.&quot;},
+  {type: &quot;action&quot;, text: &quot;Anesu wraps her arms around her father, and feels his heart skip a beat. He tightens his grip and breathes in her hair.&quot;, achievement: &quot;raised_her_arms&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;My little girl...&quot;, impacts: {anesuGuard: -1, dadTrust: 1.5}, memoryEntry: {who: &quot;Dad&quot;, text: &quot;He called me his little girl. I&#39;m nineteen. I let it happen anyway, because for once it didn&#39;t feel like a cage, it felt like something I&#39;d been missing.&quot;}},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;...&quot;},
@@ -3219,6 +3664,10 @@ $members[$memberIndex].story
 
 &lt;&lt;if _beat.memoryEntry&gt;&gt;
 &lt;&lt;run addMemory(_beat.memoryEntry.who, _beat.memoryEntry.text)&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;&lt;if _beat.achievement&gt;&gt;
+&lt;&lt;run unlockAchievement(_beat.achievement)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;&lt;if _beat.type is &quot;narrative&quot;&gt;&gt;
@@ -3544,6 +3993,7 @@ _beat.text
     } else {
       imp = _beat.partialImpacts;
     }
+    trackNudge(layerIndex === 0 ? &quot;skip&quot; : (layerIndex &gt;= layers.length ? &quot;full&quot; : &quot;partial&quot;));
     if (imp) {
       for (var key in imp) {
         if (key === &quot;wobble&quot;) continue;
@@ -3619,6 +4069,7 @@ _beat.text
 &lt;&lt;link &quot;Submit&quot;&gt;&gt;
 &lt;&lt;if $playerName.trim() is &quot;&quot;&gt;&gt;
 &lt;&lt;replace &quot;#namePromptBox&quot;&gt;&gt;&lt;&lt;/replace&gt;&gt;
+&lt;&lt;run unlockAchievement(&quot;didnt_catch_that&quot;)&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;&lt;div class=&quot;chat-line character&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;Mabel&lt;/div&gt;Sorry, I didn&#39;t quite catch that.&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;askForName&gt;&gt;
 &lt;&lt;else&gt;&gt;
@@ -3654,7 +4105,7 @@ _beat.text
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Oh, so that&#39;s where I was taking you.&quot;},
   {type: &quot;action&quot;, text: &quot;Mama rolls her eyes.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;How did you not realise you were taking him to the exam hall?&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Well idk, he told me the address and I took him!&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Well I don&#39;t know, he told me the address and I took him!&quot;},
   {type: &quot;thought&quot;, text: &quot;I wonder what they&#39;re talking about...&quot;},
   {type: &quot;action&quot;, text: &quot;Su yawns aggressively and smiles as she walks into the living room, passing the dining table to make a cup of coffee.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;So what&#39;s so cool?&quot;},
@@ -3821,7 +4272,7 @@ The kitchen, still. Coffee going cold in her hands.
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Me asking a question is making it about me? Oh okay.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Ru, Su. Let&#39;s not right now, okay.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;No no, Mama said I&#39;m making it about me, let&#39;s take it all the way there!!&quot;, impacts: {anesuGuard: 1.5}},
-  {type: &quot;action&quot;, text: &quot;The fresh cup made to perfection, fizzling out. Maybe this would go differently if it was drunk first&quot;},
+  {type: &quot;action&quot;, text: &quot;The fresh cup made to perfection, fizzling out. Maybe this would go differently if it was drunk first&quot;, achievement: &quot;cold_coffee&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Micah&quot;, text: &quot;Come on Su.&quot;},
   {type: &quot;thought&quot;, text: &quot;I look at Micah and watch his jaw clench and unclench profusely. I can&#39;t let Mama win, but I can&#39;t ruin this for Micah.&quot;},
   {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I&#39;m going to the gym.&quot;, impacts: {anesuGuard: 1}, memoryEntry: {who: &quot;Mama&quot;, text: {
@@ -3853,7 +4304,7 @@ The kitchen, tighter now. Nobody&#39;s sitting anymore.
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="23" name="B1C3_04_GoToGym" tags="" position="750,750" size="100,100">&lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;Anesu dumps her teaspoon in the sink, and darts up stairs to get changed, grab her bag and walks to the front door &quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Dad&quot;, text: &quot;Do you want your coffee?&quot;},
-  {type: &quot;action&quot;, text: &quot;SLAM&quot;},
+  {type: &quot;action&quot;, text: &quot;SLAM&quot;, achievement: &quot;cold_coffee&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B1C3_Transition_Gym&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -3957,6 +4408,8 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="25" name="B1C4_ErinCheckIn" tags="" position="1300,225" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Sun 28 Apr 2024&quot;&gt;&gt;
+&lt;&lt;set $currentTime to &quot;6:32pm&quot;&gt;&gt;
 &lt;&lt;set _endingZone to getEndingZone()&gt;&gt;
 &lt;&lt;set _matchAnswer to &quot;&quot;&gt;&gt;
 &lt;&lt;set _matchErinResp to &quot;&quot;&gt;&gt;
@@ -3970,11 +4423,11 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
 &lt;&lt;set _matchAnswer to &quot;Not really, there was a little tiff at the door when you dropped me off, but we&#39;re chillin.&quot;&gt;&gt;
 &lt;&lt;set _matchErinResp to &quot;I&#39;m glad you stood your ground, love. You did it in a respectful way... I&#39;m assuming and hoping?&quot;&gt;&gt;
 &lt;&lt;elseif _endingZone is &quot;open_clear&quot;&gt;&gt;
-&lt;&lt;set _matchAnswer to &quot;[PLACEHOLDER — the best-case answer: calm, honest, actually names what happened without excusing or hiding it]&quot;&gt;&gt;
-&lt;&lt;set _matchErinResp to &quot;[PLACEHOLDER — Erin&#39;s reply]&quot;&gt;&gt;
+&lt;&lt;set _matchAnswer to &quot;Oh lord what didn&#39;t happen? It was a shitshow from when you dropped me off. She didn&#39;t believe that I was with you!&quot;&gt;&gt;
+&lt;&lt;set _matchErinResp to &quot;Shit we&#39;re still doing this? She needs to start realising you&#39;re actually going.&quot;&gt;&gt;
 &lt;&lt;else&gt;&gt;
-&lt;&lt;set _matchAnswer to &quot;[PLACEHOLDER — genuine middle ground: not defensive, not fully clear either]&quot;&gt;&gt;
-&lt;&lt;set _matchErinResp to &quot;[PLACEHOLDER — Erin&#39;s reply]&quot;&gt;&gt;
+&lt;&lt;set _matchAnswer to &quot;Mhmmm, I mean it&#39;s the same shit if I&#39;m being honest... Mama is mama... Micah is...Micah.&quot;&gt;&gt;
+&lt;&lt;set _matchErinResp to &quot;Okay...we&#39;re gonna need to be more specific&quot;&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;&lt;set $sceneBeats to [
@@ -4015,7 +4468,7 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
     {text: &quot;Yeah okay, aunty, I got you.&quot;, impacts: {anesuGuard: -0.5}}
   ]},
   {type: &quot;action&quot;, text: &quot;[PLACEHOLDER — a beat resolving/landing the hug moment before Erin moves the conversation on. The scene currently jumps straight from the choice to \&quot;anything else happen this week\&quot; with no reaction shown.]&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Anything else happen this week??&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Anything else happen this week??&quot;, achievement: &quot;big_small_talk&quot;},
   {type: &quot;interject&quot;, text: &quot;Are we mentioning Elias? I feel like that was pretty big...&quot;},
   {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Yeah... there&#39;s actually something.&quot;, dest: &quot;B1C4_ErinCheckIn_EliasReveal&quot;},
   {type: &quot;action&quot;, text: &quot;or...&quot;},
@@ -4041,7 +4494,8 @@ Erin&#39;s car, on the way to another meeting.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Erin&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="26" name="B1C4_ErinCheckIn_EliasReveal" tags="" position="1500,225" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="26" name="B1C4_ErinCheckIn_EliasReveal" tags="" position="1500,225" size="100,100">&lt;&lt;set $toldErin to true&gt;&gt;
+&lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Oh? What&#39;s going on?&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: $wentToElias ? &quot;I ended up seeing Elias.&quot; : &quot;I almost went to see Elias, but I stayed home instead.&quot;}
 ]&gt;&gt;
@@ -4053,6 +4507,10 @@ Erin&#39;s car, on the way to another meeting.
   {type: &quot;action&quot;, text: &quot;Anesu stops. Her hand goes to her cheek, almost involuntarily.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;She hit you?&quot;, impacts: {familyAwareness: 1}},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;He blocked me anyway. So it was all for nothing. Men suck.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;They do indeed... &quot;},
+
+
     {type: &quot;continueTo&quot;, dest: &quot;B1C1_AAMessage_01P2&quot;}
 
 )&gt;&gt;
@@ -4084,8 +4542,13 @@ Erin&#39;s car, still driving.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Erin&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="27" name="B1C1_AAMessage_01P2" tags="" position="1325,700" size="100,100">&lt;div class=&quot;menu-screen&quot;&gt;
-&lt;div class=&quot;quote-box&quot;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="27" name="B1C1_AAMessage_01P2" tags="" position="1325,700" size="100,100">&lt;&lt;if not $toldErin&gt;&gt;&lt;&lt;run unlockAchievement(&quot;kept_it_from_her&quot;)&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;div class=&quot;book-wrapper&quot;&gt;
+&lt;div class=&quot;book&quot;&gt;
+&lt;div class=&quot;book-page book-page-left&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;book-spine&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;book-page book-page-right&quot;&gt;
+&lt;div id=&quot;dialogueLine&quot;&gt;
 &lt;div id=&quot;dialogueLine&quot;&gt;
 &lt;p&gt;&quot;Yes, there is a long period of reconstruction ahead. We must take the lead. A remorseful mumbling that we are sorry won&#39;t fit the bill. We ought to sit down with the family and frankly analyse the past as we now see it, being very careful not to criticise them. Their defects may be glaring, but the chances are that our own actions are partly responsible. So we clean house with the family, ask each morning in our meditation that our Higher Power show us the way of patience, tolerance, kindliness and love.&quot;&lt;/p&gt;
 &lt;p class=&quot;chat-citation&quot;&gt;Chapter 6 &quot;Into Action,&quot; p. 83, Big Book of Alcoholics Anonymous&lt;/p&gt;
@@ -4166,7 +4629,9 @@ Anesu&#39;s phone lights up on the bed beside her. The name that flashes up caus
 &lt;/div&gt;
 &lt;div class=&quot;side-log&quot; id=&quot;rightLog&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="29" name="B1C2_02_GoingToSeeElias" tags="" position="500,550" size="100,100">&lt;&lt;set $currentDate to &quot;Tue, 23 April 2024&quot;&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="29" name="B1C2_02_GoingToSeeElias" tags="" position="500,550" size="100,100">&lt;&lt;run unlockAchievement(&quot;got_in_the_car&quot;)&gt;&gt;
+&lt;&lt;run recordSeen(&quot;elias&quot;, &quot;went&quot;)&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Tue, 23 April 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;10:00pm&quot;&gt;&gt;
 &lt;&lt;set $wentToElias to true&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
@@ -4395,7 +4860,7 @@ The hallway again. Same house, same standoff, higher stakes.
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;hey sorry i didn&#39;t message you much today, things at home were a little hectic.&quot;, time: &quot;6:12pm&quot;},
   {type: &quot;text&quot;, side: &quot;me&quot;, text: &quot;thank you so much for last night. i had such a great time!&quot;, time: &quot;6:12pm&quot;},
   {type: &quot;action&quot;, text: &quot;Sending... sending... sending...&quot;},
-  {type: &quot;action&quot;, text: &quot;ERROR: message couldn&#39;t be received.&quot;},
+  {type: &quot;action&quot;, text: &quot;ERROR: message couldn&#39;t be received.&quot;, achievement: &quot;message_not_delivered&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Huh?&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Lemme just try again.&quot;},
@@ -4474,7 +4939,10 @@ Anesu stares at her phone, the message bar blinking, waiting.
 &lt;div class=&quot;continue-link&quot;&gt;&lt;&lt;link &quot;continue&quot; &quot;B1C2_Transition&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="34" name="B1C4_Meeting_SerenityPrayer" tags="" position="1450,700" size="100,100">&lt;&lt;if not $members&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="34" name="B1C4_Meeting_SerenityPrayer" tags="" position="1450,700" size="100,100">&lt;&lt;run unlockAchievement(&quot;one_day_at_a_time&quot;)&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Sun, 28 April 2024&quot;&gt;&gt;
+&lt;&lt;set $currentTime to &quot;7:15pm&quot;&gt;&gt;
+&lt;&lt;if not $members&gt;&gt;
 &lt;&lt;set $characterImages to {
   &quot;Anesu&quot;: &quot;https://i.imgur.com/PE4PsVq.gif&quot;,
   &quot;Erin&quot;: &quot;https://i.imgur.com/A4YV3S2.gif&quot;,
@@ -4503,6 +4971,10 @@ Anesu stares at her phone, the message bar blinking, waiting.
 &lt;&lt;set $angelSince to &quot;26&quot;&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
+&lt;&lt;run unlockAchievement(&quot;one_day_at_a_time&quot;)&gt;&gt;
+
+&lt;div id=&quot;roomBackdrop&quot; style=&quot;background-image: url(&#39;assets/ui/AAROOM_V004.jpg&#39;);&quot;&gt;&lt;/div&gt;
+
 &lt;div class=&quot;opening-layout&quot;&gt;
 &lt;div class=&quot;clock-scene&quot;&gt;
 &lt;div class=&quot;clock-label&quot; id=&quot;clockLabel&quot;&gt;Meeting in Session&lt;/div&gt;
@@ -4514,6 +4986,12 @@ Anesu stares at her phone, the message bar blinking, waiting.
 &lt;div class=&quot;clock-hand hour&quot; id=&quot;clockHour&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;clock-hand minute&quot; id=&quot;clockMinute&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;clock-center&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;share-panel&quot;&gt;
+&lt;div class=&quot;share-speaker&quot;&gt;Nigel&lt;/div&gt;
+&lt;div class=&quot;share-text&quot; id=&quot;shareText&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;share-skip&quot; id=&quot;shareSkip&quot;&gt;&lt;a&gt;skip ▶▶&lt;/a&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -4536,27 +5014,63 @@ Anesu stares at her phone, the message bar blinking, waiting.
   State.variables.members[2].weeksKnown = 1;
 })()&gt;&gt;
 
-&lt;&lt;run setTimeout(function(){
-  $(&#39;#clockHour&#39;).addClass(&#39;advance&#39;);
-  $(&#39;#clockMinute&#39;).addClass(&#39;advance&#39;);
-}, 800)&gt;&gt;
+&lt;&lt;set _share to [
+  &quot;There&#39;s a plan. A plan to free the mind of the insanity that runs us. To ail the sickness that has us convinced we need alcohol. You first must admit you are powerless over alcohol and your life is unmanageable.&quot;,
+  &quot;Your very best thinking has you sitting here in this room, so why would you continue with what you&#39;re already doing.&quot;,
+  &quot;I was over the depression, the anxiety, the suicidal ideation and the lingering weight of impending doom and gloom. To admit is one thing, to acknowledge it. But you have to give in. You have to accept the fact that you will not drink like a normal person. Ever.&quot;,
+  &quot;AA is not here to help you be good at drinking. To be a healthier drinker.&quot;,
+  &quot;As long as you stop drinking, you have a chance to get better. As soon as you pick up again, you&#39;ll be right back to where you started or even worse.&quot;,
+  &quot;It takes a while for the soul to surrender but you&#39;ll soon realise that you need to for your mind to be well.&quot;,
+  &quot;Sobriety doesn&#39;t mean to not drink, it&#39;s taking steps in what you say and what you do and how you think in order to stop drinking.&quot;,
+  &quot;Abstinence is just the action of stopping. But will you stay stopped?&quot;,
+  &quot;There is also the disease of delusion. The delusion of you can drink when you know you can&#39;t. That tomorrow will be different so you can do it today.&quot;,
+  &quot;The program doesn&#39;t just take away alcohol, it gives you a chance to do well in life. Alcohol is unmanageable because of the person ingesting it.&quot;,
+  &quot;You don&#39;t have to run the show, you are not the one in control. That&#39;s why we hand it over to the higher power.&quot;,
+  &quot;To keep it simple, to keep it manageable. You do it a day at a time.&quot;,
+  &quot;When the doubt trickles in, the liquor floods.&quot;,
+  &quot;You will soon see that you cannot do it anymore. You will hit your rock bottom and soon become honest open and willing.&quot;,
+  &quot;If the program doesn&#39;t work, you can always go back to the bottle. There is the door.&quot;,
+  &quot;I came in kicking and screaming, so angry at the world and hated everyone in the room.&quot;,
+  &quot;Admiring powerlessness is not defeat, it is the most profound and brave thing that you can do.&quot;,
+  &quot;Alcohol gives the relief, and once you sober up and have emotions... And memories come flooding in, not having it is hell on earth.&quot;,
+  &quot;You think what&#39;s the point? What&#39;s the use?&quot;,
+  &quot;I was sick and tired of being sick and tired. Do I kill myself or do I listen up? Take a step back and realise I do not have control...&quot;,
+  &quot;That I am not the master of these puppets... I have to let go and know what I can and cannot control.&quot;,
+  &quot;You keep thinking to yourself, I should be able to do this... Why can&#39;t I do this? Why is it all unmanageable? It&#39;s that booze.&quot;,
+  &quot;Handing my will over is so difficult. I kept saying, \&quot;I&#39;ll do it my own way, I&#39;m alright.\&quot; We must give our will over because we simply cannot handle it by ourselves. That&#39;s why we&#39;re here.&quot;,
+  &quot;If you couldn&#39;t do it before for years, what makes you so certain you can do it now?&quot;,
+  {text: &quot;No one said it had to be forever... It only has to be a day.&quot;, pause: 3500},
+  &quot;Thank you for listening.&quot;
+]&gt;&gt;
 
-&lt;&lt;run setTimeout(function(){
-  $(&#39;.clock-scene&#39;).fadeOut(500, function(){
-    $(&#39;#sceneNarrative&#39;).show();
-    var target = &quot;The serenity prayer settles over the room, scattered voices finding the same rhythm. \&quot;God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.\&quot;&quot;;
-    var el = document.createElement(&#39;span&#39;);
-    $(&#39;#sceneNarrative&#39;).append(el);
-    typewriterEffect(el, target, 25, function(){
+&lt;&lt;run (function(){
+  var shareData = _share;
+  setTimeout(function(){
+    $(&#39;#roomBackdrop&#39;).addClass(&#39;visible&#39;);
+    startShare(shareData, {startMinutes: 1155, totalMinutes: 15}, function(){
+      $(&#39;#shareSkip&#39;).hide();
+      moveClockTo(1215, true);
       setTimeout(function(){
-        $(&#39;#memberDisplay&#39;).slideDown(400, function(){
-          $(&#39;html, body&#39;).animate({ scrollTop: $(&#39;#memberDisplay&#39;).offset().top }, 500);
-          showMemoryToast(&quot;New member unlocked: Erin Ferguson&quot;);
+        $(&#39;.clock-scene&#39;).fadeOut(500, function(){
+          $(&#39;#sceneNarrative&#39;).show();
+          var target = &quot;The serenity prayer settles over the room, scattered voices finding the same rhythm. \&quot;God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.\&quot;&quot;;
+          var el = document.createElement(&#39;span&#39;);
+          $(&#39;#sceneNarrative&#39;).append(el);
+          typewriterEffect(el, target, 25, function(){
+            setTimeout(function(){
+              $(&#39;#memberDisplay&#39;).slideDown(400, function(){
+                $(&#39;html, body&#39;).animate({ scrollTop: $(&#39;#memberDisplay&#39;).offset().top }, 500);
+                showMemoryToast(&quot;New member unlocked: Erin Ferguson&quot;);
+              });
+            }, 600);
+          });
         });
-      }, 600);
+      }, 3000);
     });
-  });
-}, 3800)&gt;&gt;</tw-passagedata><tw-passagedata pid="35" name="B1C2_StayingHome" tags="" position="700,750" size="100,100">&lt;&lt;set $currentDate to &quot;Wed, 24 April 2024&quot;&gt;&gt;
+  }, 100);
+})()&gt;&gt;</tw-passagedata><tw-passagedata pid="35" name="B1C2_StayingHome" tags="" position="700,750" size="100,100">&lt;&lt;run unlockAchievement(&quot;stayed_in&quot;)&gt;&gt;
+&lt;&lt;run recordSeen(&quot;elias&quot;, &quot;stayed&quot;)&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Wed, 24 April 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;8:35pm&quot;&gt;&gt;
 &lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
@@ -4647,8 +5161,8 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: &quot;action&quot;, text: &quot;Her hand... it&#39;s always been cold. It&#39;s not smooth. It&#39;s not soft. But it&#39;s true, and Anesu can feel the determination, dripping down her knuckles.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You&#39;re one of the best things that ever happened to me, sisi. I don&#39;t always say it right.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Thank you, Mama.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text:&quot;See? She really does care for you.&quot;}
-  {type: &quot;continueTo&quot;, dest: &quot;B1C2_Transition&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text:&quot;See? She really does care for you.&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B1C2_Transition&quot; , achievement: &quot;best_things&quot;}
 ]&gt;&gt;
 &lt;&lt;elseif $v1Ending is &quot;Comply&quot;&gt;&gt;
 &lt;&lt;set _endingBeats to [
@@ -4659,8 +5173,8 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: &quot;action&quot;, text: &quot;She exhales shakily, an unnoticed weight alleviated somewhat.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I am??&quot;},
   {type: &quot;action&quot;, text: &quot;She almost doesn&#39;t let herself believe it. Almost.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You truly are, Anesu.&quot;}
-  {type: &quot;continueTo&quot;, dest: &quot;B1C2_Transition&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You truly are, Anesu.&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B1C2_Transition&quot; , achievement: &quot;best_things&quot;}
 ]&gt;&gt;
 &lt;&lt;else&gt;&gt;
 &lt;&lt;set _endingBeats to [
@@ -4669,8 +5183,8 @@ Anesu stares at her phone, the message bar blinking, waiting.
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mama&quot;, text: &quot;You&#39;re one of the best things that ever happened to me, sisi.&quot;},
   {type: &quot;action&quot;, text: &quot;She exhales shakily, an unnoticed weight alleviated somewhat.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;I am??&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You truly are, Anesu.&quot;}
-  {type: &quot;continueTo&quot;, dest: &quot;B1C2_Transition&quot;}
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You truly are, Anesu.&quot;},
+  {type: &quot;continueTo&quot;, dest: &quot;B1C2_Transition&quot; , achievement: &quot;best_things&quot;}
 ]&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
