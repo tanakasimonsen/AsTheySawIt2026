@@ -363,7 +363,7 @@ body::before {
   font-size: 0;
 }
 #story-title::after {
-  content: "written, designed & coded by titikormetsi studios\A art by t.";
+  content: "written & designed by titikormetsi studios";
   font-size: 1rem;
   font-family: 'Pixelta', monospace;
 }
@@ -383,7 +383,18 @@ body::before {
 #menu-item-saves,
 #menu-item-restart {
   font-family: 'Pixelta', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+#menu-item-memory-bank a::before { content: "\f02e"; margin-right: .35em; }
+#menu-item-achievements a::before { content: "\f005"; margin-right: .35em; }
+
+#menu li a { color: var(--text-main); }
+#menu li a:hover { background-color: var(--text-main); color: var(--bg-panel); border-color: var(--text-main); }
+#menu ul { border-color: var(--text-main); }
+#menu li:not(:first-child) { border-top-color: var(--text-main); }
 
 #ui-bar-toggle {
   display: none !important;
@@ -418,15 +429,15 @@ body.scene-night #ui-bar {
 }
 
 .status-label {
-  font-family: inherit;
-  font-size: 0.9em;
+  font-family: 'dogicabold', monospace;
+  font-size: 0.5em;
   letter-spacing: 1px;
   color: rgb(53, 36, 29);
 }
 
 .status-value {
-  font-family: inherit;
-  font-size: 0.9em;
+  font-family: 'dogica', monospace;
+  font-size: 0.5em;
   color: rgb(53, 36, 29);
 }
 
@@ -2377,18 +2388,16 @@ window.updateAngelStatus = function () {
   if ($('#angel-status').length === 0) {
     $('<div id="angel-status"></div>').insertAfter('#menu');
   }
-  if ($('#memory-bank-link').length === 0) {
-   $('<a id="memory-bank-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">Memory Bank</a>').insertAfter('#menu');
-  }
   var v = State.variables;
-  var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';
-  $('#memory-bank-link').html('Memory Bank' + dot);
-  $('#memory-bank-link').off('click').on('click', function(){ openMemoryBank(); });
-    if ($('#achievements-link').length === 0) {
-    $('<a id="achievements-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">Achievements</a>').insertAfter('#memory-bank-link');
+  if ($('#menu-item-memory-bank').length === 0) {
+    $('#menu-core').append('<li id="menu-item-memory-bank"><a tabindex="0">Memory Bank</a></li>');
   }
-  $('#achievements-link').html('Achievements' + (window.achievementsUnread ? '<span class="unread-dot"></span>' : ''));
-  $('#achievements-link').off('click').on('click', function(){ openAchievements(); });
+  var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';
+  $('#menu-item-memory-bank a').html('Memory Bank' + dot).off('click').on('click', function(){ openMemoryBank(); });
+  if ($('#menu-item-achievements').length === 0) {
+    $('#menu-core').append('<li id="menu-item-achievements"><a tabindex="0">Achievements</a></li>');
+  }
+  $('#menu-item-achievements a').html('Achievements' + (window.achievementsUnread ? '<span class="unread-dot"></span>' : '')).off('click').on('click', function(){ openAchievements(); });
   var html = '';
   html += '<div class="status-row"><span class="status-label">Name</span><span class="status-value">' + (v.playerName || '—') + '</span></div>';
   html += '<div class="status-row"><span class="status-label">Assigned Meeting</span><span class="status-value">' + (v.assignedMeeting || '—') + '</span></div>';
@@ -5219,26 +5228,28 @@ The kitchen, evening. Anesu wipes the same spot on the counter, over and over.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="36" name="B2C1_01_Erin_Opening" tags="" position="1450,700" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
+&lt;&lt;set $currentDate to &quot;Sun 28 April 2024&quot;&gt;&gt;
+&lt;&lt;set $currentTime to &quot;8:52pm&quot;&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 &lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;Erin drops Anesu off once again, watching her hair bounce as she walks to her door.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good week, Su! Trust your Higher Power!&quot;},
   {type: &quot;action&quot;, text: &quot;Erin blows her a kiss and smiles brightly. She catches it and holds it to her heart, waving with gusto.&quot;},
   {type: &quot;thought&quot;, text: &quot;What a beautiful girl.&quot;},
-  {type: &quot;interject&quot;, text: &quot;You seem to really like her, huh?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You seem to really like her, huh?&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Oh, she&#39;s like a third daughter... I feel like I have a do-over when it comes to Su. Like God gave me another chance to be a mother.&quot;},
-  {type: &quot;interject&quot;, text: &quot;That&#39;s so sweet, Erin. How long have you been her sponsor for?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;That&#39;s so sweet, Erin. How long have you been her sponsor for?&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Oh, I&#39;m not sure now.&quot;},
   {type: &quot;action&quot;, text: &quot;Erin backs out the driveway and makes a sharp right up the road.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;About 6 months now? At this point she helps me more with my sobriety than I do with hers.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Yeah? How so?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Yeah? How so?&quot;},
   {type: &quot;action&quot;, text: &quot;Erin&#39;s grip on the wheel tightens, reminded of her reality.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;It gives me a chance to be another mother. A better one.&quot;},
   {type: &quot;action&quot;, text: &quot;Tears form in her ducts and threaten to beat down.&quot;},
   {type: &quot;action&quot;, text: &quot;She pulls into her drive and sits there.&quot;},
   {type: &quot;action&quot;, text: &quot;She sits and sits...&quot;},
   {type: &quot;action&quot;, text: &quot;Waits and waits.&quot;},
-  {type: &quot;interject&quot;, text: &quot;Are we waiting for something?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Are we waiting for something?&quot;},
   {type: &quot;action&quot;, text: &quot;Erin snaps out of it and sniffs it all away.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Oh, nothing. Was waiting for Robert...&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B2C1_02_HomeAlone&quot;}
