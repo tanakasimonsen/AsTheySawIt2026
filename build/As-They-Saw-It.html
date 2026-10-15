@@ -185,6 +185,11 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
   src: url('assets/fonts/dogicabold.TTF') format('truetype');
 }
 
+@font-face {
+  font-family: 'smalle';
+  src: url('assets/fonts/smalle.TTF') format('truetype');
+}
+
 :root {
   --bg-main: #CEC19F;         /* creamy latte */
   --bg-panel: #d6bba2;        /* espresso shot */
@@ -389,12 +394,68 @@ body::before {
 }
 
 #menu-item-memory-bank a::before { content: "\f02e"; margin-right: .35em; }
-#menu-item-achievements a::before { content: "\f005"; margin-right: .35em; }
+#menu-item-memory-bank a.unread {
+  animation: dot-pulse 1.5s ease-in-out infinite;
+}
 
-#menu li a { color: var(--text-main); }
-#menu li a:hover { background-color: var(--text-main); color: var(--bg-panel); border-color: var(--text-main); }
-#menu ul { border-color: var(--text-main); }
-#menu li:not(:first-child) { border-top-color: var(--text-main); }
+#menu-item-achievements a::before { content: "\f005"; margin-right: .35em; }
+#menu-item-achievements a.unread {
+  animation: dot-pulse 1.5s ease-in-out infinite;
+}
+
+/* --- SIDEBAR MENU LINK STYLES --- */
+
+/* 1. Sets the default text colour for the sidebar links */
+#menu li a { 
+  color: var(--text-main); 
+}
+
+/* 2. Changes the colors when you hover your mouse over a link */
+#menu li a:hover { 
+  background-color: #728359;         /* Background fills with main text colour */
+  color: var(--bg-panel);              /* Text switches to the panel background colour */
+  border-color: var(--text-main);      /* Outer border switches to main text colour */
+}
+
+
+/* --- SIDEBAR MENU BORDERS --- */
+
+/* 3. Sets the colour of the outer border around the entire menu box */
+#menu ul { 
+  border-color: var(--text-main); 
+}
+
+/* 4. Sets the colour of the thin divider lines between each button */
+#menu li:not(:first-child) { 
+  border-top-color: var(--text-main); 
+}
+
+/* --- DIALOG POPUP BOXES (Saves, Settings, etc.) --- */
+
+/* 5. The title header background at the top of the popup box */
+#ui-dialog-titlebar {
+  background-color: #606f49; /* Changes header to your main text color (Green) */
+}
+
+/* 6. The main inner window background of the popup box */
+#ui-dialog-body {
+  background-color: var(--bg-panel);  /* Keeps it clean using your existing panel background */
+  border: 1px solid var(--text-main); /* Adds a nice matching green frame outline */
+}
+
+/* 7. Action buttons inside the popup (like the close "X" or Save buttons) */
+#ui-dialog-body button, #ui-dialog-close {
+  background-color: var(--bg-panel);
+  color: var(--text-main);
+  border: 1px solid var(--text-main);
+}
+
+/* 8. Hover effect for the buttons inside the popup */
+#ui-dialog-body button:hover, #ui-dialog-close:hover {
+  background-color: var(--text-main);
+  color: var(--bg-panel);
+}
+
 
 #ui-bar-toggle {
   display: none !important;
@@ -911,7 +972,8 @@ body.scene-night #ui-bar {
   flex-shrink: 0;
   padding: clamp(0.4em, 1vh, 0.7em) clamp(1em, 2vw, 2em);
   text-align: center;
-   font-size: 0.6em;
+  font-size: 0.7em;
+  line-height: 1.1;
   font-family: 'PokemonXY', monospace;
   border-style: solid;
   border-width: 20px;
@@ -924,7 +986,8 @@ body.scene-night #ui-bar {
 }
 
 .narrative-box .chapter-heading {
-  font-size: 1em;
+  font-size: 1.68rem;
+  line-height: 1.1;
   letter-spacing: 2px;
   font-family: 'Pixelta', monospace;
   color: var(--text-main);
@@ -932,12 +995,15 @@ body.scene-night #ui-bar {
 }
 
 .narrative-box .meeting-time {
-  font-size: 1em;
+  font-size: 1.68rem;
+  line-height: 1.1;
   letter-spacing: 1px;
   font-family: 'Pixelta', monospace;
   color: var(--text-muted);
   margin-bottom: 0.5em;
 }
+
+
 
 /* ============================================================
    CONVERSATION ROW (two-speaker face-to-face scenes)
@@ -1065,6 +1131,11 @@ body.scene-night #ui-bar {
   font-size: 1.5em;  
 }
 
+.chat-line.font-drunk-erin {
+  font-family: 'smalle', monospace;
+  font-size: 1.5em;
+}
+
 .chat-line.font-anesu {
   font-family: 'NorthernSans', monospace;
   font-size: 1em;
@@ -1189,7 +1260,7 @@ body.scene-night #ui-bar {
    ============================================================ */
 .chat-thought {
   font-family: 'GrapeSoda', monospace;
-  font-size: 0.7em;
+  font-size: 0.9em;
   align-self: flex-start;
   text-align: left;
   font-style: italic;
@@ -1492,7 +1563,7 @@ body.scene-night #ui-bar {
 }
 
 .type-caret {
-  color: inherit;
+  color: #FAF9F6;
   animation: caret-blink 1s step-end infinite;
 }
 
@@ -1502,7 +1573,7 @@ body.scene-night #ui-bar {
 
 .type-preview {
   font-family: 'reindeer-modern', monospace;
-  color: inherit;
+  color: #FAF9F6;
   font-size: 0.75em;
 
 }
@@ -1510,8 +1581,8 @@ body.scene-night #ui-bar {
 .type-hint {
   align-self: flex-start;
   font-size: 0.75em;
+  color: #CBB9A4;
   font-family: 'leviwindows', monospace;
-  color: inherit; opacity: 0.75;
   font-style: italic;
   padding-left: 1em;
 }
@@ -1679,7 +1750,7 @@ body.scene-night #ui-bar {
 
 .memory-tab {
   cursor: pointer;
-  color: var(--text-muted);
+  color: #728359;
   font-size: 0.95em;
   letter-spacing: 0.5px;
 }
@@ -1998,6 +2069,14 @@ window.setupDebugToggle = function() {
   });
 };
 
+window.endingDefs = {
+  shutdown:       ["White Knuckles", "Blamed everyone but herself."],
+  middle:         ["Mama Is Mama", "Kept it vague."],
+  guarded_honest: ["Rigorously Honest (ish)", "Told Erin the truth, teeth gritted."],
+  open_unsettled: ["Open Book, Missing Pages", "Opened up before she understood why it hurt."],
+  open_clear:     ["Clean Side of the Street", "Opened up, and understood why."]
+};
+
 /* ---------- ACHIEVEMENTS ---------- */
 // id: [title, description shown once unlocked] 
 window.achievementDefs = {
@@ -2022,7 +2101,8 @@ window.achievementDefs = {
   best_things:           ["One of the Best Things", "Got through the evening at home."],
   cold_coffee:           ["Cold Coffee", "Left a coffee behind."],
   saw_it_clearly:        ["Saw It Clearly", "Wrote a Memory Bank entry with clear eyes."],
-  read_the_file:         ["Read the File", "Opened the Memory Bank."]
+  read_the_file:         ["Read the File", "Opened the Memory Bank."],
+  every_kind_of_week:    ["Every Kind of Week", "Found all five endings."]
 };
 
 window.achievementStore = (function(){
@@ -2044,15 +2124,16 @@ window.achievementsUnread = false;
 window.achievementQueue = [];
 window.achievementToastBusy = false;
 
-window.showAchievementToast = function(title) {
-  window.achievementQueue.push(title);
+window.showAchievementToast = function(title, label) {
+  window.achievementQueue.push({title: title, label: label || 'Achievement'});
   if (window.achievementToastBusy) return;
   window.achievementToastBusy = true;
   (function next(){
-    var t = window.achievementQueue.shift();
-    if (!t) { window.achievementToastBusy = false; return; }
-    var toast = $('<div class="achievement-toast"><span class="achievement-toast-label">Achievement</span><span class="achievement-toast-title"></span></div>');
-    toast.find('.achievement-toast-title').text(t);
+    var item = window.achievementQueue.shift();
+    if (!item) { window.achievementToastBusy = false; return; }
+    var toast = $('<div class="achievement-toast"><span class="achievement-toast-label"></span><span class="achievement-toast-title"></span></div>');
+    toast.find('.achievement-toast-label').text(item.label);
+    toast.find('.achievement-toast-title').text(item.title);
     $('body').append(toast);
     setTimeout(function(){ toast.addClass('visible'); }, 10);
     setTimeout(function(){
@@ -2078,12 +2159,19 @@ window.unlockAchievement = function(id) {
 window.recordSeen = function(group, value) {
   var seen = window.achievementStore.data.seen;
   if (!seen[group]) seen[group] = [];
-  if (seen[group].indexOf(value) === -1) {
+  var isNew = seen[group].indexOf(value) === -1;
+  if (isNew) {
     seen[group].push(value);
     window.achievementStore.save();
   }
+  if (group === 'endings' && isNew && window.endingDefs[value]) {
+    window.achievementsUnread = true;
+    showAchievementToast(window.endingDefs[value][0], "Ending");
+    if (window.updateAngelStatus) updateAngelStatus();
+  }
   if (group === 'hallway' && seen.hallway.length >= 3) unlockAchievement('full_circle');
   if (group === 'elias' && seen.elias.length >= 2) unlockAchievement('both_doors');
+  if (group === 'endings' && seen.endings.length >= 5) unlockAchievement('every_kind_of_week');
 };
 
 // nudge tracking, reset every passage. Needs 2+ nudges in the scene to count.
@@ -2101,22 +2189,49 @@ window.trackNudge = function(result) {
   }
 };
 
-window.openAchievements = function() {
-  var unlocked = window.achievementStore.data.unlocked;
-  var ids = Object.keys(window.achievementDefs);
-  var got = ids.filter(function(id){ return unlocked[id]; }).length;
-  var html = '<div class="achievement-count">' + got + ' of ' + ids.length + ' found</div>';
-  ids.forEach(function(id){
-    var def = window.achievementDefs[id];
-    var has = unlocked[id];
-    html += '<div class="achievement-entry' + (has ? '' : ' locked') + '">';
-    html += '<div class="achievement-name">' + (has ? def[0] : '???') + '</div>';
-    html += '<div class="achievement-desc">' + (has ? def[1] : (def[2] || 'Not found yet.')) + '</div>';
-    html += '</div>';
-  });
+window.openAchievements = function(startTab) {
+  var store = window.achievementStore.data;
+  var order = ['shutdown', 'middle', 'guarded_honest', 'open_unsettled', 'open_clear'];
+
+  function achievementsHtml() {
+    var ids = Object.keys(window.achievementDefs);
+    var got = ids.filter(function(id){ return store.unlocked[id]; }).length;
+    var html = '<div class="achievement-count">' + got + ' of ' + ids.length + ' found</div>';
+    ids.forEach(function(id){
+      var def = window.achievementDefs[id];
+      var has = store.unlocked[id];
+      html += '<div class="achievement-entry' + (has ? '' : ' locked') + '">';
+      html += '<div class="achievement-name">' + (has ? def[0] : '???') + '</div>';
+      html += '<div class="achievement-desc">' + (has ? def[1] : (def[2] || 'Not found yet.')) + '</div>';
+      html += '</div>';
+    });
+    return html;
+  }
+
+  function endingsHtml() {
+    var seen = store.seen.endings || [];
+    var html = '<div class="achievement-count">Endings found: ' + seen.length + ' of ' + order.length + '</div>';
+    order.forEach(function(z){
+      var def = window.endingDefs[z];
+      var has = seen.indexOf(z) !== -1;
+      html += '<div class="achievement-entry' + (has ? '' : ' locked') + '">';
+      html += '<div class="achievement-name">' + (has ? def[0] : '???') + '</div>';
+      html += '<div class="achievement-desc">' + (has ? def[1] : 'Not found yet.') + '</div>';
+      html += '</div>';
+    });
+    return html;
+  }
+
+  function show(tab) {
+    $('#ui-dialog-body .memory-tab').removeClass('active').filter('[data-tab="' + tab + '"]').addClass('active');
+    $('#achievement-tab-body').html(tab === 'endings' ? endingsHtml() : achievementsHtml());
+  }
+
   Dialog.setup("Achievements", "achievements-dialog");
-  Dialog.wiki(html);
+  Dialog.wiki('<div class="memory-tabs"><span class="memory-tab" data-tab="achievements">Achievements</span><span class="memory-tab" data-tab="endings">Endings</span></div><div id="achievement-tab-body"></div>');
   Dialog.open();
+  $('#ui-dialog-body .memory-tab').on('click', function(){ show($(this).data('tab')); });
+  show(startTab || 'achievements');
   window.achievementsUnread = false;
   updateAngelStatus();
 };
@@ -2392,12 +2507,11 @@ window.updateAngelStatus = function () {
   if ($('#menu-item-memory-bank').length === 0) {
     $('#menu-core').append('<li id="menu-item-memory-bank"><a tabindex="0">Memory Bank</a></li>');
   }
-  var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';
-  $('#menu-item-memory-bank a').html('Memory Bank' + dot).off('click').on('click', function(){ openMemoryBank(); });
+  $('#menu-item-memory-bank a').html('Memory Bank').toggleClass('unread', !!v.memoryBankUnread).off('click').on('click', function(){ openMemoryBank(); });
   if ($('#menu-item-achievements').length === 0) {
     $('#menu-core').append('<li id="menu-item-achievements"><a tabindex="0">Achievements</a></li>');
   }
-  $('#menu-item-achievements a').html('Achievements' + (window.achievementsUnread ? '<span class="unread-dot"></span>' : '')).off('click').on('click', function(){ openAchievements(); });
+  $('#menu-item-achievements a').html('Achievements').toggleClass('unread', !!window.achievementsUnread).off('click').on('click', function(){ openAchievements(); });
   var html = '';
   html += '<div class="status-row"><span class="status-label">Name</span><span class="status-value">' + (v.playerName || '—') + '</span></div>';
   html += '<div class="status-row"><span class="status-label">Assigned Meeting</span><span class="status-value">' + (v.assignedMeeting || '—') + '</span></div>';
@@ -2409,8 +2523,12 @@ window.updateAngelStatus = function () {
   updateDebugPanel();
 };
 
-window.showMemoryToast = function(message) {
-  var $toast = $('<div id="memory-toast">' + (message || "The memory bank has been updated") + '</div>');
+window.showMemoryToast = function(message, note) {
+  var $toast = $('<div id="memory-toast"></div>');
+  $toast.append($('<div></div>').text(message || "The memory bank has been updated"));
+  if (note) {
+    $toast.append($('<div style="font-size:0.75em; opacity:0.75; margin-top:0.3em;"></div>').text(note));
+  }
   $('body').append($toast);
   setTimeout(function(){ $toast.addClass('visible'); }, 10);
   setTimeout(function(){
@@ -2455,7 +2573,7 @@ window.addQuote = function(shortText, fullText, source) {
   });
   State.variables.memoryBankUnread = true;
   updateAngelStatus();
-  showMemoryToast("A quote has been unlocked");
+  showMemoryToast("A quote has been unlocked", "Open the Memory Bank tab to read it");
 };
 function renderQuotesTab() {
   var quotes = State.variables.quotesUnlocked || [];
@@ -2931,7 +3049,7 @@ window.startShare = function(blocks, opts, onDone) {
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;Well, you pick one to assist each week. We hear members share and then we guide. We can nudge, suggest, plant the seed so to speak, and can&#39;t force one to be sober but rather help them see what they can do to be better, achieve greater things and maybe see a better tomorrow...&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;You&quot;, text: &quot;So I can pick any person? I&#39;m a god now??&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;Mhmm, not exactly. You&#39;re a higher power, a guardian angel for the Mirabel meeting. We assist and provide the tools. We cannot force one to be better. Take a look at who is here tonight...Maybe someone will be of interest. I need help with this meeting, it seems to be a popular one.&quot;, setVar: &quot;assignedMeeting&quot;, setValue: &quot;Mirabel Meeting&quot;},
-  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;Let&#39;s see who&#39;s here tonight.&quot;, dest: &quot;P_00_Member_Selection&quot;}
+  {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, label: &quot;Mabel&quot;, text: &quot;I think we have someone here for you tonight...&quot;, dest: &quot;P_00_Member_Selection&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 
@@ -3546,7 +3664,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;&lt;set $members to [
   {name: &quot;Anesu Song&quot;, age: &quot;20&quot;, sobriety: &quot;6 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;&quot;, story: &quot;Home doesn&#39;t feel like home right now. Six months sober, and everyone&#39;s still watching to see if it sticks&quot;, unlocked: true, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Martha Bonini&quot;, age: &quot;39&quot;, sobriety: &quot;3 weeks, 3rd relapse&quot;, doc: &quot;Alcohol and prescribed morphine&quot;, service: &quot;&quot;, story: &quot;A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
-  {name: &quot;Erin Ferguson&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;Anesu&#39;s Sponsor&quot;, story: &quot;Four kids who don&#39;t call anymore. A husband she still isn&#39;t used to not having. She&#39;s sober now — a little late, in her opinion.&quot;, unlocked: false, image: &quot;https://i.imgur.com/A4YV3S2.gif&quot;, weeksKnown: 0},
+  {name: &quot;Erin Ferguson&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;Anesu&#39;s Sponsor&quot;, story: &quot;Three kids who don&#39;t call anymore. A husband she still isn&#39;t used to not having. She&#39;s sober now — a little late, in her opinion.&quot;, unlocked: false, image: &quot;https://i.imgur.com/A4YV3S2.gif&quot;, weeksKnown: 0},
   {name: &quot;Franco Pitt&quot;, age: &quot;24&quot;, sobriety: &quot;Not currently sober&quot;, doc: &quot;Alcohol and \&quot;occasionally\&quot; cocaine&quot;, service: &quot;&quot;, story: &quot;Landed the job he studied his whole life for. Still doesn&#39;t feel like an adult. His relationship isn&#39;t helping&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Member 5&quot;, age: &quot;—&quot;, sobriety: &quot;—&quot;, doc: &quot;—&quot;, service: &quot;&quot;, story: &quot;Placeholder story.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Member 6&quot;, age: &quot;—&quot;, sobriety: &quot;—&quot;, doc: &quot;—&quot;, service: &quot;&quot;, story: &quot;Placeholder story.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
@@ -3689,6 +3807,10 @@ $members[$memberIndex].story
 &lt;&lt;run unlockAchievement(_beat.achievement)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
+&lt;&lt;if _beat.recordEnding&gt;&gt;
+&lt;&lt;run recordSeen(&quot;endings&quot;, getEndingZone())&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
 &lt;&lt;if _beat.type is &quot;narrative&quot;&gt;&gt;
 &lt;&lt;replace &quot;#sceneNarrative&quot;&gt;&gt;
 &lt;&lt;if _beat.chapter&gt;&gt;&lt;div class=&quot;chapter-heading&quot;&gt;_beat.chapter&lt;/div&gt;&lt;&lt;/if&gt;&gt;
@@ -3804,7 +3926,8 @@ _beat.text
 &lt;&lt;if _beat.type is &quot;dialogue&quot;&gt;&gt;
 &lt;&lt;append _target&gt;&gt;&lt;div @class=&quot;&#39;chat-line &#39; + _beat.side + &#39; font-&#39; + _beat.speaker.toLowerCase().replace(/\s/g,&#39;-&#39;)&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;_label&lt;/div&gt;&lt;span class=&quot;type-target&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
-&lt;&lt;run typewriterEffect($(_target + &#39; .type-target&#39;).last()[0], _beat.text, getTypeSpeed(_beat.speaker, _beat.speed), _beat.speaker, function() {
+&lt;&lt;set _lineText to _beat.byZone ? (_beat.byZone[getEndingZone()] || _beat.byZone.middle) : _beat.text&gt;&gt;
+&lt;&lt;run typewriterEffect($(_target + &#39; .type-target&#39;).last()[0], _lineText, getTypeSpeed(_beat.speaker, _beat.speed), _beat.speaker, function() {
   if (_beat.interrupted) {
     setTimeout(function(){ Wikifier.wikifyEval(&#39;&lt;&lt;advanceScene&gt;&gt;&#39;); }, 200);
   } else {
@@ -4190,35 +4313,68 @@ The kitchen smells like coffee. Everyone&#39;s already up.
 &lt;&lt;set $currentTime to &quot;11:40pm&quot;&gt;&gt;
 &lt;&lt;run updateAngelStatus()&gt;&gt;
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;action&quot;, text: &quot;Anesu lies in bed, trying to get to sleep. Her mind races.&quot;},
-  {type: &quot;thought&quot;, text: &quot;His hand on my jaw before he even said anything. Like he already knew.&quot;},
-  {type: &quot;thought&quot;, text: &quot;The way he said my name like it meant something. Not like the others.&quot;},
-  {type: &quot;thought&quot;, text: &quot;I don&#39;t even remember what we talked about after. Just that I didn&#39;t want it to stop.&quot;},
-  {type: &quot;thought&quot;, text: &quot;He looked at me like—&quot;},
-  {type: &quot;action&quot;, text: &quot;She stops the thought before it finishes.&quot;},
-  {type: &quot;thought&quot;, text: &quot;God, I actually let myself believe it. For one night.&quot;},
-  {type: &quot;breathe&quot;, text: &quot;She stares at the ceiling.&quot;, duration: 2500},
-  {type: &quot;thought&quot;, text: &quot;I never really liked romance films... I mean, I did when I was a child and had my celebrity crushes and fantasised like the naive child that I was.&quot;},
-  {type: &quot;thought&quot;, text: &quot;But then I realised, at some point, I&#39;m not going to have... that. I mean, don&#39;t get me wrong, a girl dreams and hopes and wishes.&quot;},
-  {type: &quot;thought&quot;, text: &quot;But seeing it happen — that cropped landscape frame, the swelling score, dialogue that hits too close to home... I&#39;ve grown to feel jealousy. To feel envy.&quot;},
-  {type: &quot;thought&quot;, text: &quot;Imagination and the feel-good, dissipated with every foul action some man has decided to douse on me, and I&#39;m left dripping cold and wet every time.&quot;},
-  {type: &quot;breathe&quot;, text: &quot;She stares at the ceiling.&quot;, duration: 2500},
-  {type: &quot;thought&quot;, text: &quot;Romance makes me awfully sad. I become ill, green, and freeze up. Rendered helpless. Unable to see the beauty in love without feeling such envy.&quot;},
-  {type: &quot;thought&quot;, text: &quot;It&#39;s quite selfish and self-absorbed, but it&#39;s the truth!&quot;},
-  {type: &quot;breathe&quot;, text: &quot;She doesn&#39;t finish the thought. Not yet.&quot;, duration: 3000},
-  {type: &quot;thought&quot;, text: &quot;So I just went the opposite route. There&#39;s something brilliant in the grotesque and the macabre. The outcast and misunderstood.&quot;},
-  {type: &quot;thought&quot;, text: &quot;Of course I&#39;m not appeasing and justifying the killers created and depicted in the film, but it&#39;s familiar. Somewhat home.&quot;},
-  {type: &quot;thought&quot;, text: &quot;I feel as if my soul may be displaced. I know what went wrong on the way... I think.&quot;},
-  {type: &quot;thought&quot;, text: &quot;The yearn for being a lover, a mother, someone&#39;s other... but it won&#39;t come true.&quot;},
-  {type: &quot;breathe&quot;, text: &quot;Her breathing catches. Quiet, almost nothing.&quot;, duration: 3000},
-  {type: &quot;thought&quot;, text: &quot;It would be unfair on myself to hope and wish, to then fall so deeply and never be caught.&quot;},
-  {type: &quot;action&quot;, text: &quot;A tear slips, then another. She doesn&#39;t wipe them.&quot;},
-  {type: &quot;breathe&quot;, text: &quot;She lies still, letting it happen.&quot;, duration: 3500},
-  {type: &quot;thought&quot;, text: &quot;So let&#39;s remain rational.&quot;},
-  {type: &quot;action&quot;, text: &quot;Anesu sits up sharply, wiping her face with the back of her hand.&quot;},
-  {type: &quot;thought&quot;, text: &quot;Let&#39;s stop dreaming and gallivanting among ridiculous ideas...&quot;},
-  {type: &quot;thought&quot;, text: &quot;I guess I can just be.&quot;},
-  {type: &quot;continueTo&quot;, dest: &quot;B1C3_01_Opening&quot;}
+&lt;&lt;set $sceneBeats to [
+  {type: &quot;action&quot;, text: &quot;It&#39;s another late evening, but instead of her making dinner, she&#39;s missing it — hammered in her room... too drunk to have dinner with her family.&quot;},
+  {type: &quot;action&quot;, text: &quot;But it&#39;s been two weeks.&quot;},
+  {type: &quot;action&quot;, text: &quot;Gotta come out at some point.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin takes a deep breath, licking her lips sloppily, dribbling down her front, and \&quot;composes\&quot; herself, making her way to the dining room.&quot;},
+  {type: &quot;action&quot;, text: &quot;She hears her loved ones chat away, no one bothering to turn around at the click of the door.&quot;},
+  {type: &quot;action&quot;, text: &quot;Mhmm — Robert flinched a little.&quot;},
+  {type: &quot;action&quot;, text: &quot;She thumps to the table, attempting to drag it out with discretion, but topples it instead.&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie sighs and flares her nostrils, trying to continue her chat with Hazel about the concert that weekend.&quot;},
+  {type: &quot;action&quot;, text: &quot;They all continue. Eating, chewing, chatting.&quot;},
+  {type: &quot;action&quot;, text: &quot;It&#39;s as if she doesn&#39;t exist.&quot;},
+  {type: &quot;action&quot;, text: &quot;She sits herself at the table and groans at the sight of greasy steak and garlicky, buttery potatoes.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Wwwwwhooo made this??&quot;},
+  {type: &quot;action&quot;, text: &quot;Robert winces sheepishly and looks to his wife.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;I did, honey. The steak was about to go bad.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;I clearly say that it was me going to be COOKING. I bought that for me to make.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin looks annoyed and disgusted, and it was a lot of emotion for a warm meal.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;You didn&#39;t even make it right! That&#39;s why I should do it!&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin begins to tear up, perceived to be misunderstood, but the family knew she was in a blackout.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;Dad made us a nice meal, Mum. Get off his back. You&#39;re just drunk.&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin glares at her daughter and holds a burp.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Drunk? You don&#39;t even know anything, Kenz.&quot;},
+  {type: &quot;action&quot;, text: &quot;Hazel scoffs and pushes her seat back, grabbing her plate.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;I&#39;ll be finishing this in my room. Thank you, Dad.&quot;},
+  {type: &quot;action&quot;, text: &quot;She looks to her father and then across the table.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;Erin.&quot;},
+  {type: &quot;action&quot;, text: &quot;She clutches her pearls as if she&#39;s been wounded and whips to Robert.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;YOU see how SHE SpeaKS to me?&quot;},
+  {type: &quot;action&quot;, text: &quot;Robert sighs and rubs his temple, fidgeting with his wedding band.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Now isn&#39;t the time, Erin, you&#39;ve been drinking.&quot;},
+  {type: &quot;action&quot;, text: &quot;And that&#39;s when shit hits the fan.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Drinking? I&#39;VE BEEN FUCKING DRINKING? ALL I DO IS WORK AND WORK AND WORK AND WORK. THIS IS THE THANKS I GIVE? I GET?&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie quickly grabs Oscar&#39;s hand and darts with him out of the room.&quot;},
+  {type: &quot;action&quot;, text: &quot;They obviously can&#39;t deal with this again.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Erin, please don&#39;t do this, love, it&#39;s ok—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;OKAY? YOU THINK BEING DISRESPECTED IS OKAY?? YOU ARE SO OKAY WITH—&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin stands up and swipes her hands across the table, sending the food crashing and splattering all over the floor. An hour of cooking gone in an instant.&quot;},
+  {type: &quot;action&quot;, text: &quot;Tears fall rapidly down Robert&#39;s cheeks, blurring his frames, bottom lip quivering.&quot;},
+  {type: &quot;action&quot;, text: &quot;He&#39;s so afraid... so afraid of the one he loves most. Oh Robert, I&#39;m so sorry.&quot;},
+  {type: &quot;action&quot;, text: &quot;He goes to pick up the mess, yet Erin keeps on screaming.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;ALL YOU DO IS DEFEND THEIR TERRIBLE BEHAVIOUR, WHAT ABOUT YOUR WIFE?&quot;},
+  {type: &quot;action&quot;, text: &quot;All he does is think about you, Erin.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;I work so h-h-h-ard. I made you dinner for you and the kids.&quot;},
+  {type: &quot;action&quot;, text: &quot;Footsteps pound down the hallway and the shit is smeared even further round the home.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;GET OUT!&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie beelines for her mother, grabbing her shoulders and directing her to the door. The force was heavy and almost sent Erin flying, too drunk to keep her balance.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Kenzie, please, just go to your ro—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;NO! I&#39;VE HAD IT! SHE IS SO MEAN TO YOU AND MEAN TO US.&quot;},
+  {type: &quot;action&quot;, text: &quot;Mackenzie keeps pushing Erin down the hall, keeping one arm on her as she unlocks the door.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Get YOUR HAANDS offMEEE.&quot;},
+  {type: &quot;action&quot;, text: &quot;She begins to flail but she has no strength, unable to fight against her 16 year old. Mackenzie continues to push past the threshold and shoves her onto the nature strip.&quot;},
+  {type: &quot;action&quot;, text: &quot;This is terrible.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;DO NOT COME BACK, ERIN. GET THE FUCK AWAY!!&quot;},
+  {type: &quot;action&quot;, text: &quot;The door slams shut and the chirp of the summer crickets ring in Erin&#39;s skull.&quot;},
+  {type: &quot;action&quot;, text: &quot;Grass in her ear, gravel on her palms and scraped shins...&quot;},
+  {type: &quot;action&quot;, text: &quot;She stays lying there, her world still spinning.&quot;},
+  {type: &quot;action&quot;, text: &quot;And spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning&quot;},
+  {type: &quot;action&quot;, text: &quot;and spinning.&quot;}
+]&gt;&gt;
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
 &lt;div class=&quot;opening-layout&quot;&gt;
@@ -4429,7 +4585,6 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="25" name="B1C4_ErinCheckIn" tags="" position="1300,225" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Sun 28 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;6:32pm&quot;&gt;&gt;
-
 &lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Sooo, how was your week, darlin&#39;?&quot;},
   {type: &quot;thought&quot;, text: &quot;She&#39;s always been so kind, so loving, yet she&#39;s always having an awful time.&quot;},
@@ -4441,8 +4596,8 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
   {type: &quot;action&quot;, text: &quot;She holds her hand tight, a gentle thumb soothing her.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;What happened?&quot;},
   {type: &quot;thought&quot;, text: &quot;She&#39;s absolutely lost it, I genuinely do not understand what goes through that woman&#39;s mind and it fucks with me on a daily basis.&quot;},
-   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Did you both get into another screaming match?&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, byZone: {
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Did you both get into another screaming match?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, recordEnding: true, byZone: {
     shutdown: &quot;Well yeah, but she started it this time! I didn&#39;t say anything harsh or mean! But god damn it, it&#39;s infuriating. Then I&#39;m staring at Dad like UM DO SOMETHING. SPEAK UP. HE&#39;S FUCKING CRICKETS.&quot;,
     guarded_honest: &quot;Kind of? Ugh, I mean I denied the breathtest and now I&#39;m kinda regretting it, but I stood up for myself!! It&#39;s my body!!&quot;,
     open_unsettled: &quot;Not really, there was a little tiff at the door when you dropped me off, but we&#39;re chillin.&quot;,
@@ -4458,7 +4613,6 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
   }},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Ugh, she&#39;s too much, Erin, it&#39;s constant! When is she going to understand things are genuinely fucking changing! I mean, breath-testing me when I get back from work?&quot;},
   {type: &quot;action&quot;, text: &quot;Erin nods deeply, humming in agreement, with care. With understanding.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Did you end up in a screaming match again?&quot;},
   {type: &quot;action&quot;, text: &quot;Anesu is silent, fiddling with her lip ring.&quot;},
   {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;It&#39;s time to be honest, Su. Erin is another mother to you.&quot;},
   {type: &quot;thought&quot;, text: &quot;She&#39;ll understand. I think we&#39;re all safe here.&quot;},
@@ -5078,7 +5232,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
             setTimeout(function(){
               $(&#39;#memberDisplay&#39;).slideDown(400, function(){
                 $(&#39;html, body&#39;).animate({ scrollTop: $(&#39;#memberDisplay&#39;).offset().top }, 500);
-                showMemoryToast(&quot;New member unlocked: Erin Ferguson&quot;);
+                showMemoryToast(&quot;New member unlocked: Erin Ferguson&quot;, &quot;She&#39;ll be waiting in the circle&quot;);
               });
             }, 600);
           });
@@ -5273,7 +5427,9 @@ Erin&#39;s car, pulling away from Anesu&#39;s house.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="37" name="B2C1_02_HomeAlone" tags="" position="400,400" size="100,100">&lt;&lt;set $sceneBeats to [
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="37" name="B2C1_02_HomeAlone" tags="" position="400,400" size="100,100">&lt;&lt;set $currentDate to &quot;Sun 28 April 2024&quot;&gt;&gt;
+&lt;&lt;set $currentTime to &quot;8:52pm&quot;&gt;&gt;
+&lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;She turns the car off and slams the door behind her, walking to the door ever so slowly.&quot;},
   {type: &quot;action&quot;, text: &quot;Her key hits the cold silver hole and she pauses, inhaling deeply.&quot;},
   {type: &quot;action&quot;, text: &quot;The ridges slide through as she exhales shakily, turning it with an echoing click.&quot;},
@@ -5389,7 +5545,35 @@ Erin&#39;s dining room, table set for two.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="39" name="B2C1_03a_YouCanCry" tags="" position="250,700" size="100,100">&lt;&lt;set $sceneBeats to [
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You can cry, Erin. [PLACEHOLDER — fuller line of encouragement, expanding on this one]&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You can cry, Erin...&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin lets herself wail and the tears pool on the wooden dining table.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Oh Robert, please come back, my love. I need you here.&quot;},
+  {type: &quot;action&quot;, text: &quot;She sniffs hard, everything hitting the back of her throat. She coughs and splutters hard, rubbing her eyes hard.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;I&#39;m going to miss you for the rest of my life.&quot;},
+  {type: &quot;action&quot;, text: &quot;She breathes hard in and out of her palms, her wedding band hugging her finger tight.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Why did I have to fucking drink the way that I did? Why didn&#39;t I just stop?!&quot;},
+  {type: &quot;action&quot;, text: &quot;Her fists pound the table, the plates jumping. Her cups of water wavering as if they were seaside.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;But I deserve this pain.&quot;},
+  {type: &quot;action&quot;, text: &quot;She sniffles once more, using her sleeve to clean up her mess.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;I deserve to feel like this. I drove you all away.&quot;},
+  {type: &quot;action&quot;, text: &quot;She looks up at the mantle and smiles weakly at the photos of her children.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Kenzie... you were just protecting your family. Like the brave girl you are.&quot;},
+  {type: &quot;action&quot;, text: &quot;Her eyes continue to trail.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;And Hazel... you just kept seeing the best in me, even though I was a drunken fool.&quot;},
+  {type: &quot;action&quot;, text: &quot;She looks at Oscar&#39;s photo, fresh as a daisy right from the hospital...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;And Os—&quot;, interrupted: true},
+  {type: &quot;action&quot;, text: &quot;She chokes up and begins to sob all over again.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;You we-we-were te-te-te-terrified of meeeeeeeeee.&quot;},
+  {type: &quot;action&quot;, text: &quot;She cries hard, trailing off.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;They all hate me. My own babies...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;But I did this. This is all my doing. I just can&#39;t live without them.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;But you&#39;re doing an incredible job, Erin. You are so brave for feeling ALL of this, and still not drinking...&quot;},
+  {type: &quot;action&quot;, text: &quot;She splutters once more, watching the pool grow.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;But for how much longer?&quot;},
+  {type: &quot;action&quot;, text: &quot;She turns to face her bedroom door and stares hard, almost in a trance.&quot;},
+  {type: &quot;action&quot;, text: &quot;She holds herself, tense and rigid.&quot;},
+  {type: &quot;action&quot;, text: &quot;You look out to where she&#39;s staring and hold the vision.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Let&#39;s take a look...&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B2C1_04_Transition&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -5397,6 +5581,7 @@ Erin&#39;s dining room, table set for two.
 &lt;div class=&quot;opening-layout&quot;&gt;
 &lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
 &lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+Erin&#39;s dining room, table set for two.
 &lt;/div&gt;
 &lt;div class=&quot;conversation-row&quot;&gt;
 &lt;div class=&quot;speaker-box&quot;&gt;
@@ -5412,7 +5597,46 @@ Erin&#39;s dining room, table set for two.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="40" name="B2C1_03b_Breathe" tags="" position="400,700" size="100,100">&lt;&lt;set $sceneBeats to [
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Oh Erin, breathe. [PLACEHOLDER — fuller line of encouragement, expanding on this one]&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Oh Erin, breathe.&quot;},
+  {type: &quot;breathe&quot;, text: &quot;Erin takes a deep breath in, but doesn&#39;t let it out.&quot;, duration: 4000},
+  {type: &quot;action&quot;, text: &quot;1&quot;},
+  {type: &quot;action&quot;, text: &quot;2&quot;},
+  {type: &quot;action&quot;, text: &quot;3&quot;},
+  {type: &quot;action&quot;, text: &quot;4&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Breathe out, Erin.&quot;},
+  {type: &quot;action&quot;, text: &quot;7&quot;},
+  {type: &quot;action&quot;, text: &quot;8&quot;},
+  {type: &quot;action&quot;, text: &quot;9&quot;},
+  {type: &quot;action&quot;, text: &quot;10&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;BREATHE, ERIN!&quot;},
+  {type: &quot;action&quot;, text: &quot;She splutters out a cough and begins to sob.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Oh Robert, please come back, my love. I need you here.&quot;},
+  {type: &quot;action&quot;, text: &quot;She sniffs hard, everything hitting the back of her throat. She coughs and splutters hard, rubbing her eyes hard.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;I&#39;m going to miss you for the rest of my life.&quot;},
+  {type: &quot;action&quot;, text: &quot;She breathes hard in and out of her palms, her wedding band hugging her finger tight.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Why did I have to fucking drink the way that I did? Why didn&#39;t I just stop?!&quot;},
+  {type: &quot;action&quot;, text: &quot;Her fists pound the table, the plates jumping. Her cups of water wavering as if they were seaside.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;But I deserve this pain.&quot;},
+  {type: &quot;action&quot;, text: &quot;She sniffles once more, using her sleeve to clean up her mess.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;I deserve to feel like this. I drove you all away.&quot;},
+  {type: &quot;action&quot;, text: &quot;She looks up at the mantle and smiles weakly at the photos of her children.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Kenzie... you were just protecting your family. Like the brave girl you are.&quot;},
+  {type: &quot;action&quot;, text: &quot;Her eyes continue to trail.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;And Hazel... you just kept seeing the best in me, even though I was a drunken fool.&quot;},
+  {type: &quot;action&quot;, text: &quot;She looks at Oscar&#39;s photo, fresh as a daisy right from the hospital...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;And Os—&quot;, interrupted: true},
+  {type: &quot;action&quot;, text: &quot;She chokes up and begins to sob all over again.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;You we-we-were te-te-te-terrified of meeeeeeeeee.&quot;},
+  {type: &quot;action&quot;, text: &quot;She cries hard, trailing off.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;They all hate me. My own babies...&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;But I did this. This is all my doing. I just can&#39;t live without them.&quot;},
+  {type: &quot;freeType&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;But you&#39;re doing an incredible job, Erin. You are so brave for feeling ALL of this, and still not drinking...&quot;},
+  {type: &quot;action&quot;, text: &quot;She splutters once more, watching the pool grow.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;But for how much longer?&quot;},
+  {type: &quot;action&quot;, text: &quot;She turns to face her bedroom door and stares hard, almost in a trance.&quot;},
+  {type: &quot;action&quot;, text: &quot;She holds herself, tense and rigid.&quot;},
+  {type: &quot;action&quot;, text: &quot;You look out to where she&#39;s staring and hold the vision.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Let&#39;s take a look...&quot;},
   {type: &quot;continueTo&quot;, dest: &quot;B2C1_04_Transition&quot;}
 ]&gt;&gt;
 &lt;&lt;set $beatIndex to 0&gt;&gt;
@@ -5420,6 +5644,7 @@ Erin&#39;s dining room, table set for two.
 &lt;div class=&quot;opening-layout&quot;&gt;
 &lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
 &lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
+Erin&#39;s dining room, table set for two.
 &lt;/div&gt;
 &lt;div class=&quot;conversation-row&quot;&gt;
 &lt;div class=&quot;speaker-box&quot;&gt;
@@ -5434,30 +5659,7 @@ Erin&#39;s dining room, table set for two.
 &lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="41" name="B2C1_03c_YoureSafe" tags="" position="550,700" size="100,100">&lt;&lt;set $sceneBeats to [
-  {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;You&#39;re safe, Erin... [PLACEHOLDER — fuller line of encouragement, expanding on this one]&quot;},
-  {type: &quot;continueTo&quot;, dest: &quot;B2C1_04_Transition&quot;}
-]&gt;&gt;
-&lt;&lt;set $beatIndex to 0&gt;&gt;
-
-&lt;div class=&quot;opening-layout&quot;&gt;
-&lt;div class=&quot;narrative-box&quot; id=&quot;sceneNarrative&quot;&gt;
-&lt;div class=&quot;meeting-time&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;conversation-row&quot;&gt;
-&lt;div class=&quot;speaker-box&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Erin&#39;]&quot;&gt;
-&lt;div class=&quot;speaker-name&quot; id=&quot;leftSpeakerName&quot;&gt;Erin&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;chat-log&quot; id=&quot;chatLog&quot;&gt;
-&lt;div class=&quot;dialogue-prompt&quot;&gt;&lt;&lt;link &quot;▼&quot;&gt;&gt;&lt;&lt;advanceScene&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;speaker-box&quot; id=&quot;rightSpeaker&quot;&gt;
-&lt;img @src=&quot;$characterImages[&#39;Higher Power&#39;]&quot; id=&quot;rightSpeakerImg&quot;&gt;
-&lt;div class=&quot;speaker-name&quot; id=&quot;rightSpeakerName&quot;&gt;Higher Power&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="42" name="B2C1_04_Transition" tags="" position="400,850" size="100,100">&lt;&lt;run $(&#39;body&#39;).addClass(&#39;scene-night&#39;)&gt;&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="41" name="B2C1_04_Transition" tags="" position="400,850" size="100,100">&lt;&lt;run $(&#39;body&#39;).addClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $sceneBeats to [
   {type: &quot;action&quot;, text: &quot;It&#39;s another late evening, but instead of her making dinner, she&#39;s missing it — hammered in her room... too drunk to have dinner with her family.&quot;},
   {type: &quot;action&quot;, text: &quot;But it&#39;s been two weeks.&quot;},
@@ -5470,35 +5672,35 @@ Erin&#39;s dining room, table set for two.
   {type: &quot;action&quot;, text: &quot;They all continue. Eating, chewing, chatting.&quot;},
   {type: &quot;action&quot;, text: &quot;It&#39;s as if she doesn&#39;t exist.&quot;},
   {type: &quot;action&quot;, text: &quot;She sits herself at the table and groans at the sight of greasy steak and garlicky, buttery potatoes.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Wwwwwhooo made this??&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Wwwwwhooo made this??&quot;},
   {type: &quot;action&quot;, text: &quot;Robert winces sheepishly and looks to his wife.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;I did, honey. The steak was about to go bad.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;I clearly say that it was me going to be COOKING. I bought that for me to make.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;I clearly say that it was me going to be COOKING. I bought that for me to make.&quot;},
   {type: &quot;action&quot;, text: &quot;Erin looks annoyed and disgusted, and it was a lot of emotion for a warm meal.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;You didn&#39;t even make it right! That&#39;s why I should do it!&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;You didn&#39;t even make it right! That&#39;s why I should do it!&quot;},
   {type: &quot;action&quot;, text: &quot;Erin begins to tear up, perceived to be misunderstood, but the family knew she was in a blackout.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;Dad made us a nice meal, Mum. Get off his back. You&#39;re just drunk.&quot;},
   {type: &quot;action&quot;, text: &quot;Erin glares at her daughter and holds a burp.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Drunk? You don&#39;t even know anything, Kenz.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Drunk? You don&#39;t even know anything, Kenz.&quot;},
   {type: &quot;action&quot;, text: &quot;Hazel scoffs and pushes her seat back, grabbing her plate.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;I&#39;ll be finishing this in my room. Thank you, Dad.&quot;},
   {type: &quot;action&quot;, text: &quot;She looks to her father and then across the table.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Hazel&quot;, text: &quot;Erin.&quot;},
   {type: &quot;action&quot;, text: &quot;She clutches her pearls as if she&#39;s been wounded and whips to Robert.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;YOU see how SHE SpeaKS to me?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;YOU see how SHE SpeaKS to me?&quot;},
   {type: &quot;action&quot;, text: &quot;Robert sighs and rubs his temple, fidgeting with his wedding band.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Now isn&#39;t the time, Erin, you&#39;ve been drinking.&quot;},
   {type: &quot;action&quot;, text: &quot;And that&#39;s when shit hits the fan.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Drinking? I&#39;VE BEEN FUCKING DRINKING? ALL I DO IS WORK AND WORK AND WORK AND WORK. THIS IS THE THANKS I GIVE? I GET?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Drinking? I&#39;VE BEEN FUCKING DRINKING? ALL I DO IS WORK AND WORK AND WORK AND WORK. THIS IS THE THANKS I GIVE? I GET?&quot;},
   {type: &quot;action&quot;, text: &quot;Mackenzie quickly grabs Oscar&#39;s hand and darts with him out of the room.&quot;},
   {type: &quot;action&quot;, text: &quot;They obviously can&#39;t deal with this again.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Erin, please don&#39;t do this, love, it&#39;s ok—&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;OKAY? YOU THINK BEING DISRESPECTED IS OKAY?? YOU ARE SO OKAY WITH—&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;OKAY? YOU THINK BEING DISRESPECTED IS OKAY?? YOU ARE SO OKAY WITH—&quot;},
   {type: &quot;action&quot;, text: &quot;Erin stands up and swipes her hands across the table, sending the food crashing and splattering all over the floor. An hour of cooking gone in an instant.&quot;},
   {type: &quot;action&quot;, text: &quot;Tears fall rapidly down Robert&#39;s cheeks, blurring his frames, bottom lip quivering.&quot;},
   {type: &quot;action&quot;, text: &quot;He&#39;s so afraid... so afraid of the one he loves most. Oh Robert, I&#39;m so sorry.&quot;},
   {type: &quot;action&quot;, text: &quot;He goes to pick up the mess, yet Erin keeps on screaming.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;ALL YOU DO IS DEFEND THEIR TERRIBLE BEHAVIOUR, WHAT ABOUT YOUR WIFE?&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;ALL YOU DO IS DEFEND THEIR TERRIBLE BEHAVIOUR, WHAT ABOUT YOUR WIFE?&quot;},
   {type: &quot;action&quot;, text: &quot;All he does is think about you, Erin.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;I work so h-h-h-ard. I made you dinner for you and the kids.&quot;},
   {type: &quot;action&quot;, text: &quot;Footsteps pound down the hallway and the shit is smeared even further round the home.&quot;},
@@ -5507,7 +5709,7 @@ Erin&#39;s dining room, table set for two.
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Robert&quot;, text: &quot;Kenzie, please, just go to your ro—&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;NO! I&#39;VE HAD IT! SHE IS SO MEAN TO YOU AND MEAN TO US.&quot;},
   {type: &quot;action&quot;, text: &quot;Mackenzie keeps pushing Erin down the hall, keeping one arm on her as she unlocks the door.&quot;},
-  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Erin&quot;, text: &quot;Get YOUR HAANDS offMEEE.&quot;},
+  {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Drunk Erin&quot;, label: &quot;Erin&quot;, text: &quot;Get YOUR HAANDS offMEEE.&quot;},
   {type: &quot;action&quot;, text: &quot;She begins to flail but she has no strength, unable to fight against her 16 year old. Mackenzie continues to push past the threshold and shoves her onto the nature strip.&quot;},
   {type: &quot;action&quot;, text: &quot;This is terrible.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Mackenzie&quot;, text: &quot;DO NOT COME BACK, ERIN. GET THE FUCK AWAY!!&quot;},
