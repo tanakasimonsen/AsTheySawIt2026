@@ -1,0 +1,5 @@
+$stamp = Get-Date -Format "yyyy-MM-dd_HHmm"
+Copy-Item "build\As-They-Saw-It.html" "build\As-They-Saw-It_$stamp.html"
+$note = Read-Host "what changed in this build?"
+Add-Content "build\BUILD-LOG.txt" "$stamp  $note"
+Write-Host "saved As-They-Saw-It_$stamp.html"

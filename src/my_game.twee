@@ -276,7 +276,7 @@ body::before {
 }
 #story-title::after {
   content: "written & designed by titikormetsi studios";
-  font-size: 1em;
+  font-size: 1rem;
   font-family: 'Pixelta', monospace;
 }
 
@@ -912,6 +912,7 @@ body.scene-night #ui-bar {
 
 .chat-log::-webkit-scrollbar-thumb {
   background-color: var(--text-main);
+  background-color: #CBB9A4;
   border-radius: 4px;
 }
 
@@ -938,22 +939,25 @@ body.scene-night #ui-bar {
   font-size: 0.8em;
   align-self: flex-start;
   text-align: left;
-  background-color: rgba(42, 61, 20, 0.6);
-  border: 1px solid var(--text-main);
+  background-color: #606f49;
+  border: 1px solid #A6B98B;
+
 }
 
 .chat-line.character {
   align-self: flex-end;
   text-align: right;
-  background-color: rgba(205, 193, 159, 0.1);
+  background-color: #E6DAC8;
+  border: 1px solid #A48D78;
+  color: #35241d;
 }
 
-.font-guardian-angel {
+.font-higher-power {
   font-family: 'reindeer-modern', monospace;
   font-size: 0.8em;
 }
 
-.chat-line.character.font-guardian-angel {
+.chat-line.character.font-higher-power {
   font-family: 'reindeer-modern', monospace;
 }
 
@@ -985,8 +989,8 @@ body.scene-night #ui-bar {
   font-size: 0.8em;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid var(--text-main);
-  color: var(--text-main);
+  border-bottom: 1px solid var(F4F1EA);
+  color: #F4F1EA;
 }
 
 .chat-choices {
@@ -999,13 +1003,15 @@ body.scene-night #ui-bar {
   max-width: 90%;
   text-align: center;
   font-family: 'LeviWindows', monospace;
-  color: var(--text-muted);
+  color: #E6DAC8;
   font-size: 0.85em;
   margin: 0.3em 0;
 }
 .chat-action.action-italic {
   font-family: 'ZeldaDX', monospace;
   font-style: italic;
+  color: #E6DAC8;
+
 }
 .chat-spacer {
   height: 1.5em;
@@ -1037,7 +1043,7 @@ body.scene-night #ui-bar {
 }
 
 .continue-link a {
-  color: var(--text-main);
+  color: inherit;
   font-size: 1.1em;
   text-decoration: underline;
   text-decoration-color: var(--accent-thought-dim);
@@ -1045,15 +1051,16 @@ body.scene-night #ui-bar {
 }
 
 .continue-link a:hover {
-  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 
 /* ============================================================
   HYPERLINK COLOURS
    ============================================================ */
+
 .chat-line a, .dialogue-prompt a {
-  color: var(--text-main);
+  color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--accent-thought-dim);
   text-underline-offset: 3px;
@@ -1064,7 +1071,7 @@ body.scene-night #ui-bar {
 }
 
 .expand-text {
-  border-bottom: 1px dotted var(--accent-thought-dim);
+  border-bottom: 1px dotted currentColor;
 }
 
 .choice-reveal-group {
@@ -1224,7 +1231,8 @@ body.scene-night #ui-bar {
 
 .text-bubble.them {
   align-self: flex-start;
-  background-color: rgba(205, 193, 159, 0.15);
+  background-color: #E6DAC8;
+  color: #35241d;  
   border-bottom-left-radius: 4px;
 }
 
@@ -1234,21 +1242,25 @@ body.scene-night #ui-bar {
 
 .text-bubble.me {
   align-self: flex-end;
-  background-color: rgba(42, 61, 20, 0.85);
-  border: 1px solid var(--text-main);
+  background-color: #606f49;
+  border: 1px solid #A6B98B;
+  color: #F4F1EA;
   border-bottom-right-radius: 4px;
 }
 
 .text-bubble.me .text-sender {
   text-align: right;
+  color: inherit
 }
 
 .text-bubble .chat-timestamp {
   margin-top: 0.3em;
+  color: inherit
 }
 
 .text-bubble.me .chat-timestamp {
   text-align: right;
+  color: inherit
 }
 
 .ga-interject {
@@ -1381,7 +1393,7 @@ body.scene-night #ui-bar {
 }
 
 .type-caret {
-  color: var(--text-main);
+  color: inherit;
   animation: caret-blink 1s step-end infinite;
 }
 
@@ -1391,7 +1403,7 @@ body.scene-night #ui-bar {
 
 .type-preview {
   font-family: 'reindeer-modern', monospace;
-  color: var(--text-main);
+  color: inherit;
   font-size: 0.75em;
 
 }
@@ -1400,7 +1412,7 @@ body.scene-night #ui-bar {
   align-self: flex-start;
   font-size: 0.75em;
   font-family: 'leviwindows', monospace;
-  color: var(--text-muted);
+  color: inherit; opacity: 0.75;
   font-style: italic;
   padding-left: 1em;
 }
@@ -1419,6 +1431,8 @@ body.scene-night #ui-bar {
   font-size: 0.75em;
   color: var(--accent-thought-dim);
   font-style: italic;
+  margin-top: 0.2em;
+  display: block;
 }
 
 .expand-text {
@@ -1443,13 +1457,7 @@ body.scene-night #ui-bar {
 .expand-layer-current.expand-clickable {
   cursor: pointer;
 }
-.expand-hint {
-  font-size: 0.75em;
-  color: var(--accent-thought-dim);
-  font-style: italic;
-  margin-top: 0.2em;
-  display: block;
-}
+
 
 /* ============================================================
    BREATHING SCREEN
@@ -1855,6 +1863,8 @@ body.scene-night #ui-bar {
 
 
 :: Story JavaScript [script]
+Config.ui.stowBarInitially = false;
+
 window.updateDebugPanel = function() {
   if ($('#debug-panel').length === 0) {
     $('<div id="debug-panel"></div>').appendTo('body');
@@ -2283,16 +2293,16 @@ window.updateAngelStatus = function () {
     $('<div id="angel-status"></div>').insertAfter('#menu');
   }
   if ($('#memory-bank-link').length === 0) {
-   $('<a id="memory-bank-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">📖 Memory Bank</a>').insertAfter('#menu');
+   $('<a id="memory-bank-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">Memory Bank</a>').insertAfter('#menu');
   }
   var v = State.variables;
   var dot = v.memoryBankUnread ? '<span class="unread-dot"></span>' : '';
-  $('#memory-bank-link').html('📖 Memory Bank' + dot);
+  $('#memory-bank-link').html('Memory Bank' + dot);
   $('#memory-bank-link').off('click').on('click', function(){ openMemoryBank(); });
     if ($('#achievements-link').length === 0) {
-    $('<a id="achievements-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">★ Achievements</a>').insertAfter('#memory-bank-link');
+    $('<a id="achievements-link" style="display:flex; align-items:center; cursor:pointer; margin-top:0.5em;">Achievements</a>').insertAfter('#memory-bank-link');
   }
-  $('#achievements-link').html('★ Achievements' + (window.achievementsUnread ? '<span class="unread-dot"></span>' : ''));
+  $('#achievements-link').html('Achievements' + (window.achievementsUnread ? '<span class="unread-dot"></span>' : ''));
   $('#achievements-link').off('click').on('click', function(){ openAchievements(); });
   var html = '';
   html += '<div class="status-row"><span class="status-label">Name</span><span class="status-value">' + (v.playerName || '—') + '</span></div>';
@@ -4411,44 +4421,38 @@ The gym hums with machines and other people's music leaking out of their headpho
 <<run $('body').removeClass('scene-night')>>
 <<set $currentDate to "Sun 28 Apr 2024">>
 <<set $currentTime to "6:32pm">>
-<<set _endingZone to getEndingZone()>>
-<<set _matchAnswer to "">>
-<<set _matchErinResp to "">>
-<<if _endingZone is "shutdown">>
-<<set _matchAnswer to "Well yeah, but she started it this time! I didn't say anything harsh or mean! But god damn it, it's infuriating. Then I'm staring at Dad like UM DO SOMETHING. SPEAK UP. HE'S FUCKING CRICKETS.">>
-<<set _matchErinResp to "You know she loves you so much. You know that, yeah?">>
-<<elseif _endingZone is "guarded_honest">>
-<<set _matchAnswer to "Kind of? Ugh, I mean I denied the breathtest and now I'm kinda regretting it, but I stood up for myself!! It's my body!!">>
-<<set _matchErinResp to "Oh honey, it's going to be okay. What did your dad say?">>
-<<elseif _endingZone is "open_unsettled">>
-<<set _matchAnswer to "Not really, there was a little tiff at the door when you dropped me off, but we're chillin.">>
-<<set _matchErinResp to "I'm glad you stood your ground, love. You did it in a respectful way... I'm assuming and hoping?">>
-<<elseif _endingZone is "open_clear">>
-<<set _matchAnswer to "Oh lord what didn't happen? It was a shitshow from when you dropped me off. She didn't believe that I was with you!">>
-<<set _matchErinResp to "Shit we're still doing this? She needs to start realising you're actually going.">>
-<<else>>
-<<set _matchAnswer to "Mhmmm, I mean it's the same shit if I'm being honest... Mama is mama... Micah is...Micah.">>
-<<set _matchErinResp to "Okay...we're gonna need to be more specific">>
-<</if>>
 
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Erin", text: "Sooo, how was your week, darlin'?"},
   {type: "thought", text: "She's always been so kind, so loving, yet she's always having an awful time."},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Yeah it was good, it was alright.", layers: ["Yeah, fine, I guess.", "Hmmm.", "Mama sucks, Erin."], partialImpacts: {anesuGuard: -0.2}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "action", text: "Erin faces Anesu, going 60km down the road."},
-  {type: "interject", text: "Does she always drive so recklessly?"},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Does she always drive so recklessly?"},
   {type: "thought", text: "Pretty much."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "Oh Su, baby, darlin'."},
   {type: "action", text: "She holds her hand tight, a gentle thumb soothing her."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "What happened?"},
   {type: "thought", text: "She's absolutely lost it, I genuinely do not understand what goes through that woman's mind and it fucks with me on a daily basis."},
+   {type: "dialogue", side: "character", speaker: "Erin", text: "Did you both get into another screaming match?"},
+  {type: "dialogue", side: "player", speaker: "Anesu", byZone: {
+    shutdown: "Well yeah, but she started it this time! I didn't say anything harsh or mean! But god damn it, it's infuriating. Then I'm staring at Dad like UM DO SOMETHING. SPEAK UP. HE'S FUCKING CRICKETS.",
+    guarded_honest: "Kind of? Ugh, I mean I denied the breathtest and now I'm kinda regretting it, but I stood up for myself!! It's my body!!",
+    open_unsettled: "Not really, there was a little tiff at the door when you dropped me off, but we're chillin.",
+    open_clear: "Oh lord what didn't happen? It was a shitshow from when you dropped me off. She didn't believe that I was with you!",
+    middle: "Mhmmm, I mean it's the same shit if I'm being honest... Mama is mama... Micah is...Micah."
+  }},
+  {type: "dialogue", side: "character", speaker: "Erin", byZone: {
+    shutdown: "You know she loves you so much. You know that, yeah?",
+    guarded_honest: "Oh honey, it's going to be okay. What did your dad say?",
+    open_unsettled: "I'm glad you stood your ground, love. You did it in a respectful way... I'm assuming and hoping?",
+    open_clear: "Shit we're still doing this? She needs to start realising you're actually going.",
+    middle: "Okay...we're gonna need to be more specific"
+  }},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Ugh, she's too much, Erin, it's constant! When is she going to understand things are genuinely fucking changing! I mean, breath-testing me when I get back from work?"},
   {type: "action", text: "Erin nods deeply, humming in agreement, with care. With understanding."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "Did you end up in a screaming match again?"},
-  {type: "action", text: "Anesu is silent, fiddling with her tongue ring."},
-  {type: "dialogue", side: "player", speaker: "Anesu", text: _matchAnswer},
-  {type: "dialogue", side: "character", speaker: "Erin", text: _matchErinResp},
-  {type: "interject", text: "It's time to be honest, Su. Erin is another mother to you."},
+  {type: "action", text: "Anesu is silent, fiddling with her lip ring."},
+  {type: "freeType", side: "character", speaker: "Higher Power", text: "It's time to be honest, Su. Erin is another mother to you."},
   {type: "thought", text: "She'll understand. I think we're all safe here."},
   {type: "expandable", side: "player", speaker: "Anesu", shortText: "Well yeah, I insulted her kinda...", layers: ["Yeah, I insulted her."], partialImpacts: {anesuGuard: -0.2}, nudgeImpacts: {anesuGuard: -0.5}, skipImpacts: {anesuGuard: 0.5}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I was just fucking pissed off. I gave up one of the best things I fucking loved and hauled off to rehab. I did that! I got sober and this is where we're at?!"},
@@ -4470,7 +4474,7 @@ The gym hums with machines and other people's music leaking out of their headpho
   ]},
   {type: "action", text: "[PLACEHOLDER — a beat resolving/landing the hug moment before Erin moves the conversation on. The scene currently jumps straight from the choice to \"anything else happen this week\" with no reaction shown.]"},
   {type: "dialogue", side: "character", speaker: "Erin", text: "Anything else happen this week??", achievement: "big_small_talk"},
-  {type: "interject", text: "Are we mentioning Elias? I feel like that was pretty big..."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Are we mentioning Elias? I feel like that was pretty big..."},
   {type: "choice", side: "player", speaker: "Anesu", text: "Yeah... there's actually something.", dest: "B1C4_ErinCheckIn_EliasReveal"},
   {type: "action", text: "or..."},
   {type: "choice", side: "player", speaker: "Anesu", text: "Nah, nothing much else.", dest: "B1C1_AAMessage_01P2"}
@@ -4513,7 +4517,8 @@ Erin's car, on the way to another meeting.
   {type: "dialogue", side: "player", speaker: "Anesu", text: "..."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "He blocked me anyway. So it was all for nothing. Men suck."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "They do indeed... "},
-
+  {type: "dialogue", side: "character", speaker: "Erin", text: "But we need to at some point discuss your mum putting her hands on you."},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "Yeah yeah, eventually. "},
 
     {type: "continueTo", dest: "B1C1_AAMessage_01P2"}
 
@@ -4522,6 +4527,10 @@ Erin's car, on the way to another meeting.
 <<run $sceneBeats.push(
   {type: "dialogue", side: "character", speaker: "Erin", text: "Good. I'm proud of you for that, love."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "It didn't feel like much of a win at the time."},
+  {type: "dialogue", side: "character", speaker: "Erin", text: "How so?"},
+  {type: "dialogue", side: "player", speaker: "Anesu", text: "He blocked me... And I didn't even do anything wrong."},
+  {type: "dialogue", side: "character", speaker: "Erin", text: "That's how you know that he's even more of an asshole"},
+
     {type: "continueTo", dest: "B1C1_AAMessage_01P2"}
 
 )>>
