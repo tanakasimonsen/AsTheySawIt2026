@@ -279,8 +279,11 @@ body::before {
 #story-title {
   font-size: 0;
 }
+
 #story-title::after {
-  content: "written & designed by titikormetsi studios";
+  content: "written & designed by\A titikormetsi studios.\A art by @unknxwn.drxgxn.";
+  white-space: pre;
+  display: block;
   font-size: 1rem;
   font-family: 'Pixelta', monospace;
 }
@@ -2165,7 +2168,7 @@ $(document).on(':passagedisplay', function() {
 });
 
 $(document).on(':passagedisplay', function(ev) {
-  var titlePassages = ["P_01_Opening_Monologue", "P_02_Title_Screen"];
+  var titlePassages = ["P_01_Opening_Monologue", "P_02_Title_Screen", "P_04_EndOfPrototype"];
   if (titlePassages.indexOf(ev.passage.title) !== -1) {
     $('body').addClass('title-mode');
   } else {
@@ -2318,7 +2321,7 @@ window.typeSequenceLines = function(containerId, lines, speed, onComplete) {
 function bleepRange(from, to) {
   var list = [];
   for (var i = from; i <= to; i++) {
-    list.push("audio/bleeps" + String(i).padStart(3, "0") + ".mp3");
+    list.push("audio/bleeps/bleep" + String(i).padStart(3, "0") + ".mp3");
   }
   return list;
 }
@@ -3301,7 +3304,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 {type: "action", text: "Anesu walks around the corner, following the brick path Dad made when he realised they had spare bricks in the garage."},
 {type: "action", text: "Anesu squeezes herself between two bricks, the perfect width apart for a makeshift seat, and sparks up.", sound: "audio/spark_up.mp3"},
 {type: "action", text: "Meow meow."},
-{type: "showCharacter", speaker: "Julian", achievement: "julian"}
+{type: "showCharacter", speaker: "Julian", achievement: "julian"},
 {type: "thought", text: "I hate cats... the way they run, how they have to be all over you, that they could kill me. Slowly. But it would be the worst fucking death."},
 {type: "thought", text: "But for some reason, this cat is growing on me. Like a cancer."},
 {type: "freeType", side: "character", speaker: "Higher Power", text: "He's walking along the colourbond fence, eyeing you carefully. Pretty sure he's a stray. Or maybe he just loves the smell of weed..."},
@@ -3630,23 +3633,23 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 /*AA MEMBERS*/
 <<set $members to [
-  {name: "Anesu Song", age: "20", sobriety: "6 months", doc: "Alcohol", service: "", story: "Home doesn't feel like home right now. Six months sober, and everyone's still watching to see if it sticks", unlocked: true, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Martha Bonini", age: "39", sobriety: "3 weeks, 3rd relapse", doc: "Alcohol and prescribed morphine", service: "", story: "A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Erin Ferguson", age: "56", sobriety: "4 years & 4 months", doc: "Alcohol", service: "Anesu's Sponsor", story: "Three kids who don't call anymore. A husband she still isn't used to not having. She's sober now — a little late, in her opinion.", unlocked: false, image: "https://i.imgur.com/A4YV3S2.gif", weeksKnown: 0},
-  {name: "Franco Pitt", age: "24", sobriety: "Not currently sober", doc: "Alcohol and \"occasionally\" cocaine", service: "", story: "Landed the job he studied his whole life for. Still doesn't feel like an adult. His relationship isn't helping", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 5", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 6", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 7", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 8", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 9", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 10", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 11", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Member 12", age: "—", sobriety: "—", doc: "—", service: "", story: "Placeholder story.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0}
+  {name: "Anesu", age: "20", sobriety: "6 months", doc: "Alcohol", service: "", story: "Home doesn't feel like home right now. Six months sober, and everyone's still watching to see if it sticks", unlocked: true, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Martha", age: "39", sobriety: "3 weeks, 3rd relapse", doc: "Alcohol and prescribed morphine", service: "", story: "A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Erin", age: "56", sobriety: "4 years & 4 months", doc: "Alcohol", service: "Anesu's Sponsor", story: "Three kids who don't call anymore. A husband she still isn't used to not having. She's sober now — a little late, in her opinion.", unlocked: false, image: "https://i.imgur.com/A4YV3S2.gif", weeksKnown: 0},
+  {name: "Franco", age: "24", sobriety: "Not currently sober", doc: "Alcohol and \"occasionally\" cocaine", service: "", story: "Landed the job he studied his whole life for. Still doesn't feel like an adult. His relationship isn't helping", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Jordan", age: "42", sobriety: "In and out, longest stint 15 days", doc: "Alcohol, and gambling once drunk", service: "", story: "Lost his chance at a Michelin-star restaurant in Sydney to his \"unwavering intoxication\". Can't see he's burning his own career.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Sam", age: "28", sobriety: "3 years & 2 months (forced)", doc: "Alcohol", service: "", story: "Lost their legs in a drunk-driving accident, thankfully only injuring themselves. Now attends court-ordered meetings.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Joseph", age: "37", sobriety: "—", doc: "Alcohol and amphetamines", service: "", story: "Once you get a drink in him, all bets are off. Here on an ultimatum, physically fit but spiritually drained.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Phineas", age: "70", sobriety: "—", doc: "Alcohol", service: "", story: "Alcoholism triggered his schizophrenia and forced a hard reset at a young age.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Andy", age: "20", sobriety: "—", doc: "—", service: "", story: "Both parents were addicts. He lost them both to addiction.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Loretta", age: "74", sobriety: "14 years", doc: "—", service: "", story: "Taken from her parents and raised in a white household, she lived up to the stereotypes of her people. A survivor of sexual abuse and cultural genocide.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Advait", age: "42", sobriety: "4 years", doc: "—", service: "", story: "Coming soon...", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Nigel", age: "72", sobriety: "—", doc: "—", service: "", story: "A highly admired professor and missionary. An upstanding citizen on the outside, spiritually sick and damaged within.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
+  {name: "Leo", age: "—", sobriety: "60 years", doc: "—", service: "", story: "Coming soon...", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0}
 ]>>
-<<set $memberIndex to 0>>
 
 /* OPENING MONOLOGUE*/
-<div class="menu-screen">
+<div class="menu-screen" style="font-family: 'cozy-quill', monospace;">
 <div class="title-lines" id="titleLines"></div>
 <div id="dialoguePrompt"></div>
 </div>
@@ -3667,7 +3670,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <div class="split-screen">
 <div class="scene-panel">
 <div class="scene-box">
-<<if $members[$memberIndex].name is "Anesu Song" or $members[$memberIndex].name is "Erin Ferguson">>
+<<if $members[$memberIndex].name is "Anesu" or $members[$memberIndex].name is "Erin">>
 <img @src="$members[$memberIndex].image">
 <<else>>
 $members[$memberIndex].name<br>(Chair + Person)
@@ -3675,7 +3678,7 @@ $members[$memberIndex].name<br>(Chair + Person)
 </div>
 <div class="scene-nav">
 <<link "◀">>
-<<set $memberIndex to ($memberIndex + 11) % 12>>
+<<set $memberIndex to ($memberIndex + $members.length - 1) % $members.length>>
 <<replace "#memberDisplay">><<showMembers>><</replace>>
 <</link>>
 <div class="select-row-inline">
@@ -3684,9 +3687,9 @@ $members[$memberIndex].name<br>(Chair + Person)
 <<set $weeksPerson to $members[$memberIndex].name>>
 <<set $weeksPersonSobriety to $members[$memberIndex].sobriety>>
 <<set $members[$memberIndex].justUnlocked to false>>
-<<if $members[$memberIndex].name is "Anesu Song">>
+<<if $members[$memberIndex].name is "Anesu">>
 <<goto "B1C1_01_AnesuChosen">>
-<<elseif $members[$memberIndex].name is "Erin Ferguson">>
+<<elseif $members[$memberIndex].name is "Erin">>
 <<goto "B2C1_01_Erin_Opening">>
 <</if>>
 <</link>>
@@ -3695,7 +3698,7 @@ $members[$memberIndex].name<br>(Chair + Person)
 <</if>>
 </div>
 <<link "▶">>
-<<set $memberIndex to ($memberIndex + 1) % 12>>
+<<set $memberIndex to ($memberIndex + 1) % $members.length>>
 <<replace "#memberDisplay">><<showMembers>><</replace>>
 <</link>>
 </div>
@@ -4298,68 +4301,35 @@ The kitchen smells like coffee. Everyone's already up.
 <<set $currentTime to "11:40pm">>
 <<run updateAngelStatus()>>
 <<set $sceneBeats to [
-<<set $sceneBeats to [
-  {type: "action", text: "It's another late evening, but instead of her making dinner, she's missing it — hammered in her room... too drunk to have dinner with her family."},
-  {type: "action", text: "But it's been two weeks."},
-  {type: "action", text: "Gotta come out at some point."},
-  {type: "action", text: "Erin takes a deep breath, licking her lips sloppily, dribbling down her front, and \"composes\" herself, making her way to the dining room."},
-  {type: "action", text: "She hears her loved ones chat away, no one bothering to turn around at the click of the door."},
-  {type: "action", text: "Mhmm — Robert flinched a little."},
-  {type: "action", text: "She thumps to the table, attempting to drag it out with discretion, but topples it instead."},
-  {type: "action", text: "Mackenzie sighs and flares her nostrils, trying to continue her chat with Hazel about the concert that weekend."},
-  {type: "action", text: "They all continue. Eating, chewing, chatting."},
-  {type: "action", text: "It's as if she doesn't exist."},
-  {type: "action", text: "She sits herself at the table and groans at the sight of greasy steak and garlicky, buttery potatoes."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "Wwwwwhooo made this??"},
-  {type: "action", text: "Robert winces sheepishly and looks to his wife."},
-  {type: "dialogue", side: "character", speaker: "Robert", text: "I did, honey. The steak was about to go bad."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "I clearly say that it was me going to be COOKING. I bought that for me to make."},
-  {type: "action", text: "Erin looks annoyed and disgusted, and it was a lot of emotion for a warm meal."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "You didn't even make it right! That's why I should do it!"},
-  {type: "action", text: "Erin begins to tear up, perceived to be misunderstood, but the family knew she was in a blackout."},
-  {type: "dialogue", side: "character", speaker: "Hazel", text: "Dad made us a nice meal, Mum. Get off his back. You're just drunk."},
-  {type: "action", text: "Erin glares at her daughter and holds a burp."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "Drunk? You don't even know anything, Kenz."},
-  {type: "action", text: "Hazel scoffs and pushes her seat back, grabbing her plate."},
-  {type: "dialogue", side: "character", speaker: "Hazel", text: "I'll be finishing this in my room. Thank you, Dad."},
-  {type: "action", text: "She looks to her father and then across the table."},
-  {type: "dialogue", side: "character", speaker: "Hazel", text: "Erin."},
-  {type: "action", text: "She clutches her pearls as if she's been wounded and whips to Robert."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "YOU see how SHE SpeaKS to me?"},
-  {type: "action", text: "Robert sighs and rubs his temple, fidgeting with his wedding band."},
-  {type: "dialogue", side: "character", speaker: "Robert", text: "Now isn't the time, Erin, you've been drinking."},
-  {type: "action", text: "And that's when shit hits the fan."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "Drinking? I'VE BEEN FUCKING DRINKING? ALL I DO IS WORK AND WORK AND WORK AND WORK. THIS IS THE THANKS I GIVE? I GET?"},
-  {type: "action", text: "Mackenzie quickly grabs Oscar's hand and darts with him out of the room."},
-  {type: "action", text: "They obviously can't deal with this again."},
-  {type: "dialogue", side: "character", speaker: "Robert", text: "Erin, please don't do this, love, it's ok—"},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "OKAY? YOU THINK BEING DISRESPECTED IS OKAY?? YOU ARE SO OKAY WITH—"},
-  {type: "action", text: "Erin stands up and swipes her hands across the table, sending the food crashing and splattering all over the floor. An hour of cooking gone in an instant."},
-  {type: "action", text: "Tears fall rapidly down Robert's cheeks, blurring his frames, bottom lip quivering."},
-  {type: "action", text: "He's so afraid... so afraid of the one he loves most. Oh Robert, I'm so sorry."},
-  {type: "action", text: "He goes to pick up the mess, yet Erin keeps on screaming."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "ALL YOU DO IS DEFEND THEIR TERRIBLE BEHAVIOUR, WHAT ABOUT YOUR WIFE?"},
-  {type: "action", text: "All he does is think about you, Erin."},
-  {type: "dialogue", side: "character", speaker: "Robert", text: "I work so h-h-h-ard. I made you dinner for you and the kids."},
-  {type: "action", text: "Footsteps pound down the hallway and the shit is smeared even further round the home."},
-  {type: "dialogue", side: "character", speaker: "Mackenzie", text: "GET OUT!"},
-  {type: "action", text: "Mackenzie beelines for her mother, grabbing her shoulders and directing her to the door. The force was heavy and almost sent Erin flying, too drunk to keep her balance."},
-  {type: "dialogue", side: "character", speaker: "Robert", text: "Kenzie, please, just go to your ro—"},
-  {type: "dialogue", side: "character", speaker: "Mackenzie", text: "NO! I'VE HAD IT! SHE IS SO MEAN TO YOU AND MEAN TO US."},
-  {type: "action", text: "Mackenzie keeps pushing Erin down the hall, keeping one arm on her as she unlocks the door."},
-  {type: "dialogue", side: "player", speaker: "Drunk Erin", label: "Erin", text: "Get YOUR HAANDS offMEEE."},
-  {type: "action", text: "She begins to flail but she has no strength, unable to fight against her 16 year old. Mackenzie continues to push past the threshold and shoves her onto the nature strip."},
-  {type: "action", text: "This is terrible."},
-  {type: "dialogue", side: "character", speaker: "Mackenzie", text: "DO NOT COME BACK, ERIN. GET THE FUCK AWAY!!"},
-  {type: "action", text: "The door slams shut and the chirp of the summer crickets ring in Erin's skull."},
-  {type: "action", text: "Grass in her ear, gravel on her palms and scraped shins..."},
-  {type: "action", text: "She stays lying there, her world still spinning."},
-  {type: "action", text: "And spinning"},
-  {type: "action", text: "and spinning"},
-  {type: "action", text: "and spinning"},
-  {type: "action", text: "and spinning"},
-  {type: "action", text: "and spinning."}
-]>>
+  {type: "action", text: "Anesu lies in bed, trying to get to sleep. Her mind races."},
+  {type: "thought", text: "His hand on my jaw before he even said anything. Like he already knew."},
+  {type: "thought", text: "The way he said my name like it meant something. Not like the others."},
+  {type: "thought", text: "I don't even remember what we talked about after. Just that I didn't want it to stop."},
+  {type: "thought", text: "He looked at me like—"},
+  {type: "action", text: "She stops the thought before it finishes."},
+  {type: "thought", text: "God, I actually let myself believe it. For one night."},
+  {type: "breathe", text: "She stares at the ceiling.", duration: 2500},
+  {type: "thought", text: "I never really liked romance films... I mean, I did when I was a child and had my celebrity crushes and fantasised like the naive child that I was."},
+  {type: "thought", text: "But then I realised, at some point, I'm not going to have... that. I mean, don't get me wrong, a girl dreams and hopes and wishes."},
+  {type: "thought", text: "But seeing it happen — that cropped landscape frame, the swelling score, dialogue that hits too close to home... I've grown to feel jealousy. To feel envy."},
+  {type: "thought", text: "Imagination and the feel-good, dissipated with every foul action some man has decided to douse on me, and I'm left dripping cold and wet every time."},
+  {type: "breathe", text: "She stares at the ceiling.", duration: 2500},
+  {type: "thought", text: "Romance makes me awfully sad. I become ill, green, and freeze up. Rendered helpless. Unable to see the beauty in love without feeling such envy."},
+  {type: "thought", text: "It's quite selfish and self-absorbed, but it's the truth!"},
+  {type: "breathe", text: "She doesn't finish the thought. Not yet.", duration: 3000},
+  {type: "thought", text: "So I just went the opposite route. There's something brilliant in the grotesque and the macabre. The outcast and misunderstood."},
+  {type: "thought", text: "Of course I'm not appeasing and justifying the killers created and depicted in the film, but it's familiar. Somewhat home."},
+  {type: "thought", text: "I feel as if my soul may be displaced. I know what went wrong on the way... I think."},
+  {type: "thought", text: "The yearn for being a lover, a mother, someone's other... but it won't come true."},
+  {type: "breathe", text: "Her breathing catches. Quiet, almost nothing.", duration: 3000},
+  {type: "thought", text: "It would be unfair on myself to hope and wish, to then fall so deeply and never be caught."},
+  {type: "action", text: "A tear slips, then another. She doesn't wipe them."},
+  {type: "breathe", text: "She lies still, letting it happen.", duration: 3500},
+  {type: "thought", text: "So let's remain rational."},
+  {type: "action", text: "Anesu sits up sharply, wiping her face with the back of her hand."},
+  {type: "thought", text: "Let's stop dreaming and gallivanting among ridiculous ideas..."},
+  {type: "thought", text: "I guess I can just be."},
+  {type: "continueTo", dest: "B1C3_01_Opening"}
 ]>>
 <<set $beatIndex to 0>>
 <div class="opening-layout">
@@ -4832,14 +4802,14 @@ Anesu's phone lights up on the bed beside her. The name that flashes up causes a
 {type: "action", text: "Elias gives her a look. The \"don't start now\" type of stare."},
 {type: "action", text: "Anesu bites her lip and picks at her nails."},
 {type: "dialogue", side: "character", speaker: "Elias", text: "Your nails look gorgeous by the way."},
-{type: "interject", text: "He didn't even look up."},
+{type: "dialogue", side: "character", speaker: "Higher Power", text: "He didn't even look up."},
 {type: "dialogue", side: "player", speaker: "Anesu", text: "Oh really? Thank you! I got them just las—", interrupted: true},
 {type: "dialogue", side: "character", speaker: "Elias", text: "They're very nice."},
 {type: "action", text: "Elias turns up the volume on the radio, one hand on the wheel, the other on the gear stick..."},
-{type: "interject", text: "The car's automatic, buddy. Just put a hand on her thigh or something."},
+{type: "dialogue", side: "character", speaker: "Higher Power", text: "The car's automatic, buddy. Just put a hand on her thigh or something."},
 {type: "action", text: "The two sit in silence, excitement oozing out of Anesu."},
 {type: "thought", text: "I can't believe he's finally seeing me!"},
-{type: "interject", text: "Neither can I..."},
+{type: "freeType", side: "character", speaker: "Higher Power", text: "Neither can I..."},
 {type: "continueTo", dest: "B1C2_03_MorningWithElias"}
 ]>>
 <<set $beatIndex to 0>>
@@ -4990,7 +4960,7 @@ Anesu's phone lights up on the bed beside her. The name that flashes up causes a
   {type: "action", text: "Micah sighs, then what sounds like the click of his laptop closing — she watches her brother cross the hall and disappear into his room.", impacts: {familyAwareness: 0.5, micahTrust: -0.5}},
   {type: "thought", text: "Fair response. It is the FUCKING MORNING."},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "I LEFT REHAB 6 MONTHS AGO! Have I NOT SHOWN ANY TYPE OF RESPONSIBILITY?", time: "8:25am"},
-  {type: "dialogue", side: "character", speaker: "Dad", text: "You have, Anesu. It's great that you're going to those meetings, going to the gym. You got a new job at the—", impacts: {dadTrust: 1} interrupted: true},
+  {type: "dialogue", side: "character", speaker: "Dad", text: "You have, Anesu. It's great that you're going to those meetings, going to the gym. You got a new job at the—", impacts: {dadTrust: 1}, interrupted: true},
   {type: "dialogue", side: "character", speaker: "Mama", text: "AH YES! THE BARE MINIMUM OF BEING AN ADULT.", impacts: {familyAwareness: 1, mamaTrust: -1}},
   {type: "dialogue", side: "player", speaker: "Anesu", text: "Wooooowww. You know what, Mama? You're absolutely fucking full of it."},
   {type: "dialogue", side: "character", speaker: "Mama", text: "Do NOT speak to me that way!"},
@@ -5261,7 +5231,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
             setTimeout(function(){
               $('#memberDisplay').slideDown(400, function(){
                 $('html, body').animate({ scrollTop: $('#memberDisplay').offset().top }, 500);
-                showMemoryToast("New member unlocked: Erin Ferguson", "She'll be waiting in the circle");
+                showMemoryToast("New member unlocked: Erin", "She'll be waiting in the circle");
               });
             }, 600);
           });
@@ -5549,6 +5519,8 @@ Erin's home. Quiet, apart from her.
 </div>
 
 :: B2C1_03_FamilyDinner {"position":"400,600","size":"100,100"}
+<<set $currentDate to "Sun 28 April 2024">>
+<<set $currentTime to "9:30pm">>
 <<set $sceneBeats to [
   {type: "action", text: "The engulfing scent of steak paired with garlic potatoes fills the house, the kitchen lively with dancing hands, bouncing from the sink to stove to benchtop."},
   {type: "action", text: "Erin plates the food with care and love. Two plates for two guests."},
@@ -5558,9 +5530,6 @@ Erin's home. Quiet, apart from her.
   {type: "action", text: "Her face falls slowly and the colour drains from her face ever so more."},
   {type: "dialogue", side: "character", speaker: "Higher Power", text: "Erin?"},
   {type: "action", text: "Tears begin to well and threaten to fall, her nose scrunching as if she's holding them up and in."},
-  {type: "action", text: "She holds herself, tense and rigid."},
-  {type: "action", text: "You look out to where she's staring and hold the vision."},
-  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Let's take a look..."},
   {type: "choices", options: [
     {text: "You can cry, Erin...", dest: "B2C1_03a_YouCanCry"},
     {text: "Oh Erin, breathe.", dest: "B2C1_03b_Breathe"},
@@ -5590,6 +5559,8 @@ Erin's dining room, table set for two.
 </div>
 
 :: B2C1_03a_YouCanCry {"position":"250,700","size":"100,100"}
+<<set $currentDate to "Sun 28 April 2024">>
+<<set $currentTime to "9:30pm">>
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Higher Power", text: "You can cry, Erin..."},
   {type: "action", text: "Erin lets herself wail and the tears pool on the wooden dining table."},
@@ -5645,6 +5616,8 @@ Erin's dining room, table set for two.
 </div>
 
 :: B2C1_03b_Breathe {"position":"400,700","size":"100,100"}
+<<set $currentDate to "Sun 28 April 2024">>
+<<set $currentTime to "9:30pm">>
 <<set $sceneBeats to [
   {type: "dialogue", side: "character", speaker: "Higher Power", text: "Oh Erin, breathe."},
   {type: "breathe", text: "Erin takes a deep breath in, but doesn't let it out.", duration: 4000},
@@ -5710,6 +5683,66 @@ Erin's dining room, table set for two.
 </div>
 </div>
 
+:: B2C1_03c_YoureSafe {"position":"550,700","size":"100,100"}
+<<set $currentDate to "Sun 28 April 2024">>
+<<set $currentTime to "9:30pm">>
+<<set $sceneBeats to [
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "You're safe, Erin..."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Not without my Robert, I'm not."},
+  {type: "action", text: "Her fingers trace the lid of his urn and her vision begins to blur."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "And I drove him away..."},
+  {type: "action", text: "Her nails click on the jade and she exhales shakily."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "I'm going to miss you for the rest of my life, aren't I?"},
+  {type: "action", text: "She brings her hands to her face, hiding the pain from lord knows who."},
+  {type: "action", text: "She breathes hard in and out of her palms, her wedding band hugging her finger tight."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Why did I have to fucking drink the way that I did? Why didn't I just stop?!"},
+  {type: "action", text: "Her fists pound the table, the plates jumping. Her cups of water wavering as if they were seaside."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "But I deserve this pain."},
+  {type: "action", text: "She sniffles once more, using her sleeve to clean up her mess."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "I deserve to feel like this. I drove you all away."},
+  {type: "action", text: "She looks up at the mantle and smiles weakly at the photos of her children."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "Kenzie... you were just protecting your family. Like the brave girl you are."},
+  {type: "action", text: "Her eyes continue to trail."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "And Hazel... you just kept seeing the best in me, even though I was a drunken fool."},
+  {type: "action", text: "She looks at Oscar's photo, fresh as a daisy right from the hospital..."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "And Os—", interrupted: true},
+  {type: "action", text: "She chokes up and begins to sob all over again."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "You we-we-were te-te-te-terrified of meeeeeeeeee."},
+  {type: "action", text: "She cries hard, trailing off."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "They all hate me. My own babies..."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "But I did this. This is all my doing. I just can't live without them."},
+  {type: "freeType", side: "character", speaker: "Higher Power", text: "But you're doing an incredible job, Erin. You are so brave for feeling ALL of this, and still not drinking..."},
+  {type: "action", text: "She splutters once more, watching the pool grow."},
+  {type: "dialogue", side: "player", speaker: "Erin", text: "But for how much longer?"},
+  {type: "action", text: "She turns to face her bedroom door and stares hard, almost in a trance."},
+  {type: "action", text: "She holds herself, tense and rigid."},
+  {type: "action", text: "You look out to where she's staring and hold the vision."},
+  {type: "dialogue", side: "character", speaker: "Higher Power", text: "Let's take a look..."},
+  {type: "continueTo", dest: "B2C1_04_Transition"}
+]>>
+<<set $beatIndex to 0>>
+
+<div class="opening-layout">
+<div class="narrative-box" id="sceneNarrative">
+<div class="meeting-time"></div>
+Erin's dining room, table set for two.
+</div>
+<div class="conversation-row">
+<div class="speaker-box">
+<img @src="$characterImages['Erin']">
+<div class="speaker-name" id="leftSpeakerName">Erin</div>
+</div>
+<div class="chat-log" id="chatLog">
+<div class="dialogue-prompt"><<link "▼">><<advanceScene>><</link>></div>
+</div>
+<div class="speaker-box" id="rightSpeaker">
+<img @src="$characterImages['Higher Power']" id="rightSpeakerImg">
+<div class="speaker-name" id="rightSpeakerName">Higher Power</div>
+</div>
+</div>
+</div>
+
+
 
 
 :: B2C1_04_Transition {"position":"400,850","size":"100,100"}
@@ -5774,7 +5807,8 @@ Erin's dining room, table set for two.
   {type: "action", text: "and spinning"},
   {type: "action", text: "and spinning"},
   {type: "action", text: "and spinning"},
-  {type: "action", text: "and spinning."}
+  {type: "action", text: "and spinning."},
+  {type: "continueTo", dest: "P_04_EndOfPrototype"}
 ]>>
 <<set $beatIndex to 0>>
 
@@ -5796,3 +5830,26 @@ A different dinner. Years ago.
 </div>
 </div>
 </div>
+
+:: P_04_EndOfPrototype {"position":"1450,1100","size":"100,100"}
+<<run $('body').removeClass('scene-night')>>
+<<run stopAmbience()>>
+<<set _found to Object.keys(window.achievementStore.data.unlocked).length>>
+<<set _total to Object.keys(window.achievementDefs).length>>
+<<set _endings to (window.achievementStore.data.seen.endings || []).length>>
+
+<div id="titleBackdrop"></div>
+<div class="menu-screen">
+<div class="title-lines">
+<div class="title-line"><span class="title-highlight" style="font-size:2.5em;">As They Saw It</span></div>
+<div class="title-line"><span class="title-highlight">end of prototype</span></div>
+<div class="title-line"><span class="title-highlight">No one said it had to be forever... It only has to be a day.</span></div>
+<div class="title-line"><span class="title-highlight">Endings found: <<print _endings>> of 5</span></div>
+<div class="title-line"><span class="title-highlight">Achievements: <<print _found>> of <<print _total>></span></div>
+</div>
+<div id="dialoguePrompt">
+<div class="continue-link title-highlight"><<link "Achievements">><<run openAchievements()>><</link>> &nbsp;&nbsp;·&nbsp;&nbsp; <<link "Memory Bank">><<run openMemoryBank()>><</link>> &nbsp;&nbsp;·&nbsp;&nbsp; <<link "Play again">><<run Engine.restart()>><</link>></div>
+</div>
+</div>
+
+<<run setTimeout(function(){ $('#titleBackdrop').addClass('visible'); }, 100)>>
