@@ -1065,7 +1065,7 @@ body.scene-night #ui-bar {
 }
 
 .speaker-box {
-  width: clamp(140px, 17vw, 340px);
+  width: clamp(140px, 13vw, 250px);
   height: 100%;
   border: 3px dashed var(--text-main);
   display: flex;
@@ -3166,11 +3166,14 @@ window.startShare = function(blocks, opts, onDone) {
    CHARACTER PORTRAITS
    ============================================================ */
 window.portraitTalking = {
-  "assets/characters/ERIN-A.png":   "assets/characters/ERIN-B.png",
-  "assets/characters/GERALD-A.png": "assets/characters/GERALD-B.png",
-  "assets/characters/MICAH-A.png":  "assets/characters/MICAH-B.png",
-  "assets/characters/RUBY-A.png":   "assets/characters/RUBY-B.png"
+  "assets/characters/ANESU-A.png":       "assets/characters/ANESU-B.png",
+  "assets/characters/ERIN-A.png":        "assets/characters/ERIN-B.png",
+  "assets/characters/GERALD-A.png":      "assets/characters/GERALD-B.png",
+  "assets/characters/MICAH-A.png":       "assets/characters/MICAH-B.png",
+  "assets/characters/RUBY-A.png":        "assets/characters/RUBY-B.png",
+  "assets/characters/HIGHERPOWER_A.png": "assets/characters/HIGHERPOWER_B.png"
 };
+
 window.portraitIdle = {};
 Object.keys(window.portraitTalking).forEach(function (idle) {
   var talking = window.portraitTalking[idle];
@@ -3278,7 +3281,7 @@ You&#39;ve chosen to follow Anesu this week.
   {type: &quot;action&quot;, text: &quot;The engine turns over.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Mhmm, yeah, a great meeting. Thank you for driving me home Erin.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;You know it&#39;s no trouble love. Soon you can drive me! When you get your P&#39;s!&quot;},
-  {type: &quot;action&quot;, text: &quot;Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.&quot;, sound: &quot;audio/seatbelt_ding.mp3&quot;},
+  {type: &quot;action&quot;, text: &quot;Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Doesn&#39;t the dinging bother you?&quot;},
   {type: &quot;choice&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;What dinging?&quot;, dest: &quot;B1C1_03_AnesuDoorstep&quot;}
 ]&gt;&gt;
@@ -3813,13 +3816,14 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;&lt;set $micahTrust to 5&gt;&gt;
 
 &lt;&lt;set $characterImages to {
-  &quot;Anesu&quot;: &quot;https://i.imgur.com/PE4PsVq.gif&quot;,
+  &quot;Anesu&quot;: &quot;assets/characters/ANESU-A.png&quot;,
   &quot;Erin&quot;: &quot;assets/characters/ERIN-A.png&quot;,
   &quot;Drunk Erin&quot;: &quot;assets/characters/ERIN-A.png&quot;,
   &quot;Mama&quot;: &quot;assets/characters/RUBY-A.png&quot;,
   &quot;Dad&quot;: &quot;assets/characters/GERALD-A.png&quot;,
   &quot;Micah&quot;: &quot;assets/characters/MICAH-A.png&quot;,
-  &quot;Julian&quot;: &quot;https://i.imgur.com/5Xz9pGG.gif&quot;
+  &quot;Julian&quot;: &quot;https://i.imgur.com/5Xz9pGG.gif&quot;,
+  &quot;Higher Power&quot;: &quot;assets/characters/HIGHERPOWER_A.png&quot;
 }&gt;&gt;
 
 
@@ -3833,7 +3837,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
    /*AA MEMBERS*/
    &lt;&lt;set $memberIndex to 0&gt;&gt;
    &lt;&lt;set $members to [
-  {name: &quot;Anesu&quot;, age: &quot;20&quot;, sobriety: &quot;6 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;&quot;, story: &quot;Home doesn&#39;t feel like home right now. Six months sober, and everyone&#39;s still watching to see if it sticks&quot;, unlocked: true, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
+  {name: &quot;Anesu&quot;, age: &quot;20&quot;, sobriety: &quot;6 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;&quot;, story: &quot;Home doesn&#39;t feel like home right now. Six months sober, and everyone&#39;s still watching to see if it sticks&quot;, unlocked: true, image: &quot;assets/characters/ANESU-A.png&quot;, weeksKnown: 0},
   {name: &quot;Martha&quot;, age: &quot;39&quot;, sobriety: &quot;3 weeks, 3rd relapse&quot;, doc: &quot;Alcohol and prescribed morphine&quot;, service: &quot;&quot;, story: &quot;A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Erin&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;Anesu&#39;s Sponsor&quot;, story: &quot;Three kids who don&#39;t call anymore. A husband she still isn&#39;t used to not having. She&#39;s sober now — a little late, in her opinion.&quot;, unlocked: false, image: &quot;assets/characters/ERIN-A.png&quot;, weeksKnown: 0},
   {name: &quot;Franco&quot;, age: &quot;24&quot;, sobriety: &quot;Not currently sober&quot;, doc: &quot;Alcohol and \&quot;occasionally\&quot; cocaine&quot;, service: &quot;&quot;, story: &quot;Landed the job he studied his whole life for. Still doesn&#39;t feel like an adult. His relationship isn&#39;t helping&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},

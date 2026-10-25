@@ -1,9 +1,0 @@
-2026-10-15_1556  chat action colour
-2026-10-15_1609  memory bank and achievement buttons
-2026-10-15_1613  s;kfhish
-2026-10-15_1617  fixed ui font
-2026-10-15_1617  gggg
-2026-10-15_1622  colour of ui buttons
-2026-10-15_1850  erin chapter 1 and transition, ui pulse and tab colour change
-2026-10-15_1936  tab colour change
-2026-10-15_1959  aa
