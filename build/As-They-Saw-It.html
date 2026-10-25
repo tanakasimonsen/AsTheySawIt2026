@@ -800,7 +800,7 @@ body.scene-night #ui-bar {
   height: clamp(350px, 70vh, 820px);
   border: 3px dashed var(--text-main);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   color: var(--text-muted);
   font-size: 1em;
@@ -815,6 +815,21 @@ body.scene-night #ui-bar {
   max-width: 200px;
   image-rendering: pixelated;
   margin-bottom: 0.5em;
+}
+
+.scene-box img {
+  margin-bottom: 0;
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+.scene-nav {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  gap: 3em;
 }
 
 .scene-nav {
@@ -838,6 +853,7 @@ body.scene-night #ui-bar {
   width: clamp(500px, 82vh, 950px);
   height: clamp(450px, 70vh, 700px);
   border: 3px dashed var(--text-main);
+  background-color: var(--bg-panel);
   padding: clamp(0.5em, 1vw, 0.8em);
   display: flex;
   flex-direction: column;
@@ -1162,7 +1178,7 @@ body.scene-night #ui-bar {
   font-size: 0.8em;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid var(F4F1EA);
+  border-bottom: 1px solid #F4F1EA;
   color: #F4F1EA;
 }
 
@@ -2034,6 +2050,7 @@ body.scene-night #ui-bar {
   box-shadow: 0 0 20px 6px rgba(192, 69, 63, 0.55);
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "Story JavaScript" */
 Config.ui.stowBarInitially = false;
+window.debugPanelOn = false;
 
 window.updateDebugPanel = function() {
   if ($('#debug-panel').length === 0) {
@@ -3030,7 +3047,42 @@ window.startShare = function(blocks, opts, onDone) {
     })();
   }
   typeBlock(0);
-};</script><tw-tag name="StoryInit" color="blue"></tw-tag><tw-tag name="widget" color="yellow"></tw-tag><tw-passagedata pid="1" name="P_03_Opening_Scene" tags="" position="650,75" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
+};
+
+/* ============================================================
+   CHARACTER PORTRAITS
+   ============================================================ */
+window.portraitTalking = {
+  "assets/characters/ERIN-A.png":   "assets/characters/ERIN-B.png",
+  "assets/characters/GERALD-A.png": "assets/characters/GERALD-B.png",
+  "assets/characters/MICAH-A.png":  "assets/characters/MICAH-B.png",
+  "assets/characters/RUBY-A.png":   "assets/characters/RUBY-B.png"
+};
+window.portraitIdle = {};
+Object.keys(window.portraitTalking).forEach(function (idle) {
+  var talking = window.portraitTalking[idle];
+  window.portraitIdle[talking] = idle;
+  new Image().src = talking;
+});
+window.syncPortraits = function () {
+  $('.speaker-box').each(function () {
+    var $img = $(this).find('img').first();
+    if (!$img.length) return;
+    var src = $img.attr('src') || '';
+    var idle = window.portraitIdle[src] || src;
+    var want = ($(this).hasClass('speaking') && window.portraitTalking[idle]) ? window.portraitTalking[idle] : idle;
+    if (src !== want) $img.attr('src', want);
+  });
+};
+window.portraitSyncQueued = false;
+new MutationObserver(function () {
+  if (window.portraitSyncQueued) return;
+  window.portraitSyncQueued = true;
+  requestAnimationFrame(function () {
+    window.portraitSyncQueued = false;
+    window.syncPortraits();
+  });
+}).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class', 'src'] });</script><tw-tag name="StoryInit" color="blue"></tw-tag><tw-tag name="widget" color="yellow"></tw-tag><tw-passagedata pid="1" name="P_03_Opening_Scene" tags="" position="650,75" size="100,100">&lt;&lt;run $(&#39;body&#39;).removeClass(&#39;scene-night&#39;)&gt;&gt;
 &lt;&lt;set $currentDate to &quot;Sun, 21 Apr 2024&quot;&gt;&gt;
 &lt;&lt;set $currentTime to &quot;7:15pm&quot;&gt;&gt;
 &lt;&lt;run setAmbience(&#39;audio/meeting_interior.mp3&#39;)&gt;&gt;
@@ -3606,7 +3658,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="P_02_Title_Screen" tags="" position="600,225" size="100,100">&lt;div id=&quot;titleBackdrop&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;menu-screen&quot;&gt;
+&lt;div class=&quot;menu-screen&quot; style=&quot;font-family: &#39;cozy-quill&#39;, monospace;&quot;&gt;
 &lt;div class=&quot;title-lines&quot; id=&quot;titleLines&quot;&gt;&lt;/div&gt;
 &lt;div id=&quot;dialoguePrompt&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -3649,12 +3701,14 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 &lt;&lt;set $characterImages to {
   &quot;Anesu&quot;: &quot;https://i.imgur.com/PE4PsVq.gif&quot;,
-  &quot;Erin&quot;: &quot;https://i.imgur.com/A4YV3S2.gif&quot;,
-  &quot;Mama&quot;: &quot;https://i.imgur.com/L16jEVN.gif&quot;,
-  &quot;Dad&quot;: &quot;https://i.imgur.com/DSDJ6Y9.gif&quot;,
-  &quot;Micah&quot;: &quot;https://i.imgur.com/bjzAo97.gif&quot;,
+  &quot;Erin&quot;: &quot;assets/characters/ERIN-A.png&quot;,
+  &quot;Drunk Erin&quot;: &quot;assets/characters/ERIN-A.png&quot;,
+  &quot;Mama&quot;: &quot;assets/characters/RUBY-A.png&quot;,
+  &quot;Dad&quot;: &quot;assets/characters/GERALD-A.png&quot;,
+  &quot;Micah&quot;: &quot;assets/characters/MICAH-A.png&quot;,
   &quot;Julian&quot;: &quot;https://i.imgur.com/5Xz9pGG.gif&quot;
 }&gt;&gt;
+
 
 /*UI VARIABLES*/
 &lt;&lt;set $playerName to &quot;&quot;&gt;&gt;
@@ -3663,11 +3717,12 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 &lt;&lt;set $bossName to &quot;????&quot;&gt;&gt;
 &lt;&lt;set $angelSince to &quot;2024&quot;&gt;&gt;
 
-/*AA MEMBERS*/
-&lt;&lt;set $members to [
+   /*AA MEMBERS*/
+   &lt;&lt;set $memberIndex to 0&gt;&gt;
+   &lt;&lt;set $members to [
   {name: &quot;Anesu&quot;, age: &quot;20&quot;, sobriety: &quot;6 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;&quot;, story: &quot;Home doesn&#39;t feel like home right now. Six months sober, and everyone&#39;s still watching to see if it sticks&quot;, unlocked: true, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Martha&quot;, age: &quot;39&quot;, sobriety: &quot;3 weeks, 3rd relapse&quot;, doc: &quot;Alcohol and prescribed morphine&quot;, service: &quot;&quot;, story: &quot;A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
-  {name: &quot;Erin&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;Anesu&#39;s Sponsor&quot;, story: &quot;Three kids who don&#39;t call anymore. A husband she still isn&#39;t used to not having. She&#39;s sober now — a little late, in her opinion.&quot;, unlocked: false, image: &quot;https://i.imgur.com/A4YV3S2.gif&quot;, weeksKnown: 0},
+  {name: &quot;Erin&quot;, age: &quot;56&quot;, sobriety: &quot;4 years &amp; 4 months&quot;, doc: &quot;Alcohol&quot;, service: &quot;Anesu&#39;s Sponsor&quot;, story: &quot;Three kids who don&#39;t call anymore. A husband she still isn&#39;t used to not having. She&#39;s sober now — a little late, in her opinion.&quot;, unlocked: false, image: &quot;assets/characters/ERIN-A.png&quot;, weeksKnown: 0},
   {name: &quot;Franco&quot;, age: &quot;24&quot;, sobriety: &quot;Not currently sober&quot;, doc: &quot;Alcohol and \&quot;occasionally\&quot; cocaine&quot;, service: &quot;&quot;, story: &quot;Landed the job he studied his whole life for. Still doesn&#39;t feel like an adult. His relationship isn&#39;t helping&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Jordan&quot;, age: &quot;42&quot;, sobriety: &quot;In and out, longest stint 15 days&quot;, doc: &quot;Alcohol, and gambling once drunk&quot;, service: &quot;&quot;, story: &quot;Lost his chance at a Michelin-star restaurant in Sydney to his \&quot;unwavering intoxication\&quot;. Can&#39;t see he&#39;s burning his own career.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
   {name: &quot;Sam&quot;, age: &quot;28&quot;, sobriety: &quot;3 years &amp; 2 months (forced)&quot;, doc: &quot;Alcohol&quot;, service: &quot;&quot;, story: &quot;Lost their legs in a drunk-driving accident, thankfully only injuring themselves. Now attends court-ordered meetings.&quot;, unlocked: false, image: &quot;https://i.imgur.com/PE4PsVq.gif&quot;, weeksKnown: 0},
@@ -3768,7 +3823,7 @@ $members[$memberIndex].story
 &lt;&lt;if $beatIndex lt $sceneBeats.length&gt;&gt;
 &lt;&lt;set _beat to $sceneBeats[$beatIndex]&gt;&gt;
 &lt;&lt;run $(&#39;.dialogue-prompt&#39;).remove()&gt;&gt;
-&lt;&lt;if _beat.impacts&gt;&gt;
+&lt;&lt;if _beat.impacts and _beat.type isnot &quot;choice&quot;&gt;&gt;
 &lt;&lt;run (function(){
   var imp = _beat.impacts;
   for (var key in imp) {
@@ -3944,7 +3999,19 @@ _beat.text
 &lt;&lt;run (function(){
   var dest = _thisDest;
   var linkEl = $(&#39;&lt;a class=&quot;link-internal&quot;&gt;&#39; + _beat.text + &#39;&lt;/a&gt;&#39;);
-  linkEl.on(&#39;click&#39;, function(){ Engine.play(dest); });
+     var imp = _beat.impacts;
+   linkEl.on(&#39;click&#39;, function(){
+     if (imp) {
+       for (var key in imp) {
+         if (key === &quot;wobble&quot;) continue;
+         var cur = State.variables[key] || 0;
+         var wob = imp.wobble ? (Math.random() * 1.4 - 0.7) : 0;
+         State.variables[key] = Math.max(0, Math.min(10, cur + imp[key] + wob));
+       }
+       updateAngelStatus();
+     }
+     Engine.play(dest);
+   });
   $(_target + &#39; .chat-line&#39;).last().append(linkEl);
 })()&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
@@ -3953,7 +4020,7 @@ _beat.text
 &lt;&lt;elseif _beat.type is &quot;choices&quot;&gt;&gt;
 &lt;&lt;append &quot;#chatLog&quot;&gt;&gt;\
 &lt;&lt;for _i to 0; _i lt _beat.options.length; _i++&gt;&gt;\
-&lt;div class=&quot;chat-line player&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;$playerName&lt;/div&gt;&lt;&lt;link _beat.options[_i].text&gt;&gt;&lt;&lt;goto _beat.options[_i].dest&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/div&gt;\
+&lt;div class=&quot;chat-line player&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;$playerName&lt;/div&gt;&lt;&lt;set _opt to _beat.options[_i]&gt;&gt;&lt;&lt;capture _opt&gt;&gt;&lt;&lt;link _opt.text&gt;&gt;&lt;&lt;goto _opt.dest&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/capture&gt;&gt;&lt;/div&gt;\
 &lt;&lt;/for&gt;&gt;\
 &lt;&lt;/append&gt;&gt;
 &lt;&lt;set $beatIndex += 1&gt;&gt;
@@ -3984,7 +4051,16 @@ _beat.text
       $(&#39;#typeInputRow&#39;).prev(&#39;.type-hint&#39;).remove();
       $(&#39;#typeInputRow&#39;).remove();
       var chosen = opts[i];
-      if (chosen.setVar) { State.variables[chosen.setVar] = chosen.setValue; updateAngelStatus(); }
+         var imp = chosen.impacts;
+   if (imp) {
+     for (var key in imp) {
+       if (key === &quot;wobble&quot;) continue;
+       var cur = State.variables[key] || 0;
+       var wob = imp.wobble ? (Math.random() * 1.4 - 0.7) : 0;
+       State.variables[key] = Math.max(0, Math.min(10, cur + imp[key] + wob));
+     }
+     updateAngelStatus();
+   }
       State.variables.beatIndex += 1;
       var label = State.variables.playerName !== &quot;&quot; ? State.variables.playerName : &quot;You&quot;;
       $(&#39;#chatLog&#39;).append(&#39;&lt;div class=&quot;chat-line player&quot;&gt;&lt;div class=&quot;chat-speaker&quot;&gt;&#39; + label + &#39;&lt;/div&gt;&lt;span class=&quot;type-target&quot;&gt;&lt;/span&gt;&lt;/div&gt;&#39;);
@@ -4029,7 +4105,7 @@ _beat.text
   var bubbleSel = &quot;#&quot; + _bubbleId;
   var revealSel = &quot;#&quot; + _revealId;
   var revealed = 0;
-  $(bubbleSel).attr(&#39;class&#39;, &#39;chat-line &#39; + side);
+  $(bubbleSel).attr(&#39;class&#39;, &#39;chat-line &#39; + side + &#39; font-&#39; + String(_beat.speaker || &#39;&#39;).toLowerCase().replace(/\s/g, &#39;-&#39;));
   $(document).off(&#39;keydown.freeType&#39;).on(&#39;keydown.freeType&#39;, function(e){
     if (e.key === &#39;Tab&#39; || e.key === &#39;Shift&#39; || e.key === &#39;Control&#39; || e.key === &#39;Alt&#39; || e.key === &#39;Meta&#39; || e.key === &#39;CapsLock&#39; || e.key === &#39;Escape&#39;) return;
     e.preventDefault();
@@ -4087,7 +4163,7 @@ _beat.text
   var label = _label;
   var side = _beat.side;
   var target = _target;
-  var bubbleEl = $(&#39;&lt;div class=&quot;chat-line &#39; + side + &#39;&quot;&gt;&lt;/div&gt;&#39;);
+  var bubbleEl = $(&#39;&lt;div class=&quot;chat-line &#39; + side + &#39; font-&#39; + String(_beat.speaker || &#39;&#39;).toLowerCase().replace(/\s/g, &#39;-&#39;) + &#39;&quot;&gt;&lt;/div&gt;&#39;);
   var speakerEl = $(&#39;&lt;div class=&quot;chat-speaker&quot;&gt;&lt;/div&gt;&#39;).text(label);
   var layersWrap = $(&#39;&lt;div class=&quot;expand-layers&quot;&gt;&lt;/div&gt;&#39;);
   var firstLineEl = $(&#39;&lt;div class=&quot;expand-layer expand-layer-current&quot;&gt;&lt;/div&gt;&#39;).text(_beat.shortText);
@@ -4604,7 +4680,7 @@ The gym hums with machines and other people&#39;s music leaking out of their hea
     {text: &quot;Fine, Erin, you got me.&quot;, impacts: {anesuGuard: -0.5}},
     {text: &quot;Yeah okay, aunty, I got you.&quot;, impacts: {anesuGuard: -0.5}}
   ]},
-  {type: &quot;action&quot;, text: &quot;[PLACEHOLDER — a beat resolving/landing the hug moment before Erin moves the conversation on. The scene currently jumps straight from the choice to \&quot;anything else happen this week\&quot; with no reaction shown.]&quot;},
+  {type: &quot;action&quot;, text: &quot;The pair sit in silence, growing slowly with one another. An unlikely friendship, helping each other heal from familial traumas.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Anything else happen this week??&quot;, achievement: &quot;big_small_talk&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Higher Power&quot;, text: &quot;Are we mentioning Elias? I feel like that was pretty big...&quot;},
   {type: &quot;choice&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Yeah... there&#39;s actually something.&quot;, dest: &quot;B1C4_ErinCheckIn_EliasReveal&quot;},
@@ -5173,7 +5249,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   &quot;You will soon see that you cannot do it anymore. You will hit your rock bottom and soon become honest open and willing.&quot;,
   &quot;If the program doesn&#39;t work, you can always go back to the bottle. There is the door.&quot;,
   &quot;I came in kicking and screaming, so angry at the world and hated everyone in the room.&quot;,
-  &quot;Admiring powerlessness is not defeat, it is the most profound and brave thing that you can do.&quot;,
+  &quot;Admitting powerlessness is not defeat, it is the most profound and brave thing that you can do.&quot;,
   &quot;Alcohol gives the relief, and once you sober up and have emotions... And memories come flooding in, not having it is hell on earth.&quot;,
   &quot;You think what&#39;s the point? What&#39;s the use?&quot;,
   &quot;I was sick and tired of being sick and tired. Do I kill myself or do I listen up? Take a step back and realise I do not have control...&quot;,
@@ -5198,7 +5274,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
           var target = &quot;The serenity prayer settles over the room, scattered voices finding the same rhythm. \&quot;God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.\&quot;&quot;;
           var el = document.createElement(&#39;span&#39;);
           $(&#39;#sceneNarrative&#39;).append(el);
-          typewriterEffect(el, target, 25, function(){
+             typewriterEffect(el, target, 25, null, function(){
             setTimeout(function(){
               $(&#39;#memberDisplay&#39;).slideDown(400, function(){
                 $(&#39;html, body&#39;).animate({ scrollTop: $(&#39;#memberDisplay&#39;).offset().top }, 500);
@@ -5778,7 +5854,7 @@ A different dinner. Years ago.
 &lt;&lt;set _endings to (window.achievementStore.data.seen.endings || []).length&gt;&gt;
 
 &lt;div id=&quot;titleBackdrop&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;menu-screen&quot;&gt;
+&lt;div class=&quot;menu-screen&quot; style=&quot;font-family: &#39;cozy-quill&#39;, monospace;&quot;&gt;
 &lt;div class=&quot;title-lines&quot;&gt;
 &lt;div class=&quot;title-line&quot;&gt;&lt;span class=&quot;title-highlight&quot; style=&quot;font-size:2.5em;&quot;&gt;As They Saw It&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;title-line&quot;&gt;&lt;span class=&quot;title-highlight&quot;&gt;end of prototype&lt;/span&gt;&lt;/div&gt;

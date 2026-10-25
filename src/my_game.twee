@@ -712,7 +712,7 @@ body.scene-night #ui-bar {
   height: clamp(350px, 70vh, 820px);
   border: 3px dashed var(--text-main);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   color: var(--text-muted);
   font-size: 1em;
@@ -727,6 +727,21 @@ body.scene-night #ui-bar {
   max-width: 200px;
   image-rendering: pixelated;
   margin-bottom: 0.5em;
+}
+
+.scene-box img {
+  margin-bottom: 0;
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+.scene-nav {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  gap: 3em;
 }
 
 .scene-nav {
@@ -750,6 +765,7 @@ body.scene-night #ui-bar {
   width: clamp(500px, 82vh, 950px);
   height: clamp(450px, 70vh, 700px);
   border: 3px dashed var(--text-main);
+  background-color: var(--bg-panel);
   padding: clamp(0.5em, 1vw, 0.8em);
   display: flex;
   flex-direction: column;
@@ -1074,7 +1090,7 @@ body.scene-night #ui-bar {
   font-size: 0.8em;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid var(F4F1EA);
+  border-bottom: 1px solid #F4F1EA;
   color: #F4F1EA;
 }
 
@@ -1949,6 +1965,7 @@ body.scene-night #ui-bar {
 
 :: Story JavaScript [script]
 Config.ui.stowBarInitially = false;
+window.debugPanelOn = false;
 
 window.updateDebugPanel = function() {
   if ($('#debug-panel').length === 0) {
@@ -2947,6 +2964,41 @@ window.startShare = function(blocks, opts, onDone) {
   typeBlock(0);
 };
 
+/* ============================================================
+   CHARACTER PORTRAITS
+   ============================================================ */
+window.portraitTalking = {
+  "assets/characters/ERIN-A.png":   "assets/characters/ERIN-B.png",
+  "assets/characters/GERALD-A.png": "assets/characters/GERALD-B.png",
+  "assets/characters/MICAH-A.png":  "assets/characters/MICAH-B.png",
+  "assets/characters/RUBY-A.png":   "assets/characters/RUBY-B.png"
+};
+window.portraitIdle = {};
+Object.keys(window.portraitTalking).forEach(function (idle) {
+  var talking = window.portraitTalking[idle];
+  window.portraitIdle[talking] = idle;
+  new Image().src = talking;
+});
+window.syncPortraits = function () {
+  $('.speaker-box').each(function () {
+    var $img = $(this).find('img').first();
+    if (!$img.length) return;
+    var src = $img.attr('src') || '';
+    var idle = window.portraitIdle[src] || src;
+    var want = ($(this).hasClass('speaking') && window.portraitTalking[idle]) ? window.portraitTalking[idle] : idle;
+    if (src !== want) $img.attr('src', want);
+  });
+};
+window.portraitSyncQueued = false;
+new MutationObserver(function () {
+  if (window.portraitSyncQueued) return;
+  window.portraitSyncQueued = true;
+  requestAnimationFrame(function () {
+    window.portraitSyncQueued = false;
+    window.syncPortraits();
+  });
+}).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class', 'src'] });
+
 :: P_03_Opening_Scene {"position":"650,75","size":"100,100"}
 <<run $('body').removeClass('scene-night')>>
 <<set $currentDate to "Sun, 21 Apr 2024">>
@@ -3571,7 +3623,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 :: P_02_Title_Screen
 <div id="titleBackdrop"></div>
-<div class="menu-screen">
+<div class="menu-screen" style="font-family: 'cozy-quill', monospace;">
 <div class="title-lines" id="titleLines"></div>
 <div id="dialoguePrompt"></div>
 </div>
@@ -3617,12 +3669,14 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 
 <<set $characterImages to {
   "Anesu": "https://i.imgur.com/PE4PsVq.gif",
-  "Erin": "https://i.imgur.com/A4YV3S2.gif",
-  "Mama": "https://i.imgur.com/L16jEVN.gif",
-  "Dad": "https://i.imgur.com/DSDJ6Y9.gif",
-  "Micah": "https://i.imgur.com/bjzAo97.gif",
+  "Erin": "assets/characters/ERIN-A.png",
+  "Drunk Erin": "assets/characters/ERIN-A.png",
+  "Mama": "assets/characters/RUBY-A.png",
+  "Dad": "assets/characters/GERALD-A.png",
+  "Micah": "assets/characters/MICAH-A.png",
   "Julian": "https://i.imgur.com/5Xz9pGG.gif"
 }>>
+
 
 /*UI VARIABLES*/
 <<set $playerName to "">>
@@ -3631,11 +3685,12 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
 <<set $bossName to "????">>
 <<set $angelSince to "2024">>
 
-/*AA MEMBERS*/
-<<set $members to [
+   /*AA MEMBERS*/
+   <<set $memberIndex to 0>>
+   <<set $members to [
   {name: "Anesu", age: "20", sobriety: "6 months", doc: "Alcohol", service: "", story: "Home doesn't feel like home right now. Six months sober, and everyone's still watching to see if it sticks", unlocked: true, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
   {name: "Martha", age: "39", sobriety: "3 weeks, 3rd relapse", doc: "Alcohol and prescribed morphine", service: "", story: "A full time round the clock carer for her son, Michael, who has just celebrated his 21st birthday.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
-  {name: "Erin", age: "56", sobriety: "4 years & 4 months", doc: "Alcohol", service: "Anesu's Sponsor", story: "Three kids who don't call anymore. A husband she still isn't used to not having. She's sober now — a little late, in her opinion.", unlocked: false, image: "https://i.imgur.com/A4YV3S2.gif", weeksKnown: 0},
+  {name: "Erin", age: "56", sobriety: "4 years & 4 months", doc: "Alcohol", service: "Anesu's Sponsor", story: "Three kids who don't call anymore. A husband she still isn't used to not having. She's sober now — a little late, in her opinion.", unlocked: false, image: "assets/characters/ERIN-A.png", weeksKnown: 0},
   {name: "Franco", age: "24", sobriety: "Not currently sober", doc: "Alcohol and \"occasionally\" cocaine", service: "", story: "Landed the job he studied his whole life for. Still doesn't feel like an adult. His relationship isn't helping", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
   {name: "Jordan", age: "42", sobriety: "In and out, longest stint 15 days", doc: "Alcohol, and gambling once drunk", service: "", story: "Lost his chance at a Michelin-star restaurant in Sydney to his \"unwavering intoxication\". Can't see he's burning his own career.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
   {name: "Sam", age: "28", sobriety: "3 years & 2 months (forced)", doc: "Alcohol", service: "", story: "Lost their legs in a drunk-driving accident, thankfully only injuring themselves. Now attends court-ordered meetings.", unlocked: false, image: "https://i.imgur.com/PE4PsVq.gif", weeksKnown: 0},
@@ -3744,7 +3799,7 @@ $members[$memberIndex].story
 <<if $beatIndex lt $sceneBeats.length>>
 <<set _beat to $sceneBeats[$beatIndex]>>
 <<run $('.dialogue-prompt').remove()>>
-<<if _beat.impacts>>
+<<if _beat.impacts and _beat.type isnot "choice">>
 <<run (function(){
   var imp = _beat.impacts;
   for (var key in imp) {
@@ -3920,7 +3975,19 @@ _beat.text
 <<run (function(){
   var dest = _thisDest;
   var linkEl = $('<a class="link-internal">' + _beat.text + '</a>');
-  linkEl.on('click', function(){ Engine.play(dest); });
+     var imp = _beat.impacts;
+   linkEl.on('click', function(){
+     if (imp) {
+       for (var key in imp) {
+         if (key === "wobble") continue;
+         var cur = State.variables[key] || 0;
+         var wob = imp.wobble ? (Math.random() * 1.4 - 0.7) : 0;
+         State.variables[key] = Math.max(0, Math.min(10, cur + imp[key] + wob));
+       }
+       updateAngelStatus();
+     }
+     Engine.play(dest);
+   });
   $(_target + ' .chat-line').last().append(linkEl);
 })()>>
 <<set $beatIndex += 1>>
@@ -3929,7 +3996,7 @@ _beat.text
 <<elseif _beat.type is "choices">>
 <<append "#chatLog">>\
 <<for _i to 0; _i lt _beat.options.length; _i++>>\
-<div class="chat-line player"><div class="chat-speaker">$playerName</div><<link _beat.options[_i].text>><<goto _beat.options[_i].dest>><</link>></div>\
+<div class="chat-line player"><div class="chat-speaker">$playerName</div><<set _opt to _beat.options[_i]>><<capture _opt>><<link _opt.text>><<goto _opt.dest>><</link>><</capture>></div>\
 <</for>>\
 <</append>>
 <<set $beatIndex += 1>>
@@ -3960,7 +4027,16 @@ _beat.text
       $('#typeInputRow').prev('.type-hint').remove();
       $('#typeInputRow').remove();
       var chosen = opts[i];
-      if (chosen.setVar) { State.variables[chosen.setVar] = chosen.setValue; updateAngelStatus(); }
+         var imp = chosen.impacts;
+   if (imp) {
+     for (var key in imp) {
+       if (key === "wobble") continue;
+       var cur = State.variables[key] || 0;
+       var wob = imp.wobble ? (Math.random() * 1.4 - 0.7) : 0;
+       State.variables[key] = Math.max(0, Math.min(10, cur + imp[key] + wob));
+     }
+     updateAngelStatus();
+   }
       State.variables.beatIndex += 1;
       var label = State.variables.playerName !== "" ? State.variables.playerName : "You";
       $('#chatLog').append('<div class="chat-line player"><div class="chat-speaker">' + label + '</div><span class="type-target"></span></div>');
@@ -4005,7 +4081,7 @@ _beat.text
   var bubbleSel = "#" + _bubbleId;
   var revealSel = "#" + _revealId;
   var revealed = 0;
-  $(bubbleSel).attr('class', 'chat-line ' + side);
+  $(bubbleSel).attr('class', 'chat-line ' + side + ' font-' + String(_beat.speaker || '').toLowerCase().replace(/\s/g, '-'));
   $(document).off('keydown.freeType').on('keydown.freeType', function(e){
     if (e.key === 'Tab' || e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta' || e.key === 'CapsLock' || e.key === 'Escape') return;
     e.preventDefault();
@@ -4063,7 +4139,7 @@ _beat.text
   var label = _label;
   var side = _beat.side;
   var target = _target;
-  var bubbleEl = $('<div class="chat-line ' + side + '"></div>');
+  var bubbleEl = $('<div class="chat-line ' + side + ' font-' + String(_beat.speaker || '').toLowerCase().replace(/\s/g, '-') + '"></div>');
   var speakerEl = $('<div class="chat-speaker"></div>').text(label);
   var layersWrap = $('<div class="expand-layers"></div>');
   var firstLineEl = $('<div class="expand-layer expand-layer-current"></div>').text(_beat.shortText);
@@ -5202,7 +5278,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
   "You will soon see that you cannot do it anymore. You will hit your rock bottom and soon become honest open and willing.",
   "If the program doesn't work, you can always go back to the bottle. There is the door.",
   "I came in kicking and screaming, so angry at the world and hated everyone in the room.",
-  "Admiring powerlessness is not defeat, it is the most profound and brave thing that you can do.",
+  "Admitting powerlessness is not defeat, it is the most profound and brave thing that you can do.",
   "Alcohol gives the relief, and once you sober up and have emotions... And memories come flooding in, not having it is hell on earth.",
   "You think what's the point? What's the use?",
   "I was sick and tired of being sick and tired. Do I kill myself or do I listen up? Take a step back and realise I do not have control...",
@@ -5227,7 +5303,7 @@ Anesu stares at her phone, the message bar blinking, waiting.
           var target = "The serenity prayer settles over the room, scattered voices finding the same rhythm. \"God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.\"";
           var el = document.createElement('span');
           $('#sceneNarrative').append(el);
-          typewriterEffect(el, target, 25, function(){
+             typewriterEffect(el, target, 25, null, function(){
             setTimeout(function(){
               $('#memberDisplay').slideDown(400, function(){
                 $('html, body').animate({ scrollTop: $('#memberDisplay').offset().top }, 500);
@@ -5839,7 +5915,7 @@ A different dinner. Years ago.
 <<set _endings to (window.achievementStore.data.seen.endings || []).length>>
 
 <div id="titleBackdrop"></div>
-<div class="menu-screen">
+<div class="menu-screen" style="font-family: 'cozy-quill', monospace;">
 <div class="title-lines">
 <div class="title-line"><span class="title-highlight" style="font-size:2.5em;">As They Saw It</span></div>
 <div class="title-line"><span class="title-highlight">end of prototype</span></div>
