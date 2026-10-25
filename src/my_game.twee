@@ -4605,7 +4605,7 @@ The gym hums with machines and other people's music leaking out of their headpho
     {text: "Fine, Erin, you got me.", impacts: {anesuGuard: -0.5}},
     {text: "Yeah okay, aunty, I got you.", impacts: {anesuGuard: -0.5}}
   ]},
-  {type: "action", text: "[PLACEHOLDER — a beat resolving/landing the hug moment before Erin moves the conversation on. The scene currently jumps straight from the choice to \"anything else happen this week\" with no reaction shown.]"},
+  {type: "action", text: "The pair sit in silence, growing slowly with one another. An unlikely friendship, helping each other heal from familial traumas."},
   {type: "dialogue", side: "character", speaker: "Erin", text: "Anything else happen this week??", achievement: "big_small_talk"},
   {type: "dialogue", side: "character", speaker: "Higher Power", text: "Are we mentioning Elias? I feel like that was pretty big..."},
   {type: "choice", side: "player", speaker: "Anesu", text: "Yeah... there's actually something.", dest: "B1C4_ErinCheckIn_EliasReveal"},
