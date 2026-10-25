@@ -522,14 +522,28 @@ body.scene-night #ui-bar {
 #dialoguePrompt > a, .dialogue-prompt a, .expand-continue {
   font-size: 0;
 }
+
 #dialoguePrompt > a::after, .dialogue-prompt a::after, .expand-continue::after {
-  content: "";
+  content: "»";
   display: inline-block;
-  width: 7px;
-  height: 14px;
-  background-image: url('assets/ui/SkipArrowB_V001.png');
-  background-size: 100% 100%;
-  image-rendering: pixelated;
+  font-size: 32px;
+  font-family: monospace;
+  color: #E6DAC8;
+  transform: rotate(90deg);
+  opacity: 0.5;
+}
+
+#dialoguePrompt > a:hover::after, .dialogue-prompt a:hover::after, .expand-continue:hover::after {
+  opacity: 1;
+}
+
+#dialoguePrompt > a::after, .dialogue-prompt a::after, .expand-continue::after {
+  animation: arrow-bob 1.2s ease-in-out infinite;
+}
+
+@keyframes arrow-bob {
+  0%, 100% { transform: rotate(90deg) translateX(0); }
+  50%      { transform: rotate(90deg) translateX(4px); }
 }
 
 #volume-panel {
@@ -825,6 +839,11 @@ body.scene-night #ui-bar {
   max-width: none;
 }
 
+.speaker-box img {
+  width: 100%;
+  max-width: 320px;
+}
+
 .scene-nav {
   margin-top: 1em;
   display: flex;
@@ -958,11 +977,12 @@ body.scene-night #ui-bar {
 
 .card-new-badge {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  background-image: url('assets/ui/UnreadDot_V002.png');
+  width: 44px;
+  height: 20px;
+  background-image: url('assets/ui/NewBox_V004.png');
   background-size: contain;
   background-repeat: no-repeat;
+  image-rendering: pixelated;
   margin-left: 0.5em;
   vertical-align: middle;
 }
@@ -1045,7 +1065,7 @@ body.scene-night #ui-bar {
 }
 
 .speaker-box {
-  width: clamp(90px, 12vw, 260px);
+  width: clamp(140px, 17vw, 340px);
   height: 100%;
   border: 3px dashed var(--text-main);
   display: flex;
@@ -2048,6 +2068,99 @@ body.scene-night #ui-bar {
 
 .speaker-box.anesu-glow-high {
   box-shadow: 0 0 20px 6px rgba(192, 69, 63, 0.55);
+}
+
+#debug-panel, #debug-toggle {
+  display: none !important;
+}
+
+#skip-toggle {
+  background: none !important;
+  border: none !important;
+  padding: 0.2em 0.4em !important;
+  font-size: 0 !important;
+  opacity: 0.4;
+  right: 28px !important;
+  bottom: 22px !important;
+}
+
+#skip-toggle::before {
+  content: "»";
+  font-size: 40px;
+  font-family: monospace;
+  color: var(--text-main);
+}
+
+#skip-toggle:hover,
+#skip-toggle.active {
+  opacity: 0.9;
+}
+
+#skip-toggle.active::after {
+  content: "Fast mode is on. Some features won't play.";
+  position: absolute;
+  right: 0;
+  bottom: 110%;
+  width: 220px;
+  padding: 10px 12px;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.2;
+  text-align: left;
+  color: var(--bg-main);
+  background: var(--text-main);
+  border-radius: 6px;
+  pointer-events: none;
+  animation: skip-warn 6s forwards;
+}
+
+@keyframes skip-warn {
+  0%, 20%, 40% { opacity: 1; }
+  10%, 30%     { opacity: 0.2; }
+  85%          { opacity: 1; }
+  100%         { opacity: 0; }
+}
+
+#skip-toggle.active::after {
+  content: "Fast mode is on. Some features won't play.";
+  position: absolute;
+  right: 0;
+  bottom: 110%;
+  width: 220px;
+  padding: 10px 12px;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.2;
+  text-align: left;
+  color: var(--bg-main);
+  background: var(--text-main);
+  border-radius: 6px;
+  pointer-events: none;
+  animation: skip-warn 6s forwards;
+}
+
+@keyframes skip-warn {
+  0%, 20%, 40% { opacity: 1; }
+  10%, 30%     { opacity: 0.2; }
+  85%          { opacity: 1; }
+  100%         { opacity: 0; }
+}
+
+#menu-item-memory-bank a.unread::before,
+#menu-item-achievements a.unread::before {
+  content: "";
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+  background: url('assets/ui/NewBox_V004.png') no-repeat center / contain;
+  image-rendering: pixelated;
+  vertical-align: middle;
+  margin-right: .35em;
+}
+
+.speaker-box:has(img[src*="assets/characters"]),
+.speaker-box:has(img[src*="imgur"]) {
+  border-color: transparent;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "Story JavaScript" */
 Config.ui.stowBarInitially = false;
 window.debugPanelOn = false;
@@ -3160,9 +3273,9 @@ You&#39;ve chosen to follow Anesu this week.
 &lt;&lt;set $sceneBeats to [
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Well that was a lovely meeting! Andy finally shared.&quot;},
   {type: &quot;thought&quot;, text: &quot;I never know how to respond to someone saying a \&quot;good meeting\&quot;, they can be so depressing sometimes, and so was Andy&#39;s share. And Jordan! God man you&#39;re 40 something years old, get your shit together!&quot;},
-  {type: &quot;action&quot;, text: &quot;Erin&#39;s door thuds shut.&quot;, sound: &quot;audio/car_door.mp3&quot;},
-  {type: &quot;action&quot;, text: &quot;With Anesu a beat after.&quot;, sound: &quot;audio/car_door.mp3&quot;},
-  {type: &quot;action&quot;, text: &quot;The engine turns over.&quot;, sound: &quot;audio/engine_start.mp3&quot;, soundId: &quot;engine&quot;, soundPersist: true},
+  {type: &quot;action&quot;, text: &quot;Erin&#39;s door thuds shut.&quot;},
+  {type: &quot;action&quot;, text: &quot;With Anesu a beat after.&quot;},
+  {type: &quot;action&quot;, text: &quot;The engine turns over.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;player&quot;, speaker: &quot;Anesu&quot;, text: &quot;Mhmm, yeah, a great meeting. Thank you for driving me home Erin.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;You know it&#39;s no trouble love. Soon you can drive me! When you get your P&#39;s!&quot;},
   {type: &quot;action&quot;, text: &quot;Erin flashes Anesu a smile and pulls out of the carpark, forgetting to put her seatbelt on.&quot;, sound: &quot;audio/seatbelt_ding.mp3&quot;},
@@ -3193,7 +3306,7 @@ You follow Anesu home, watching her hop in the passenger side of Erin&#39;s car.
 &lt;/div&gt;
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="B1C1_03_AnesuDoorstep" tags="" position="900,200" size="100,100">&lt;&lt;run stopAmbience()&gt;&gt;        
 &lt;&lt;set $sceneBeats to [
-  {type: &quot;action&quot;, text: &quot;They jolt with a halt, a little too close to the garage door.&quot;, sound: &quot;audio/engine_stop.mp3&quot;, stopSoundId: &quot;engine&quot;},
+  {type: &quot;action&quot;, text: &quot;They jolt with a halt, a little too close to the garage door.&quot;},
   {type: &quot;dialogue&quot;, side: &quot;character&quot;, speaker: &quot;Erin&quot;, text: &quot;Have a good rest of your week hun! Remember, your mother loves you very much.&quot;, memoryEntry: {who: &quot;Erin&quot;, text: &quot;My sponsor. Drives me home every week whether I ask or not. Sweet, but she talks about my mama like she knows her, which she very much does not.&quot;}},
   {type: &quot;action&quot;, text: &quot;Erin flashes her lights and drives off, her home a few kms down the road.&quot;},
   {type: &quot;thought&quot;, text: &quot;Okay, just shoes off and straight to your room, don&#39;t even hesitate.&quot;},
@@ -3673,7 +3786,7 @@ Anesu, Mama, and Dad stand together. Together in the literal sense... not at all
         $(&#39;#titleBackdrop&#39;).addClass(&#39;visible&#39;);
         var t3 = setTimeout(function(){
           if ($(&#39;#titleLines&#39;).length) {
-            Wikifier.wikifyEval(&#39;&lt;&lt;replace &quot;#titleLines&quot;&gt;&gt;&lt;span class=&quot;title-highlight&quot; style=&quot;font-size:2.5em;&quot;&gt;As They Saw It&lt;/span&gt;&lt;&lt;/replace&gt;&gt;&#39;);
+            Wikifier.wikifyEval(&#39;&lt;&lt;replace &quot;#titleLines&quot;&gt;&gt;&lt;span class=&quot;title-highlight&quot; style=&quot;font-size:1.8em;&quot;&gt;As They Saw It&lt;/span&gt;&lt;&lt;/replace&gt;&gt;&#39;);
           }
           var t4 = setTimeout(function(){
             if ($(&#39;#dialoguePrompt&#39;).length) {

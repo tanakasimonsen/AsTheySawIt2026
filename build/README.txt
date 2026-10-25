@@ -88,6 +88,24 @@ KNOWN ISSUES
 - Member stories for locked characters are placeholders ("Coming
   soon...") as they are not part of this prototype.
 - You may need to scroll if you don't see any links or buttons
+
+------------------------------------------------------------
+STARTING FRESH / RESETTING ACHIEVEMENTS
+------------------------------------------------------------
+Achievements, saves and the Memory Bank are remembered by your
+browser, not the game file. If you have played an earlier copy
+on this computer, they may already show as unlocked.
+
+To reset everything:
+1. Open the game.
+2. Press F12 and click the "Console" tab.
+3. Paste the line below and press Enter:
+
+   localStorage.clear(); sessionStorage.clear(); location.reload();
+
+Or open the game in a private window (Ctrl+Shift+N in Chrome,
+Ctrl+Shift+P in Edge) for a clean playthrough every time.
+
 ------------------------------------------------------------
 CREDITS AND EXTERNAL ASSETS
 ------------------------------------------------------------
